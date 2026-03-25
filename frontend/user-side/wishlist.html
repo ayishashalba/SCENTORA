@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scentora - My Wishlist</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<style>
+    .product-image-container img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    .out-of-stock-img {
+    opacity: 0.4;
+    filter: grayscale(80%);
+}
+    .out-stock-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    z-index: 2;
+}
+.product-image-container {
+    position: relative;
+}
+.disabled-cart {
+    background: #ccc !important;
+    cursor: not-allowed;
+}
+.low-stock-badge {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: #ffc107;
+    color: #000;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 5px;
+    z-index: 2;
+    font-weight: 500;
+}
+    
+</style>
+
+<body class="home-body">
+    <!-- Navbar -->
+    <header class="header-section">
+        <div class="container-fluid top-header">
+            <div class="row align-items-center">
+                <!-- Search Bar -->
+                <div class="col-4">
+                    <!-- <div class="search-bar">
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search for Perfume...">
+                    </div> -->
+                </div>
+                <!-- Logo -->
+                <div class="col-4 text-center">
+                    <p class="brand-logo">SCENTORA</p>
+                </div>
+                <!-- Icons -->
+                <div class="col-4 text-end">
+                    <div class="header-icons">
+                        <a href="wishlist.html"><i class="bi bi-heart-fill heart-icon"></i></a>
+                        <a href="profile.html"><i class="bi bi-person-fill person-icon"></i></a>
+                        <a href="cart.html"><i class="bi bi-cart cart-icon"></i></a>
+                    </div>
+                </div>
+                <!-- Navigation Menu -->
+                <div class="col-12">
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a href="products.html">Shop All</a></li>
+                            <li><a href="crazy-deals.html">Crazy Deals</a></li>
+                            <li><a href="home.html#bestsellers">Bestsellers</a></li>
+                            <li><a href="home.html#categories">Categories</a></li>
+                            <li><a href="home.html#bestsellers">New Arrivals</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Wishlist Page Content -->
+    <main class="wishlist-page py-5">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">MY WISHLIST</h2>
+
+            <!-- Wishlist Items Grid -->
+            <div class="row g-4" id="wishlistGrid"></div>
+
+
+            <!-- Empty State (Hidden) -->
+            <div class="empty-wishlist text-center py-5 d-none">
+                <i class="bi bi-heart-break mb-4 text-muted" style="font-size: 80px;"></i>
+                <h2>Your wishlist is empty</h2>
+                <p class="text-muted mb-4">Explore our collections and find something you love!</p>
+                <a href="products.html" class="btn wishlist-add-btn px-5 py-3">Explore Products</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <h4>BESTSELLERS</h4>
+                <ul>
+                    <li>Ultimate Perfume Box</li>
+                    <li>Perfume Gift Set For Men</li>
+                    <li>Men</li>
+                    <li>Perfume Gift Set For Women</li>
+                    <li>Attars</li>
+                    <li>Perfume For Men</li>
+                    <li>Perfume For Women</li>
+                    <li>Unisex Perfume</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>INFORMATION</h4>
+                <ul>
+                    <li>Blogs</li>
+                    <li>Newsroom</li>
+                    <li>Terms & Conditions</li>
+                    <li>Privacy Policy</li>
+                    <li>Refund and Return</li>
+                    <li>Shipping Policy</li>
+                    <li>Bulk Order - GST</li>
+                    <li>Invoice</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>SUPPORT</h4>
+                <ul>
+                    <li>About Us</li>
+                    <li>Contact Us</li>
+                    <li>Order Tracking</li>
+                    <li>All Products</li>
+                    <li>FAQ</li>
+                    <li>Sitemap</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <p>
+                    Office Location: Plot no. 417, Udyog Vihar Phase III,
+                    Gurgaon, Haryana, India
+                </p>
+                <p><a href="#">Contact Us on WhatsApp</a></p>
+                <p>+91-9810154380</p>
+                <p>Timing: 10:00 AM to 7:00 PM, Monday to Sunday</p>
+            </div>
+
+            <div class="footer-col newsletter">
+                <h4>EXCLUSIVE</h4>
+                <div class="newsletter-box">
+                    <input type="email" placeholder="Enter email here">
+                    <button>&rarr;</button>
+                </div>
+                <p>
+                    Sign up here to get the latest news, updates and special
+                    offers delivered to your inbox.
+                </p>
+                <p>
+                    Plus, you'll be the first to know about our discounts!
+                </p>
+
+                <div class="social-icons">
+                    <i class="bi bi-facebook"></i>
+                    <i class="bi bi-twitter"></i>
+                    <i class="bi bi-pinterest"></i>
+                    <i class="bi bi-instagram"></i>
+                    <i class="bi bi-youtube"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="scam-alert">
+            <h5>⚠ Scam Alert</h5>
+            <p>
+                We have noticed a rise in fraudulent activities through calls,
+                SMS, WhatsApp messages, emails, and other mediums.
+            </p>
+            <ul>
+                <li>
+                    Please be aware that <strong>SCENTORA and its employees</strong>
+                    never ask for your financial details for contests or deals.
+                </li>
+                <li>
+                    If you receive any such communication, reach out to us at
+                    <strong>+91 9810154380</strong> or email
+                    <strong>shop@scentoraorganic.com</strong>.
+                </li>
+                <li>
+                    If you suspect any scam, kindly report it to the Department
+                    of Telecommunications (DoT).
+                </li>
+            </ul>
+            <p><strong>Stay safe!</strong></p>
+        </div>
+    </footer>
+
+<div id="messageBox" class="position-fixed top-0 end-0 p-3" style="z-index:9999;"></div>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showMessage(text, type = "success") {
+    const box = document.getElementById("messageBox");
+
+    const msg = document.createElement("div");
+    msg.className = `alert alert-${type} shadow`;
+    msg.innerText = text;
+
+    box.appendChild(msg);
+
+    setTimeout(() => {
+        msg.remove();
+    }, 3000);
+}
+       document.addEventListener("DOMContentLoaded", () => {
+    const token = localStorage.getItem("token");
+    const container = document.getElementById("wishlistGrid");
+    const emptyState = document.querySelector(".empty-wishlist");
+    const LOW_STOCK_LIMIT = 5;
+
+    async function loadWishlist() {
+        try {
+            const res = await fetch("http://localhost:5000/api/wishlist", {
+                headers: { "Authorization": "Bearer " + token }
+            });
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+            const data = await res.json();
+            const items = data.wishlist || data;
+
+            container.innerHTML = "";
+            if (!items || items.length === 0) {
+                emptyState.classList.remove("d-none");
+                return;
+            } else {
+                emptyState.classList.add("d-none");
+            }
+
+            items.forEach(item => {
+                const product = item.product;
+                const col = document.createElement("div");
+                col.className = "col-6 col-md-4 col-lg-3";
+
+                const isOutOfStock = !product.stock || product.stock <= 0;
+                const isLowStock = product.stock > 0 && product.stock <= LOW_STOCK_LIMIT;
+
+                col.innerHTML = `
+                    <div class="product-listing-card position-relative">
+                        <button class="btn btn-sm btn-outline-danger position-absolute top-0 end-0 m-1 p-1"
+                            onclick="removeFromWishlist('${product._id}')">
+                            <i class="bi bi-trash"></i>
+                        </button>
+
+                        <div class="product-image-container">
+                            ${isOutOfStock ? `<div class="out-stock-badge">Out of Stock</div>` : ""}
+                            ${isLowStock ? `<div class="low-stock-badge">Only ${product.stock} left</div>` : ""}
+                            <a ${isOutOfStock ? "" : `href="product-details.html?id=${product._id}"`}>
+                                <img src="${product.image && product.image.startsWith('uploads/') 
+    ? 'http://localhost:5000/' + product.image 
+    : (product.image || 'assets/images/default.jpg')}"
+     alt="${product.name}"
+     class="${isOutOfStock ? "out-of-stock-img" : ""}">
+                            </a>
+                        </div>
+
+                        <div class="product-details">
+                            <a href="product-details.html?id=${product._id}" style="text-decoration:none; color:inherit;">
+                                <h5 class="product-title">${product.name}</h5>
+                                <p class="product-desc">${product.description || ""}</p>
+                                <div class="product-price">₹${product.price}</div>
+                            </a>
+                            <button class="btn add-to-cart-btn w-100 ${isOutOfStock ? "disabled-cart" : ""}"
+                                    onclick="addToCart('${product._id}')"
+                                    ${isOutOfStock ? "disabled" : ""}>
+                                ${isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
+
+        } catch (err) {
+            console.error("Failed to load wishlist:", err);
+            container.innerHTML = `<p class="text-danger">Failed to load wishlist. Please try again later.</p>`;
+        }
+    }
+
+    window.removeFromWishlist = async function(productId) {
+        try {
+            await fetch(`http://localhost:5000/api/wishlist/${productId}`, {
+                method: "DELETE",
+                headers: { "Authorization": "Bearer " + token }
+            });
+            loadWishlist();
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    window.addToCart = async function(productId) {
+        try {
+            const res = await fetch("http://localhost:5000/api/cart", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: JSON.stringify({ productId, quantity: 1 })
+            });
+            const data = await res.json();
+            showMessage(data.message || "Added to cart!");
+        } catch (err) {
+            console.error(err);
+            showMessage("Failed to add to cart.");
+        }
+    }
+
+    loadWishlist();
+});
+    </script>
+
+
+</body>
+
+</html>

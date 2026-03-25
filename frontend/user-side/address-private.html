@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scentora - My Addresses</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+
+<body class="home-body">
+    <!-- Navbar -->
+    <header class="header-section">
+        <div class="container-fluid top-header">
+            <div class="row align-items-center">
+                <!-- Search Bar -->
+                <div class="col-4">
+                    <div class="search-bar">
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search for Perfume...">
+                    </div>
+                </div>
+                <!-- Logo -->
+                <div class="col-4 text-center">
+                    <p class="brand-logo">SCENTORA</p>
+                </div>
+                <!-- Icons -->
+                <div class="col-4 text-end">
+                    <div class="header-icons">
+                        <a href="wishlist.html"><i class="bi bi-heart-fill heart-icon"></i></a>
+                        <a href="profile.html"><i class="bi bi-person-fill person-icon"></i></a>
+                        <a href="cart.html"><i class="bi bi-cart cart-icon"></i></a>
+                    </div>
+                </div>
+                <!-- Navigation Menu -->
+                <div class="col-12">
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a href="products.html">Shop All</a></li>
+                            <li><a href="crazy-deals.html">Crazy Deals</a></li>
+                            <li><a href="home.html#bestsellers">Bestsellers</a></li>
+                            <li><a href="home.html#categories">Categories</a></li>
+                            <li><a href="home.html#bestsellers">New Arrivals</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Address Page Content -->
+    <main class="address-private-page py-5">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Left Sidebar: Account Menu -->
+                <div class="col-lg-3 col-md-4">
+                    <div class="account-sidebar shadow-sm">
+                        <div class="sidebar-user-info p-4 border-bottom text-center">
+                            <div class="user-avatar-circle mx-auto mb-3">
+                            </div>
+                            <h5 class="mb-0 fw-600">John Doe</h5>
+                            <p class="text-muted small">john.doe@example.com</p>
+                        </div>
+                        <ul class="sidebar-menu list-unstyled mb-0">
+                            <li><a href="profile.html"><i class="bi bi-person me-3"></i>Profile</a></li>
+                            <li><a href="orders.html"><i class="bi bi-bag me-3"></i>Orders</a></li>
+                            <li><a href="address-private.html" class="active"><i
+                                        class="bi bi-geo-alt me-3"></i>Addresses</a></li>
+                            <li><a href="wishlist.html"><i class="bi bi-heart me-3"></i>Wishlist</a></li>
+                            <li><a href="wallet.html"><i class="bi bi-wallet2 me-3"></i>Wallet</a></li>
+                            <li><a href="coupons.html"><i class="bi bi-ticket-perforated me-3"></i>Coupons</a></li>
+                             <li><a href="settings.html"><i class="bi bi-gear me-3"></i>Settings</a></li>
+                            <li class="border-top mt-2"><a href="logout.html" class="text-danger"><i
+                                        class="bi bi-box-arrow-right me-3"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Content Area: Address Management -->
+                <div class="col-lg-9 col-md-8">
+                    <div id="uiMessage" class="alert d-none mb-3"></div>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold mb-0">Manage Addresses</h4>
+                        <button class="btn add-new-address-btn px-4 py-2 fw-600" data-bs-toggle="collapse"
+                            data-bs-target="#addAddressForm">
+                            <i class="bi bi-plus-lg me-2"></i>ADD NEW ADDRESS
+                        </button>
+                    </div>
+
+                    <!-- Add/Edit Address Form (Collapsible) -->
+                    <div class="collapse mb-4" id="addAddressForm">
+                        <div class="card holographic-form shadow-sm border-0 p-4 p-md-5">
+                            <div class="form-pattern"></div>
+                            <div class="form-content">
+                                <h5 class="fw-bold mb-4 text-white">Add/Edit Address</h5>
+                                <form id="addressForm" action="#" class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label text-white-50">Full Name</label>
+                                        <input type="text" class="form-control futuristic-input" id="fullName"
+                                            placeholder="e.g. John Doe">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-white-50">Mobile Number</label>
+                                        <input type="text" class="form-control futuristic-input" id="phone"
+                                            placeholder="e.g. +91 1234567890">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label text-white-50">Pincode</label>
+                                        <input type="text" class="form-control futuristic-input" id="pincode"
+                                            placeholder="e.g. 122016">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label text-white-50">City</label>
+                                        <input type="text" class="form-control futuristic-input" id="city"
+                                            placeholder="e.g. Gurgaon">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label text-white-50">State</label>
+                                        <input type="text" class="form-control futuristic-input" id="state"
+                                            placeholder="e.g. Haryana">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label text-white-50">Address Line 1 (Street, Area)</label>
+                                        <input type="text" class="form-control futuristic-input" id="addressLine1"
+                                            placeholder="e.g. Plot 417, Udyog Vihar III">
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label class="form-label text-white-50">Address Type</label>
+                                        <select id="addressType" class="form-control futuristic-input">
+                                            <option value="Home">Home</option>
+                                            <option value="Office">Office</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-12 mt-4">
+                                        <div class="form-check form-switch futuristic-switch">
+                                            <input class="form-check-input" type="checkbox" id="defaultAddressToggle"
+                                                checked>
+                                            <label class="form-check-label text-white" for="defaultAddressToggle">Set as
+                                                Default Address</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-4 d-flex gap-3">
+                                        <button type="submit" class="btn futuristic-save-btn px-5 py-2 fw-600">SAVE
+                                            ADDRESS</button>
+                                        <button type="button" class="btn futuristic-cancel-btn px-5 py-2 fw-600"
+                                            data-bs-toggle="collapse" data-bs-target="#addAddressForm">CANCEL</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Saved Addresses List -->
+                    <div class="address-grid row g-4" id="addressList">
+                        <!-- Default Address Card -->
+                        <div class="col-md-6">
+                            <div class="address-card private default-address shadow-sm p-4 h-100">
+                                <div class="card-header-actions d-flex justify-content-between align-items-start mb-3">
+                                    <span class="badge neon-badge-blue">DEFAULT</span>
+                                    <div class="dropdown">
+                                        <button class="btn p-0 border-0" data-bs-toggle="dropdown"><i
+                                                class="bi bi-three-dots-vertical"></i></button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                            <li><a class="dropdown-item" href="#"><i
+                                                        class="bi bi-pencil me-2"></i>Edit</a></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i
+                                                        class="bi bi-trash me-2"></i>Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Regular Address Card -->
+                        <div class="col-md-6">
+                            <div class="address-card private shadow-sm p-4 h-100">
+                                <div class="card-header-actions d-flex justify-content-between align-items-start mb-3">
+                                    <span class="badge badge-light text-muted border">OFFICE</span>
+                                    <div class="dropdown">
+                                        <button class="btn p-0 border-0" data-bs-toggle="dropdown"><i
+                                                class="bi bi-three-dots-vertical"></i></button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                            <li><a class="dropdown-item" href="#"><i
+                                                        class="bi bi-pencil me-2"></i>Edit</a></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i
+                                                        class="bi bi-trash me-2"></i>Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <h4>BESTSELLERS</h4>
+                <ul>
+                    <li>Ultimate Perfume Box</li>
+                    <li>Perfume Gift Set For Men</li>
+                    <li>Men</li>
+                    <li>Perfume Gift Set For Women</li>
+                    <li>Attars</li>
+                    <li>Perfume For Men</li>
+                    <li>Perfume For Women</li>
+                    <li>Unisex Perfume</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>INFORMATION</h4>
+                <ul>
+                    <li>Blogs</li>
+                    <li>Newsroom</li>
+                    <li>Terms & Conditions</li>
+                    <li>Privacy Policy</li>
+                    <li>Refund and Return</li>
+                    <li>Shipping Policy</li>
+                    <li>Bulk Order - GST</li>
+                    <li>Invoice</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>SUPPORT</h4>
+                <ul>
+                    <li>About Us</li>
+                    <li>Contact Us</li>
+                    <li>Order Tracking</li>
+                    <li>All Products</li>
+                    <li>FAQ</li>
+                    <li>Sitemap</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <p>
+                    Office Location: Plot no. 417, Udyog Vihar Phase III,
+                    Gurgaon, Haryana, India
+                </p>
+                <p><a href="#">Contact Us on WhatsApp</a></p>
+                <p>+91-1234567890</p>
+                <p>Timing: 10:00 AM to 7:00 PM, Monday to Sunday</p>
+            </div>
+
+            <div class="footer-col newsletter">
+                <h4>EXCLUSIVE</h4>
+                <div class="newsletter-box">
+                    <input type="email" placeholder="Enter email here">
+                    <button>&rarr;</button>
+                </div>
+                <p>
+                    Sign up here to get the latest news, updates and special
+                    offers delivered to your inbox.
+                </p>
+                <p>
+                    Plus, you'll be the first to know about our discounts!
+                </p>
+
+                <div class="social-icons">
+                    <i class="bi bi-facebook"></i>
+                    <i class="bi bi-twitter"></i>
+                    <i class="bi bi-pinterest"></i>
+                    <i class="bi bi-instagram"></i>
+                    <i class="bi bi-youtube"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="scam-alert">
+            <h5>⚠ Scam Alert</h5>
+            <p>
+                We have noticed a rise in fraudulent activities through calls,
+                SMS, WhatsApp messages, emails, and other mediums.
+            </p>
+            <ul>
+                <li>
+                    Please be aware that <strong>SCENTORA and its employees</strong>
+                    never ask for your financial details for contests or deals.
+                </li>
+                <li>
+                    If you receive any such communication, reach out to us at
+                    <strong>+91 1234567890</strong> or email
+                    <strong>shop@scentoraorganic.com</strong>.
+                </li>
+                <li>
+                    If you suspect any scam, kindly report it to the Department
+                    of Telecommunications (DoT).
+                </li>
+            </ul>
+            <p><strong>Stay safe!</strong></p>
+        </div>
+    </footer>
+
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   <script>
+    const uiMessage = document.getElementById("uiMessage");
+
+function showMessage(msg, type="danger"){
+    uiMessage.textContent = msg;
+    uiMessage.className = `alert alert-${type}`;
+    uiMessage.classList.remove("d-none");
+
+    setTimeout(()=>{
+        uiMessage.classList.add("d-none");
+    },3000);
+}
+const token = localStorage.getItem("token");
+if (!token) {
+    window.location.href = "login.html";
+}
+
+let selectedAddressId = localStorage.getItem("selectedAddressId");
+let editingAddressId = null; // Track the address being edited
+async function loadAddresses() {
+const res = await fetch("http://localhost:5000/api/address", {
+        headers: { "Authorization": "Bearer " + token }
+    });
+    if (!res.ok) return;
+
+    const addresses = await res.json();
+    const container = document.getElementById("addressList");
+    container.innerHTML = "";
+
+    addresses.forEach(addr => {
+    const isSelected = addr._id === selectedAddressId;
+    container.innerHTML += `
+    <div class="col-md-6">
+        <div class="address-card private shadow-sm p-4 h-100" style="${isSelected ? 'border:2px solid #0d6efd;' : ''}">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <input type="radio" name="selectedAddress" value="${addr._id}" id="addr-${addr._id}" ${isSelected ? 'checked' : ''} />
+                    <label for="addr-${addr._id}">
+                        <strong>${addr.fullName}</strong> (${addr.addressType || 'Home'})
+                    </label>
+                    <p>${addr.house}, ${addr.city}, ${addr.state} - ${addr.pincode}</p>
+                    <p>Phone: ${addr.phone}</p>
+                </div>
+                <!-- Add dropdown here -->
+                <div class="dropdown">
+                    <button class="btn p-0 border-0" data-bs-toggle="dropdown">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                        <li><a class="dropdown-item edit-address" href="#" data-id="${addr._id}"><i class="bi bi-pencil me-2"></i>Edit</a></li>
+                        <li><a class="dropdown-item text-danger delete-address" href="#" data-id="${addr._id}"><i class="bi bi-trash me-2"></i>Delete</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+});
+document.querySelectorAll('.edit-address').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = btn.dataset.id;
+        const addr = addresses.find(a => a._id === id);
+        if (!addr) return;
+
+        // Populate form
+        document.getElementById("fullName").value = addr.fullName;
+        document.getElementById("phone").value = addr.phone;
+        document.getElementById("pincode").value = addr.pincode;
+        document.getElementById("state").value = addr.state;
+        document.getElementById("city").value = addr.city;
+        document.getElementById("addressLine1").value = addr.house;
+        document.getElementById("addressType").value = addr.addressType;
+        document.getElementById("defaultAddressToggle").checked = addr.isDefault || false;
+
+        // Store the id so the form knows we're editing
+        editingAddressId = id;
+
+        // Show form
+        new bootstrap.Collapse(document.getElementById('addAddressForm'), { show: true });
+    });
+});
+
+    // Add click listener for selection & redirect
+    document.querySelectorAll('input[name="selectedAddress"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+        const selectedId = e.target.value;
+        localStorage.setItem("selectedAddressId", selectedId);
+
+        // Save the full address object for summary page
+        const selectedAddress = addresses.find(a => a._id === selectedId);
+        localStorage.setItem("selectedAddress", JSON.stringify(selectedAddress));
+
+        // Highlight the selected card
+        document.querySelectorAll('.address-card').forEach(card => card.style.border = '');
+        e.target.closest('.address-card').style.border = '2px solid #0d6efd';
+
+        // Redirect to summary page
+        window.location.href = "summary.html";
+    });
+});
+document.querySelectorAll('.delete-address').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = btn.dataset.id;
+
+        // Create a confirmation UI message
+        uiMessage.innerHTML = `
+            <div>Are you sure you want to delete this address?</div>
+            <div class="mt-2">
+                <button id="confirmDeleteBtn" class="btn btn-danger btn-sm me-2">Yes</button>
+                <button id="cancelDeleteBtn" class="btn btn-secondary btn-sm">No</button>
+            </div>
+        `;
+        uiMessage.className = "alert alert-warning"; 
+        uiMessage.classList.remove("d-none");
+
+        // Cancel button
+        document.getElementById("cancelDeleteBtn").addEventListener("click", () => {
+            uiMessage.classList.add("d-none"); // hide message
+        });
+
+        // Confirm button
+        document.getElementById("confirmDeleteBtn").addEventListener("click", async () => {
+            uiMessage.classList.add("d-none"); // hide message
+
+            // Perform delete
+            await fetch(`http://localhost:5000/api/address/${id}`, {
+                method: "DELETE",
+                headers: { "Authorization": "Bearer " + token }
+            });
+
+            showMessage("Address deleted successfully!", "success");
+            loadAddresses();
+        });
+    });
+});
+}
+
+
+// Add new address
+document.getElementById("addressForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = {
+        fullName: document.getElementById("fullName").value,
+        phone: document.getElementById("phone").value,
+        pincode: document.getElementById("pincode").value,
+        state: document.getElementById("state").value,
+        city: document.getElementById("city").value,
+        house: document.getElementById("addressLine1").value,
+        addressType: document.getElementById("addressType")?.value || "Home",
+        isDefault: document.getElementById("defaultAddressToggle").checked
+    };
+
+    try {
+        let url = "http://localhost:5000/api/address";
+        let method = "POST";
+
+        if (editingAddressId) {
+            // Edit mode
+            url = `http://localhost:5000/api/address/${editingAddressId}`;
+            method = "PUT";
+        }
+
+        const res = await fetch(url, {
+            method,
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            showMessage(errorData.message || "Something went wrong!", "danger");
+            return;
+        }
+
+        // Reset edit mode only AFTER successful update
+        editingAddressId = null;
+
+        // Reset form
+        this.reset();
+
+        // Close the form
+        new bootstrap.Collapse(document.getElementById('addAddressForm'), { hide: true });
+
+        // Reload addresses
+        loadAddresses();
+
+        showMessage("Address saved successfully!", "success");
+
+    } catch (err) {
+        console.error(err);
+        showMessage("Failed to save address", "danger");
+    }
+});
+
+// Load addresses on page load
+loadAddresses();
+    </script>
+</body>
+
+</html>

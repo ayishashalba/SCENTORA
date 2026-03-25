@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice - SCENTORA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f4f6f9;
+            font-family: 'Georgia', serif;
+        }
+
+        .invoice-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .invoice-title {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .brand-name {
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .section-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .table th {
+            background-color: #f1f3f6;
+        }
+
+        .summary-table td {
+            padding: 6px 0;
+        }
+
+        .grand-total {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .print-btn {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        /* PRINT STYLE */
+        @media print {
+            body { background: #fff; }
+            .print-btn { display: none; }
+            .invoice-container { box-shadow: none; margin: 0; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="invoice-container">
+<div id="invoiceMessage" class="alert d-none text-center mb-3"></div>
+    <!-- PRINT BUTTON -->
+    <div class="print-btn">
+        <button onclick="window.print()" class="btn btn-dark">
+            🖨 Print Invoice
+        </button>
+    </div>
+
+    <!-- 1️⃣ Invoice Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <div class="brand-name">SCENTORA</div>
+            <small>Premium Fragrance Store</small>
+        </div>
+        <div class="text-end">
+            <div class="invoice-title">INVOICE</div>
+            <small id="invoiceHeader">
+                <!-- Dynamic Invoice No, Order ID, Date -->
+            </small>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- 2️⃣ Seller Details -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="section-title">Seller Details</div>
+            SCENTORA Pvt Ltd<br>
+            417, Udyog Vihar Phase III<br>
+            Gurgaon, Haryana 122016<br>
+            India<br>
+            GSTIN: 06ABCDE1234F1Z5<br>
+            Email: support@scentora.com<br>
+            Phone: +91 9876543210
+        </div>
+
+        <!-- 3️⃣ Customer Details -->
+        <div class="col-md-6 text-md-end" id="customerDetails">
+            <!-- Filled dynamically -->
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- 4️⃣ Order Details Table -->
+    <div class="section-title">Order Details</div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Variant</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody id="orderItems">
+                <!-- Filled dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 5️⃣ Price Summary -->
+    <div class="row mt-4">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <table class="w-100 summary-table">
+                <tr>
+                    <td>Item Total:</td>
+                    <td class="text-end" id="summarySubtotal">₹0.00</td>
+                </tr>
+                <tr>
+                    <td>Discount:</td>
+                    <td class="text-end" id="summaryDiscount">₹0.00</td>
+                </tr>
+                <tr>
+                    <td>Shipping:</td>
+                    <td class="text-end" id="summaryShipping">FREE</td>
+                </tr>
+                <tr>
+                    <td>Tax (18% GST):</td>
+                    <td class="text-end" id="summaryTax">₹0.00</td>
+                </tr>
+                <tr class="grand-total">
+                    <td>Grand Total:</td>
+                    <td class="text-end" id="summaryGrandTotal">₹0.00</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- 6️⃣ Payment Info -->
+    <div class="section-title">Payment Information</div>
+    <div id="paymentInfo">
+        <!-- Filled dynamically -->
+    </div>
+
+    <hr class="my-4">
+
+    <!-- 7️⃣ Footer -->
+    <div class="text-center">
+        <p><strong>Thank you for shopping with SCENTORA 💙</strong></p>
+        <small>
+            This is a system-generated invoice and does not require a signature.<br>
+            Goods once sold will not be taken back unless damaged.<br>
+            For support, contact support@scentora.com
+        </small>
+    </div>
+
+</div>
+
+<script>
+    function showMessage(msg, type = "danger") {
+    const box = document.getElementById("invoiceMessage");
+    box.textContent = msg;
+    box.className = `alert alert-${type} text-center`;
+    box.classList.remove("d-none");
+
+    setTimeout(() => {
+        box.classList.add("d-none");
+    }, 3000);
+}
+const printBtn = document.getElementById("printInvoiceBtn");
+const token = localStorage.getItem("token");
+
+// Get orderId from page, for example via a data attribute on a container
+// <div id="orderContainer" data-orderid="ORDER123"></div>
+const orderId = document.getElementById("orderContainer").dataset.orderid;
+
+printBtn.addEventListener("click", async () => {
+    if (!orderId || !token) return showMessage("Order not found or not logged in.");
+
+    try {
+        // Fetch order data from backend
+        const res = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        const order = await res.json();
+
+        if (!order) return showMessage("Order data not found.");
+
+        // Build invoice window
+        const invoiceWindow = window.open('', '_blank', 'width=900,height=800');
+        invoiceWindow.document.write(`
+            <html>
+            <head>
+                <title>Invoice - ${order._id}</title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                <style>
+                    body { font-family: 'Georgia', serif; background: #fff; padding: 20px; }
+                    .invoice-container { max-width: 900px; margin: auto; }
+                    .brand-name { font-size: 26px; font-weight: bold; letter-spacing: 2px; }
+                    .section-title { font-weight: 600; margin-top: 20px; margin-bottom: 10px; }
+                    .table th { background-color: #f1f3f6; }
+                    .grand-total { font-weight: bold; font-size: 18px; }
+                    @media print { .btn { display: none; } }
+                </style>
+            </head>
+            <body>
+                <div class="invoice-container">
+                    <div class="d-flex justify-content-between mb-4">
+                        <div class="brand-name">SCENTORA</div>
+                        <div>
+                            Invoice No: INV-${order._id.slice(-6).toUpperCase()}<br>
+                            Order ID: ${order._id}<br>
+                            Date: ${new Date(order.createdAt).toLocaleDateString()}
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="section-title">Seller Details</div>
+                            SCENTORA Pvt Ltd<br>
+                            417, Udyog Vihar Phase III<br>
+                            Gurgaon, Haryana 122016<br>
+                            India<br>
+                            GSTIN: 06ABCDE1234F1Z5<br>
+                            Email: support@scentora.com<br>
+                            Phone: +91 9876543210
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <div class="section-title">Bill To</div>
+                            ${order.user.name}<br>
+                            ${order.user.address}<br>
+                            ${order.user.city}, ${order.user.state} ${order.user.zip}<br>
+                            ${order.user.country}<br>
+                            Phone: ${order.user.phone}<br>
+                            Email: ${order.user.email}
+                        </div>
+                    </div>
+
+                    <hr>
+                    <div class="section-title">Order Items</div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Variant</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${order.items.map(item => `
+                                <tr>
+                                    <td>${item.product.name}</td>
+                                    <td>${item.variant || '-'}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>₹${item.product.price.toFixed(2)}</td>
+                                    <td>₹${(item.product.price * item.quantity).toFixed(2)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <table class="w-100 summary-table">
+                                <tr><td>Item Total:</td><td class="text-end">₹${order.subtotal.toFixed(2)}</td></tr>
+                                <tr><td>Discount:</td><td class="text-end">₹${order.discount.toFixed(2)}</td></tr>
+                                <tr><td>Shipping:</td><td class="text-end">${order.shipping > 0 ? '₹' + order.shipping.toFixed(2) : 'FREE'}</td></tr>
+                                <tr class="grand-total"><td>Grand Total:</td><td class="text-end">₹${order.totalAmount.toFixed(2)}</td></tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <div class="section-title">Payment Information</div>
+                    Method: ${order.paymentMethod}<br>
+                    Status: <strong class="${order.paymentStatus === 'Paid' ? 'text-success' : 'text-danger'}">${order.paymentStatus}</strong>
+
+                    <hr>
+                    <div class="text-center">
+                        <p><strong>Thank you for shopping with SCENTORA 💙</strong></p>
+                        <small>This is a system-generated invoice and does not require a signature.</small>
+                    </div>
+                </div>
+        `);
+        invoiceWindow.document.close();
+    } catch (err) {
+        console.error(err);
+        showMessage("Failed to generate invoice.");
+    }
+});
+</script>
+
+</body>
+</html>

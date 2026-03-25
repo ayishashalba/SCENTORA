@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - Scentora</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=abhaya+libre:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            font-family: 'abhaya libre medium', serif;
+            background-color: #f3f4f6;
+            margin: 0;
+        }
+
+        .form-card {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 700px;
+            margin: 50px auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .btn-save {
+            background-color: #1E50A0;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 10px 25px;
+            border: none;
+        }
+
+        .btn-save:hover {
+            background-color: #164082;
+        }
+        .drop-area {
+    border: 2px dashed #1E50A0;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f8fafc;
+    transition: all 0.3s ease;
+}
+
+.drop-area:hover {
+    background-color: #eef3fb;
+}
+
+.drop-area.dragover {
+    background-color: #e0ebff;
+    border-color: #1E50A0;
+}
+
+.preview-img {
+    max-width: 180px;
+    display: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+    </style>
+</head>
+
+<body>
+    <div class="form-card">
+        <div id="messageBox"></div>
+<h3 class="mb-4" id="pageTitle">Add New Product</h3>
+        <form id="productForm" novalidate>
+            <div class="mb-3">
+                <label class="form-label">Product Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter product name" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <select class="form-select" id="category" required>
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="rose">Rose</option>
+                    <option value="musk">Musk</option>
+                    <option value="floral">Floral</option>
+                    <option value="aquatic">Aquatic</option>
+                    <option value="woody">Woody</option>
+                    <option value="citrus">Citrus</option>
+                    <option value="spicy">Spicy</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Price ($)</label>
+                <input type="number" step="0.01" min="0"  class="form-control" id="price" placeholder="100.00" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Stock Quantity</label>
+                <input type="number" class="form-control" min="0" id="stock" placeholder="50" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Product Description</label>
+                <textarea class="form-control" id="description" rows="4"
+                    placeholder="Enter detailed description..."></textarea>
+            </div>
+
+            <div class="mb-3">
+    <label class="form-label">Product Image sings</label>
+
+    <div id="dropArea" class="drop-area">
+        <p>Drag & Drop image here</p>
+        <p class="small text-muted">or click to browse</p>
+        <input type="file" id="imageFile" accept="image/*" hidden>
+    </div>
+
+    <img id="imagePreview" class="mt-3 preview-img" />
+</div>
+
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="status" value="active" id="active" checked>
+                    <label class="form-check-label" for="active">Active</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="status" value="inactive" id="inactive">
+                    <label class="form-check-label" for="inactive">Inactive</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-save">Save Product</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showMessage(message, type = "success") {
+    const box = document.getElementById("messageBox");
+
+    box.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    `;
+
+    // auto remove after 4 seconds
+    setTimeout(() => {
+        box.innerHTML = "";
+    }, 4000);
+}
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get("id"); // if editing
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const pageTitle = document.getElementById("pageTitle");
+
+    if (productId) {
+
+        pageTitle.innerText = "Edit Product";
+
+                try {
+                    const res = await fetch(`http://localhost:5000/api/products/${productId}`);
+                    const data = await res.json();
+
+                    // handle backend response structure
+                    const product = data.product || data;
+
+                    // pre-fill form
+                    document.getElementById("name").value = product.name;
+                    document.getElementById("category").value = product.category;
+                    document.getElementById("price").value = product.price;
+                    document.getElementById("stock").value = product.stock;
+                    document.getElementById("description").value = product.description || "";
+                    document.querySelector(`input[name="status"][value="${product.status}"]`).checked = true;
+if (product.image) {
+    preview.src = `http://localhost:5000/${product.image}`;
+    preview.style.display = "block";
+}
+                    document.querySelector(".btn-save").textContent = "Update Product";
+
+                } catch (err) {
+                    console.error("Failed to load product:", err);
+                    showMessage("Failed to load product details. Check console.");
+                }
+            }
+        });
+        const dropArea = document.getElementById("dropArea");
+const fileInput = document.getElementById("imageFile");
+const preview = document.getElementById("imagePreview");
+
+// Click to open file browser
+dropArea.addEventListener("click", () => fileInput.click());
+
+// When file selected normally
+fileInput.addEventListener("change", () => {
+    handleFile(fileInput.files[0]);
+});
+
+// Drag over
+dropArea.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropArea.classList.add("dragover");
+});
+
+// Drag leave
+dropArea.addEventListener("dragleave", () => {
+    dropArea.classList.remove("dragover");
+});
+
+// Drop
+dropArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropArea.classList.remove("dragover");
+
+    const file = e.dataTransfer.files[0];
+    fileInput.files = e.dataTransfer.files;
+    handleFile(file);
+});
+
+// Preview function
+function handleFile(file) {
+    if (!file || !file.type.startsWith("image/")) {
+        showMessage("Please upload a valid image file.");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+}
+        document.getElementById("productForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const price = parseFloat(document.getElementById("price").value);
+    const stock = parseInt(document.getElementById("stock").value);
+
+    if (price < 0) {
+        showMessage("Price cannot be negative", "danger");
+        return;
+    }
+
+    if (stock < 0) {
+        showMessage("Stock cannot be negative", "danger");
+        return;
+    }
+
+    const formData = new FormData();
+
+    formData.append("name", document.getElementById("name").value.trim());
+    formData.append("category", document.getElementById("category").value);
+    const priceValue = document.getElementById("price").value;
+const stockValue = document.getElementById("stock").value;
+
+if (priceValue !== "") {
+    formData.append("price", priceValue);
+}
+
+if (stockValue !== "") {
+    formData.append("stock", stockValue);
+}
+    formData.append("description", document.getElementById("description").value.trim());
+    formData.append("status", document.querySelector('input[name="status"]:checked').value);
+
+    const imageFile = document.getElementById("imageFile").files[0];
+    if (imageFile) {
+        formData.append("image", imageFile);
+    }
+
+    try {
+        let res;
+
+        if (productId) {
+            res = await fetch(`http://localhost:5000/api/products/${productId}`, {
+                method: "PUT",
+                body: formData
+            });
+        } else {
+            res = await fetch("http://localhost:5000/api/products", {
+                method: "POST",
+                body: formData
+            });
+        }
+
+        const data = await res.json();
+
+        if (res.ok) {
+            showMessage(productId
+                ? `Product updated successfully!`
+                : `Product added successfully!`);
+
+            window.location.href = "admin-products.html";
+        } else {
+            showMessage(data.message || "Error saving product");
+        }
+
+    } catch (err) {
+        console.error(err);
+        showMessage("Server error");
+    }
+ 
+});
+    </script>
+
+</body>
+
+</html>

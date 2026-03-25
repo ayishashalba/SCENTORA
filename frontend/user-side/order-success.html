@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scentora - Order Placed Successfully!</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+
+<body class="home-body">
+    <!-- Navbar -->
+    <header class="header-section">
+        <div class="container-fluid top-header">
+            <div class="row align-items-center">
+                <!-- Search Bar -->
+                <div class="col-4">
+                    <div class="search-bar">
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search for Perfume...">
+                    </div>
+                </div>
+                <!-- Logo -->
+                <div class="col-4 text-center">
+                    <p class="brand-logo">SCENTORA</p>
+                </div>
+                <!-- Icons -->
+                <div class="col-4 text-end">
+                    <div class="header-icons">
+                        <a href="wishlist.html"><i class="bi bi-heart-fill heart-icon"></i></a>
+                        <a href="profile.html"><i class="bi bi-person-fill person-icon"></i></a>
+                        <a href="cart.html"><i class="bi bi-cart cart-icon"></i></a>
+                    </div>
+                </div>
+                <!-- Navigation Menu -->
+                <div class="col-12">
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a href="products.html">Shop All</a></li>
+                            <li><a href="crazy-deals.html">Crazy Deals</a></li>
+                            <li><a href="home.html#bestsellers">Bestsellers</a></li>
+                            <li><a href="home.html#categories">Categories</a></li>
+                            <li><a href="home.html#bestsellers">New Arrivals</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Success Page Content -->
+    <main class="success-page py-5">
+        <div class="container py-5">
+            <div id="pageMessage" class="alert alert-danger text-center d-none"></div>
+            <div class="row justify-content-center">
+                <div class="col-lg-7 text-center">
+                    <!-- Success Icon -->
+                    <div class="success-icon-wrapper mb-4">
+                        <div class="success-circle">
+                            <i class="bi bi-check-lg"></i>
+                        </div>
+                    </div>
+
+                    <!-- Heading & Subtext -->
+                    <h1 class="success-title mb-3">Order Placed Successfully!</h1>
+                    <p class="success-subtext mb-5 text-muted">
+                        Thank you for your purchase. <br>
+                        Your order has been confirmed and will be delivered soon.
+                    </p>
+
+                    <!-- Illustration Placeholder -->
+                    <div class="order-illustration mb-5">
+                        <i class="bi bi-box-seam-fill text-muted opacity-25" style="font-size: 100px;"></i>
+                    </div>
+
+                    <!-- Order Details Card -->
+                    <div class="order-details-card card p-4 mb-5 shadow-sm border-0">
+                        <div class="row g-3">
+                            <div class="col-6 text-start">
+                                <span class="text-muted small d-block">Order ID</span>
+                                <span class="fw-600" id="orderId"></span>
+                            </div>
+                            <div class="col-6 text-end">
+                                <span class="text-muted small d-block">Order Date</span>
+                                <span class="fw-600" id="orderDate"></span>
+                            </div>
+                            <div class="col-6 text-start">
+                                <span class="text-muted small d-block">Payment Method</span>
+                                <span class="fw-600" id="orderPayment"></span>
+                            </div>
+                            <div class="col-6 text-end">
+                                <span class="text-muted small d-block">Total Amount</span>
+                                <span class="fw-600 text-blue" id="orderTotal"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="#" class="btn btn-light border px-4 py-2">
+                            <i class="bi bi-printer me-2"></i>
+                            Download Invoice
+                        </a>
+                    </div>
+                    <br><br>
+                    <!-- Action Buttons -->
+                    <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
+                        <button class="btn btn-primary track-shipment-btn">
+    <i class="bi bi-truck me-2"></i>TRACK ORDER
+</button>
+                        <a href="home.html" class="btn continue-shopping-btn px-5 py-3">
+                            CONTINUE SHOPPING
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <h4>BESTSELLERS</h4>
+                <ul>
+                    <li>Ultimate Perfume Box</li>
+                    <li>Perfume Gift Set For Men</li>
+                    <li>Men</li>
+                    <li>Perfume Gift Set For Women</li>
+                    <li>Attars</li>
+                    <li>Perfume For Men</li>
+                    <li>Perfume For Women</li>
+                    <li>Unisex Perfume</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>INFORMATION</h4>
+                <ul>
+                    <li>Blogs</li>
+                    <li>Newsroom</li>
+                    <li>Terms & Conditions</li>
+                    <li>Privacy Policy</li>
+                    <li>Refund and Return</li>
+                    <li>Shipping Policy</li>
+                    <li>Bulk Order - GST</li>
+                    <li>Invoice</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>SUPPORT</h4>
+                <ul>
+                    <li>About Us</li>
+                    <li>Contact Us</li>
+                    <li>Order Tracking</li>
+                    <li>All Products</li>
+                    <li>FAQ</li>
+                    <li>Sitemap</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <p>
+                    Office Location: Plot no. 417, Udyog Vihar Phase III,
+                    Gurgaon, Haryana, India
+                </p>
+                <p><a href="#">Contact Us on WhatsApp</a></p>
+                <p>+91-9810154380</p>
+                <p>Timing: 10:00 AM to 7:00 PM, Monday to Sunday</p>
+            </div>
+
+            <div class="footer-col newsletter">
+                <h4>EXCLUSIVE</h4>
+                <div class="newsletter-box">
+                    <input type="email" placeholder="Enter email here">
+                    <button>&rarr;</button>
+                </div>
+                <p>
+                    Sign up here to get the latest news, updates and special
+                    offers delivered to your inbox.
+                </p>
+                <p>
+                    Plus, you'll be the first to know about our discounts!
+                </p>
+
+                <div class="social-icons">
+                    <i class="bi bi-facebook"></i>
+                    <i class="bi bi-twitter"></i>
+                    <i class="bi bi-pinterest"></i>
+                    <i class="bi bi-instagram"></i>
+                    <i class="bi bi-youtube"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="scam-alert">
+            <h5>⚠ Scam Alert</h5>
+            <p>
+                We have noticed a rise in fraudulent activities through calls,
+                SMS, WhatsApp messages, emails, and other mediums.
+            </p>
+            <ul>
+                <li>
+                    Please be aware that <strong>SCENTORA and its employees</strong>
+                    never ask for your financial details for contests or deals.
+                </li>
+                <li>
+                    If you receive any such communication, reach out to us at
+                    <strong>+91 9810154380</strong> or email
+                    <strong>shop@scentoraorganic.com</strong>.
+                </li>
+                <li>
+                    If you suspect any scam, kindly report it to the Department
+                    of Telecommunications (DoT).
+                </li>
+            </ul>
+            <p><strong>Stay safe!</strong></p>
+        </div>
+    </footer>
+
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showMessage(msg, type = "danger") {
+    const box = document.getElementById("pageMessage");
+    box.textContent = msg;
+    box.className = `alert alert-${type} text-center`;
+    box.classList.remove("d-none");
+
+    setTimeout(() => {
+        box.classList.add("d-none");
+    }, 3000);
+}
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const token = localStorage.getItem("token");
+
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get("orderId");
+
+    if (!token || !orderId) {
+        window.location.href = "home.html";
+        return;
+    }
+
+    try {
+
+        const res = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        const order = await res.json();
+
+        if (!res.ok) throw new Error("Order not found");
+
+        document.getElementById("orderId").innerText =
+            "#" + order._id.slice(-6).toUpperCase();
+
+        document.getElementById("orderDate").innerText =
+            new Date(order.createdAt).toDateString();
+
+        document.getElementById("orderPayment").innerText =
+            order.paymentMethod;
+
+        document.getElementById("orderTotal").innerText =
+            "₹" + order.totalAmount;
+
+        document.querySelector(".track-shipment-btn").addEventListener("click", () => {
+            window.location.href = `order-details.html?id=${order._id}`;
+        });
+
+    } catch (err) {
+
+        console.error(err);
+        showMessage("Failed to load order details");
+        window.location.href = "home.html";
+
+    }
+
+});
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Management - Scentora</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=abhaya+libre:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'abhaya libre medium', serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #2e415f;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            z-index: 1000;
+            transition: all 0.3s;
+
+            overflow-y: auto;
+            /* 🔥 ADD THIS */
+            overflow-x: hidden;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .sidebar-brand {
+            padding: 10px 25px;
+            font-family: 'Aclonica', sans-serif;
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: block;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 400;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #1E50A0;
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header Styling */
+        .header {
+            background-color: #fff;
+            padding: 15px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-weight: 600;
+            margin: 0;
+            font-size: 1.5rem;
+            color: #212529;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #e9ecef;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #2e415f;
+        }
+
+        /* Products Table Styling */
+        .products-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-title-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .add-product-btn {
+            background-color: #1E50A0;
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-product-btn:hover {
+            background-color: #164082;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .product-img-thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            background-color: #f8f9fa;
+        }
+
+        .badge-active {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .badge-inactive {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-edit {
+            background-color: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
+        }
+
+        .btn-edit:hover {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+
+        .btn-delete {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .btn-delete:hover {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .table> :not(caption)>*>* {
+            padding: 1rem 0.75rem;
+            vertical-align: middle;
+        }
+
+        /* Responsive Improvements */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .sidebar-brand span,
+            .nav-link span {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 70px;
+            }
+
+            .sidebar-brand {
+                text-align: center;
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .table-title-area {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .add-product-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="admin-dashboard.html" class="sidebar-brand">
+            <span>SCENTORA</span>
+        </a>
+        <nav class="nav flex-column">
+            <a class="nav-link " href="admin-dashboard.html">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-link active" href="admin-products.html">
+                <i class="bi bi-box-seam"></i>
+                <span>Products</span>
+            </a>
+            <a class="nav-link" href="admin-inventory.html">
+                <i class="bi bi-box-fill"></i>
+                <span>Inventory</span>
+            </a>
+            <a class="nav-link" href="admin-orders.html">
+                <i class="bi bi-cart3"></i>
+                <span>Orders</span>
+            </a>
+            <a class="nav-link" href="admin-users.html">
+                <i class="bi bi-people"></i>
+                <span>Users</span>
+            </a>
+            <a class="nav-link " href="admin-categories.html">
+                <i class="bi bi-tags"></i>
+                <span>Categories</span>
+            </a>
+
+            <a class="nav-link" href="admin-offers.html">
+                <i class="bi bi-ticket-perforated"></i>
+                <span>Offers / Coupons</span>
+            </a>
+            <a class="nav-link" href="admin-payments.html">
+                <i class="bi bi-credit-card"></i>
+                <span>Payments</span>
+            </a>
+            <a class="nav-link" href="admin-reports.html">
+                <i class="bi bi-bar-chart-line"></i>
+                <span>Reports</span>
+            </a>
+            <a class="nav-link" href="admin-transactions.html">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Transactions</span>
+            </a>
+            <a class="nav-link" href="admin-reviews.html">
+                <i class="bi bi-star-fill"></i>
+                <span>Reviews</span>
+            </a>
+            <a class="nav-link" href="admin-profile.html">
+                <i class="bi bi-person-circle"></i>
+                <span>Profile</span>
+            </a>
+            <a class="nav-link" href="settings.html">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+            <hr class="mx-3 my-3 text-white-50">
+            <a class="nav-link" href="admin-login.html">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h2 class="header-title">Admin Panel</h2>
+            <div class="admin-profile">
+                <span>Welcome, Admin</span>
+                <div class="profile-icon">
+                    <i class="bi bi-person"></i>
+                </div>
+            </div>
+        </div>
+        <div id="messageBox"></div>
+
+        <!-- Products Management Content -->
+        <div class="products-card">
+            <div class="table-title-area">
+    <h4 class="m-0">Products Management</h4>
+    <a href="add-product.html" class="add-product-btn">
+        <i class="bi bi-plus-lg"></i> Add Product
+    </a>
+    <button id="exportBtn" class="add-product-btn">
+        <i class="bi bi-download"></i> Export
+    </button>
+</div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Image</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                    </tbody>
+
+                </table>
+            </div>
+
+            <!-- Pagination Placeholder -->
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Footer -->
+        <div class="row mt-5 pb-4">
+            <div class="col-12 text-center text-muted">
+                <p>© Admin Dashboard - SCENTORA</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script>
+        function showMessage(message, type = "success") {
+    const box = document.getElementById("messageBox");
+
+    box.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show mt-3" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    `;
+
+    setTimeout(() => {
+        box.innerHTML = "";
+    }, 4000);
+}
+async function loadProducts() {
+    try {
+        const res = await fetch("http://localhost:5000/api/products");
+        const products = await res.json();
+
+        const tableBody = document.getElementById("productTableBody");
+        tableBody.innerHTML = "";
+
+        products.forEach(product => {
+
+            // Encode filename properly to fix spaces and special characters
+            let imgSrc = "https://via.placeholder.com/50";
+
+if (product.image) {
+    if (product.image.startsWith("uploads/")) {
+        imgSrc = `http://localhost:5000/${product.image}`;
+    } else {
+        imgSrc = `./${product.image}`;
+    }
+}
+
+            // Status badge
+            const statusBadge = product.status === "active"
+                ? `<span class="badge badge-active">Active</span>`
+                : `<span class="badge badge-inactive">Inactive</span>`;
+
+            tableBody.innerHTML += `
+                <tr>
+                    <td>
+                        <img src="${imgSrc}" class="product-img-thumb" alt="${product.name}">
+                    </td>
+                    <td>${product.name}</td>
+                    <td>${product.category || "General"}</td>
+                    <td>₹${product.price}</td>
+                    <td>${product.stock}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <a href="add-product.html?id=${product._id}" class="action-btn btn-edit me-2" title="Edit">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="#" onclick="deleteProduct('${product._id}')" class="action-btn btn-delete" title="Delete">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            `;
+        });
+
+    } catch (err) {
+        console.error("Error loading products:", err);
+        showMessage("Failed to load products. Check console for details.");
+    }
+}
+
+async function deleteProduct(id) {
+
+    showMessage("Deleting product...", "warning");
+
+    try {
+        await fetch(`http://localhost:5000/api/products/${id}`, { method: "DELETE" });
+
+        showMessage("Product deleted successfully", "danger");
+
+        loadProducts(); // reload table
+
+    } catch (err) {
+        console.error("Delete failed:", err);
+        showMessage("Delete failed. Check console for details.", "danger");
+    }
+}
+
+// Load products when page loads
+document.addEventListener("DOMContentLoaded", loadProducts);
+  
+document.getElementById("exportBtn").addEventListener("click", async () => {
+    try {
+        const resProducts = await fetch("http://localhost:5000/api/products");
+        const products = await resProducts.json();
+
+        const resCategories = await fetch("http://localhost:5000/api/admin/categories", {
+            headers: { "Authorization": "Bearer " + localStorage.getItem("adminToken") }
+        });
+        const categories = await resCategories.json();
+
+        const exportData = products.map(p => ({
+    Name: p.name,
+    SKU: p.sku || p._id,
+    Category: p.category || "General",
+    Price: p.price,
+    Stock: p.stock,
+    Status: p.status
+}));
+
+        // Convert to worksheet
+        const worksheet = XLSX.utils.json_to_sheet(exportData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Products");
+
+        // Export as Excel
+        XLSX.writeFile(workbook, "Products_List.xlsx");
+
+    } catch (err) {
+        console.error("Export failed:", err);
+        alert("Failed to export products. Check console for details.");
+    }
+});
+</script>
+
+</body>
+
+</html>

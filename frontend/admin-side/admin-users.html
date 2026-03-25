@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Management - Scentora Admin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=abhaya+libre:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'abhaya libre medium', serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #2e415f;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            z-index: 1000;
+            transition: all 0.3s;
+
+            overflow-y: auto;
+            /* 🔥 ADD THIS */
+            overflow-x: hidden;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .sidebar-brand {
+            padding: 10px 25px;
+            font-family: 'Aclonica', sans-serif;
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: block;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 400;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #1E50A0;
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header Styling */
+        .header {
+            background-color: #fff;
+            padding: 15px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-weight: 600;
+            margin: 0;
+            font-size: 1.5rem;
+            color: #212529;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #e9ecef;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #2e415f;
+        }
+
+        /* Users Table Styling */
+        .users-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-title-area {
+            margin-bottom: 25px;
+        }
+
+        .badge-active {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .badge-blocked {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-action {
+            padding: 5px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-view {
+            background-color: rgba(30, 80, 160, 0.1);
+            color: #1E50A0;
+            border: 1px solid rgba(30, 80, 160, 0.2);
+        }
+
+        .btn-view:hover {
+            background-color: #1E50A0;
+            color: #fff;
+        }
+
+        .btn-block {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.2);
+        }
+
+        .btn-block:hover {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-unblock {
+            background-color: rgba(25, 135, 84, 0.1);
+            color: #198754;
+            border: 1px solid rgba(25, 135, 84, 0.2);
+        }
+
+        .btn-unblock:hover {
+            background-color: #198754;
+            color: #fff;
+        }
+
+        .table> :not(caption)>*>* {
+            padding: 1rem 0.75rem;
+            vertical-align: middle;
+        }
+
+        /* Responsive Improvements */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .sidebar-brand span,
+            .nav-link span {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 70px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="admin-dashboard.html" class="sidebar-brand">
+            <span>SCENTORA</span>
+        </a>
+        <nav class="nav flex-column">
+            <a class="nav-link " href="admin-dashboard.html">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-link" href="admin-products.html">
+                <i class="bi bi-box-seam"></i>
+                <span>Products</span>
+            </a>
+            <a class="nav-link" href="admin-inventory.html">
+                <i class="bi bi-box-fill"></i>
+                <span>Inventory</span>
+            </a>
+            <a class="nav-link" href="admin-orders.html">
+                <i class="bi bi-cart3"></i>
+                <span>Orders</span>
+            </a>
+            <a class="nav-link active" href="admin-users.html">
+                <i class="bi bi-people"></i>
+                <span>Users</span>
+            </a>
+            <a class="nav-link " href="admin-categories.html">
+                <i class="bi bi-tags"></i>
+                <span>Categories</span>
+            </a>
+
+            <a class="nav-link" href="admin-offers.html">
+                <i class="bi bi-ticket-perforated"></i>
+                <span>Offers / Coupons</span>
+            </a>
+            <a class="nav-link" href="admin-payments.html">
+                <i class="bi bi-credit-card"></i>
+                <span>Payments</span>
+            </a>
+            <a class="nav-link" href="admin-reports.html">
+                <i class="bi bi-bar-chart-line"></i>
+                <span>Reports</span>
+            </a>
+            <a class="nav-link" href="admin-transactions.html">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Transactions</span>
+            </a>
+            <a class="nav-link" href="admin-reviews.html">
+                <i class="bi bi-star-fill"></i>
+                <span>Reviews</span>
+            </a>
+            <a class="nav-link" href="admin-profile.html">
+                <i class="bi bi-person-circle"></i>
+                <span>Profile</span>
+            </a>
+            <a class="nav-link" href="settings.html">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+            <hr class="mx-3 my-3 text-white-50">
+            <a class="nav-link" href="admin-login.html">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h2 class="header-title">Users Management</h2>
+            <div class="admin-profile">
+                <span>Welcome, Admin</span>
+                <div class="profile-icon">
+                    <i class="bi bi-person"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Table Content -->
+        <div class="users-card">
+            <div id="messageBox"></div>
+            <div class="d-flex mb-3">
+    <h4 class="m-0">Customer Directory</h4>
+    <button id="exportCustomersBtn" class="btn btn-primary ms-auto">
+        Export Customers
+    </button>
+</div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>User ID</th>
+                            <th>Full Name</th>
+                            <th>Email Address</th>
+                            <th>Phone Number</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Pagination Placeholder -->
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Footer -->
+        <div class="row mt-5 pb-4">
+            <div class="col-12 text-center text-muted">
+                <p>© Admin Dashboard - SCENTORA</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showMessage(message, type = "success") {
+
+    const messageBox = document.getElementById("messageBox");
+
+    messageBox.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    `;
+
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        messageBox.innerHTML = "";
+    }, 3000);
+}
+        async function loadUsers() {
+            try {
+                // Fetch users from backend
+                const res = await fetch("http://localhost:5000/api/admin/users", {
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("adminToken")}` // use your admin token
+                    }
+                });
+                if (!res.ok) {
+                    const errData = await res.json();
+                    throw new Error(errData.message || "Failed to fetch users");
+                }
+
+                const users = await res.json();
+
+                // Populate table
+const tbody = document.getElementById("usersTableBody");
+                tbody.innerHTML = "";
+
+                users.forEach(user => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                <td><strong>#USR-${user._id.slice(-6)}</strong></td>
+                <td>${user.fullName || "N/A"}</td>
+                <td>${user.email}</td>
+                <td>${user.phone || "N/A"}</td>
+                <td>
+                    <span class="badge ${user.isBlocked ? 'badge-blocked' : 'badge-active'}">
+                        ${user.isBlocked ? 'Blocked' : 'Active'}
+                    </span>
+                </td>
+                <td class="text-nowrap">
+                    <a href="#" class="btn-action btn-view me-2" data-id="${user._id}">View</a>
+                    <a href="#" class="btn-action ${user.isBlocked ? 'btn-unblock' : 'btn-block'}" 
+                       data-id="${user._id}">
+                        ${user.isBlocked ? 'Unblock' : 'Block'}
+                    </a>
+                </td>
+            `;
+                    tbody.appendChild(tr);
+                });
+
+                // Add click events for block/unblock
+                document.querySelectorAll(".btn-block, .btn-unblock").forEach(btn => {
+                    btn.addEventListener("click", async e => {
+                        e.preventDefault();
+                        const userId = btn.getAttribute("data-id");
+                        const action = btn.classList.contains("btn-block") ? "block" : "unblock";
+
+                        try {
+                            const res = await fetch(`http://localhost:5000/api/admin/users/${userId}/${action}`, {
+                                method: "PUT",
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("adminToken")}`,
+                                    "Content-Type": "application/json"
+                                }
+                            });
+                            const data = await res.json();
+                            if (res.ok) {
+                                showMessage(data.message);
+                                loadUsers(); // Refresh table after action
+                            } else {
+                                showMessage(data.message || "Error");
+                            }
+                        } catch (err) {
+                            console.error("Error:", err);
+                        }
+                    });
+                });
+
+                // Add click events for view button
+                document.querySelectorAll(".btn-view").forEach(btn => {
+                    btn.addEventListener("click", async e => {
+                        e.preventDefault();
+                        const userId = btn.getAttribute("data-id");
+
+                        try {
+                            const res = await fetch(`http://localhost:5000/api/admin/users/${userId}`, {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("adminToken")}`
+                                }
+                            });
+                            const user = await res.json();
+                            if (!res.ok) {
+                                showMessage(user.message || "Error fetching user details");
+                                return;
+                            }
+
+                            // Show user details (example: showMessage or modal)
+                            showMessage(`
+User Details:<br>
+Name: ${user.fullName}<br>
+Email: ${user.email}<br>
+Phone: ${user.phone || "N/A"}<br>
+Status: ${user.isBlocked ? "Blocked" : "Active"}<br>
+Registered At: ${new Date(user.createdAt).toLocaleDateString()}
+                    `);
+
+                        } catch (err) {
+                            console.error("Error viewing user:", err);
+                        }
+                    });
+                });
+
+            } catch (err) {
+                console.error("Error loading users:", err);
+                showMessage(err.message);
+            }
+        }
+        
+
+        // Load users on page load
+        document.addEventListener("DOMContentLoaded", loadUsers);
+        document.getElementById("exportCustomersBtn").addEventListener("click", async () => {
+    try {
+        const token = localStorage.getItem("adminToken");
+
+        // Fetch users
+        const usersRes = await fetch("http://localhost:5000/api/admin/users", {
+            headers: { Authorization: "Bearer " + token }
+        });
+        const users = await usersRes.json();
+
+        // Fetch orders
+        const ordersRes = await fetch("http://localhost:5000/api/admin/orders", {
+            headers: { Authorization: "Bearer " + token }
+        });
+        const orders = await ordersRes.json();
+
+        if (!users.length) {
+            showMessage("No customers to export", "warning");
+            return;
+        }
+
+        const header = ["User ID", "Full Name", "Email", "Phone", "Status", "Purchase History"];
+
+        const rows = users.map(user => {
+            const status = user.isBlocked ? "Blocked" : "Active";
+
+            // Find all orders for this user by email
+            const userOrders = orders.filter(o => o.user?.email === user.email);
+            const purchaseHistory = userOrders.length 
+                ? userOrders.map(o => `#ORD-${o._id.slice(-6)} (${new Date(o.createdAt).toLocaleDateString()})`).join(" | ")
+                : "No Orders";
+
+            return [
+                `USR-${user._id.slice(-6)}`,
+                user.fullName || "",
+                user.email || "",
+                user.phone || "",
+                status,
+                purchaseHistory
+            ];
+        });
+
+        // Build CSV
+        let csvContent = header.join(",") + "\n";
+        rows.forEach(row => {
+            csvContent += row.map(cell => `"${cell}"`).join(",") + "\n";
+        });
+
+        // Trigger download
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Customers_${new Date().toISOString().slice(0,10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        showMessage("Customers exported successfully!");
+    } catch (err) {
+        console.error(err);
+        showMessage("Failed to export customers", "danger");
+    }
+});
+    </script>
+
+</body>
+
+</html>

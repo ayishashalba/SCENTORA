@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scentora - Product Details</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .product-thumb-gallery {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .thumb-img img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 6px;
+        }
+
+        .thumb-img.active img {
+            border-color: #000;
+        }
+
+        .wishlist-detail-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #ccc;
+            transition: 0.3s;
+        }
+
+        .wishlist-detail-icon.active {
+            color: red;
+        }
+
+        .quantity-selector {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.quantity-selector button {
+    width: 55px;
+    height: 45px;
+    font-size: 18px;
+}
+
+.quantity-selector input {
+    width: 50px;
+    height: 35px;
+    text-align: center;
+    border: none;        /* removes box */
+    outline: none; 
+}
+
+#addToCartBtn {
+    margin-top: 15px;
+    padding: 15px 70px;
+    font-size: 16px;
+}
+
+        .rating-stars {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-top: 5px;
+        }
+
+        .rating-stars i {
+            color: #ffc107;
+        }
+
+        .rating-value {
+            margin-left: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body class="home-body">
+    <!-- Navbar -->
+    <header class="header-section">
+        <div id="messageBox" style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    background-color: #f44336;
+    color: white;
+    border-radius: 6px;
+    display: none;
+    z-index: 9999;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+"></div>
+        <div class="container-fluid top-header">
+            <div class="row align-items-center">
+                <!-- Search Bar -->
+                <div class="col-4">
+                    <div class="search-bar">
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search for Perfume...">
+                    </div>
+                </div>
+                <!-- Logo -->
+                <div class="col-4 text-center">
+                    <p class="brand-logo"><a href="home.html" style="color:#fff;text-decoration: none;">SCENTORA</a></p>
+                </div>
+                <!-- Icons -->
+                <div class="col-4 text-end">
+                    <div class="header-icons">
+                        <a href="wishlist.html"><i class="bi bi-heart-fill heart-icon"></i></a>
+                        <a href="profile.html"><i class="bi bi-person-fill person-icon"></i></a>
+                        <a href="cart.html"><i class="bi bi-cart cart-icon"></i></a>
+                    </div>
+                </div>
+                <!-- Navigation Menu -->
+                <div class="col-12">
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a href="products.html">Shop All</a></li>
+                            <li><a href="crazy-deals.html">Crazy Deals</a></li>
+                            <li><a href="home.html#bestsellers">Bestsellers</a></li>
+                            <li><a href="home.html#categories">Categories</a></li>
+                            <li><a href="home.html#new-arrivals">New Arrivals</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Product Details Section -->
+    <main class="product-details-page py-5">
+        <div class="container">
+            <div class="product-details-container p-4 border-0 shadow-sm">
+                <div class="row g-5">
+                    <!-- Left Column: Images -->
+                    <div class="col-lg-6 position-relative">
+                        <div class="wishlist-detail-icon" id="wishlistIcon">
+                            <i class="bi bi-heart-fill"></i>
+                        </div>
+                        <img id="productImage" src="" alt="Product Image" class="img-fluid main-product-img">
+                        
+                        <div class="product-thumb-gallery" id="thumbGallery"></div>
+                        <!-- Product Images -->
+                    </div>
+
+                    <!-- Right Column: Product Info -->
+                    <div class="col-lg-6">
+                        <h2 id="productName"></h2>
+
+<p><strong>Notes:</strong> <span id="productCategory"></span></p>
+
+<h4 id="productPrice"></h4>
+
+<p id="productDescription"></p>
+
+<div class="quantity-selector">
+    <button id="decreaseQty">-</button>
+    <input type="number" id="productQty" value="1" min="1">
+    <button id="increaseQty">+</button>
+</div>
+<div class="stock mt-2 fw-semibold" id="stockStatus"></div>
+
+<div>
+<button class="btn btn-dark mt-3" id="addToCartBtn">
+    Add to Cart
+</button>
+</div>
+                    </div>
+                    
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+
+    <!-- Perfume Notes Section -->
+    <div class="perfume-notes-section mt-5 px-lg-4">
+        <h4 class="detail-section-title mb-4">Perfume Notes</h4>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="note-info-card text-center p-4 h-100 musk">
+                    <div class="note-img-box musk mb-3 ">
+                        <img src="assets/images/note (1).png" alt="musk">
+                    </div>
+                    <h5>Vanilla</h5>
+                    <p class="small text-muted mb-0">Sweet, creamy, and comforting aroma that provides a rich
+                        base.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="note-info-card text-center p-4 h-100 spicy">
+                    <div class="note-img-box spicy mb-3">
+                        <img src="assets/images/note (2).png" alt="spicy">
+                    </div>
+                    <h5>Benzoin</h5>
+                    <p class="small text-muted mb-0">Warm resinous fragrance with sweet, balsamic undertones.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="note-info-card text-center p-4 h-100 woody">
+                    <div class="note-img-box woody mb-3">
+                        <img src="assets/images/note (3).png" alt="woody">
+                    </div>
+                    <h5>Cedarwood</h5>
+                    <p class="small text-muted mb-0">Woody and earthy character that adds depth and longevity to
+                        the scent.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section mt-5 px-lg-4">
+        <h4 class="detail-section-title mb-4">Reviews</h4>
+        <div class="review-item card p-4 border-0 shadow-sm">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="user-avatar-circle">
+                    <img src="https://ui-avatars.com/api/?name=Emily+John&background=random" alt="Emily John"
+                        class="rounded-circle">
+                </div>
+                <div>
+                    <h6 class="mb-0 fw-bold">Emily John</h6>
+                    <div class="stars-list tiny">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                    </div>
+                </div>
+            </div>
+            <p class="review-text text-muted mb-0">
+                Absolutely love this gift set! The three different scents are all wonderful and perfect for
+                different occasions. The packaging is very premium and makes it a great gift option. Highly
+                recommended for anyone looking for quality perfumes at a great price!
+            </p>
+        </div>
+    </div>
+    </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <h4>BESTSELLERS</h4>
+                <ul>
+                    <li>Ultimate Perfume Box</li>
+                    <li>Perfume Gift Set For Men</li>
+                    <li>Men</li>
+                    <li>Perfume Gift Set For Women</li>
+                    <li>Attars</li>
+                    <li>Perfume For Men</li>
+                    <li>Perfume For Women</li>
+                    <li>Unisex Perfume</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>INFORMATION</h4>
+                <ul>
+                    <li>Blogs</li>
+                    <li>Newsroom</li>
+                    <li>Terms & Conditions</li>
+                    <li>Privacy Policy</li>
+                    <li>Refund and Return</li>
+                    <li>Shipping Policy</li>
+                    <li>Bulk Order - GST</li>
+                    <li>Invoice</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>SUPPORT</h4>
+                <ul>
+                    <li>About Us</li>
+                    <li>Contact Us</li>
+                    <li>Order Tracking</li>
+                    <li>All Products</li>
+                    <li>FAQ</li>
+                    <li>Sitemap</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <p>
+                    Office Location: Plot no. 417, Udyog Vihar Phase III,
+                    Gurgaon, Haryana, India
+                </p>
+                <p><a href="#">Contact Us on WhatsApp</a></p>
+                <p>+91-9810154380</p>
+                <p>Timing: 10:00 AM to 7:00 PM, Monday to Sunday</p>
+            </div>
+
+            <div class="footer-col newsletter">
+                <h4>EXCLUSIVE</h4>
+                <div class="newsletter-box">
+                    <input type="email" placeholder="Enter email here">
+                    <button>&rarr;</button>
+                </div>
+                <p>
+                    Sign up here to get the latest news, updates and special
+                    offers delivered to your inbox.
+                </p>
+                <p>
+                    Plus, you'll be the first to know about our discounts!
+                </p>
+
+                <div class="social-icons">
+                    <i class="bi bi-facebook"></i>
+                    <i class="bi bi-twitter"></i>
+                    <i class="bi bi-pinterest"></i>
+                    <i class="bi bi-instagram"></i>
+                    <i class="bi bi-youtube"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="scam-alert">
+            <h5>⚠ Scam Alert</h5>
+            <p>
+                We have noticed a rise in fraudulent activities through calls,
+                SMS, WhatsApp messages, emails, and other mediums.
+            </p>
+            <ul>
+                <li>
+                    Please be aware that <strong>SCENTORA and its employees</strong>
+                    never ask for your financial details for contests or deals.
+                </li>
+                <li>
+                    If you receive any such communication, reach out to us at
+                    <strong>+91 9810154380</strong> or email
+                    <strong>shop@scentoraorganic.com</strong>.
+                </li>
+                <li>
+                    If you suspect any scam, kindly report it to the Department
+                    of Telecommunications (DoT).
+                </li>
+            </ul>
+            <p><strong>Stay safe!</strong></p>
+        </div>
+    </footer>
+
+    <script>
+        function showMessage(msg, type = "error", duration = 3000) {
+    const box = document.getElementById("messageBox");
+    box.innerText = msg;
+
+    if (type === "success") box.style.backgroundColor = "#28a745";
+    else if (type === "info") box.style.backgroundColor = "#007bff";
+    else box.style.backgroundColor = "#f44336";
+
+    box.style.display = "block";
+
+    setTimeout(() => {
+        box.style.display = "none";
+    }, duration);
+}
+    </script>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+const params = new URLSearchParams(window.location.search);
+const productId = params.get("id");
+
+async function loadProduct() {
+    document.getElementById("productName").innerText = "Loading...";
+    
+    if (!productId) return showMessage("Product not found", "error");
+
+    try {
+
+        const res = await fetch(`http://localhost:5000/api/products/${productId}`);
+        const data = await res.json();
+const product = data.product || data;
+
+        let productStock = product.stock || 0;
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+let cartItem = cart.find(item => item.id === productId);
+let cartQty = cartItem ? cartItem.qty : 0;
+
+let availableStock = productStock - cartQty;
+
+if (availableStock < 0) availableStock = 0;
+const stockStatus = document.getElementById("stockStatus");
+
+if (productStock === 0) {
+    stockStatus.innerText = "Out of Stock";
+    stockStatus.style.color = "red";
+}
+else if (productStock <= 10) {
+    stockStatus.innerText = "⚠ Low Stock";
+    stockStatus.style.color = "orange";
+}
+else {
+    stockStatus.innerText = "✔ In Stock";
+    stockStatus.style.color = "green";
+}
+const imgSrc = product.image
+  ? "http://localhost:5000/" + product.image
+  : "assets/images/no-image.png";
+
+document.getElementById("productImage").src = imgSrc;
+document.getElementById("productName").innerText = product.name;
+document.getElementById("productCategory").innerText = product.category;
+document.getElementById("productDescription").innerText = product.description;
+document.getElementById("productPrice").innerText = "₹" + product.price;
+
+        const qtyInput = document.getElementById("productQty");
+        const addBtn = document.getElementById("addToCartBtn");
+
+        // 🔹 Function to update UI based on stock
+        function updateStockUI() {
+            if (productStock <= 0) {
+                addBtn.disabled = true;
+                addBtn.innerText = "Out of Stock";
+                qtyInput.value = 1;
+            } else {
+                addBtn.disabled = false;
+                addBtn.innerText = "Add to Cart";
+            }
+        }
+
+        updateStockUI();
+
+        // 🔹 Increase Quantity
+        // Function to show temporary button message
+function showTempMessage(message, duration = 3000) {
+    const originalText = addBtn.innerText;
+    addBtn.innerText = message;
+    addBtn.style.backgroundColor = "#ffc107"; // yellow
+    addBtn.style.color = "#000";
+    addBtn.disabled = true;
+
+    setTimeout(() => {
+        if (productStock > 0) {
+            addBtn.innerText = "Add to Cart";
+            addBtn.style.backgroundColor = ""; // revert
+            addBtn.style.color = "";
+            addBtn.disabled = false;
+        } else {
+            addBtn.innerText = "Out of Stock";
+            addBtn.disabled = true;
+        }
+    }, duration);
+}
+
+// 🔹 Increase Quantity
+document.getElementById("increaseQty").addEventListener("click", () => {
+    if (productStock <= 0) return;
+
+    let current = parseInt(qtyInput.value);
+
+    if (current < availableStock) {
+        qtyInput.value = current + 1;
+    } else {
+        // Show stock message instead of alert
+        showTempMessage(`Only ${availableStock} available`);
+    }
+});
+
+// 🔹 Decrease Quantity
+document.getElementById("decreaseQty").addEventListener("click", () => {
+    qtyInput.value = Math.max(1, parseInt(qtyInput.value) - 1);
+});
+
+// 🔹 Manual input limit
+qtyInput.addEventListener("input", () => {
+    let val = parseInt(qtyInput.value);
+
+    if (val > productStock) {
+        qtyInput.value = productStock;
+        showTempMessage(`Only ${productStock} left`, 3000);
+    }
+
+    if (val < 1) {
+        qtyInput.value = 1;
+    }
+});
+        // 🔹 Add to Cart
+        // 🔹 Add to Cart with button transform
+addBtn.addEventListener("click", async () => {
+
+    if (productStock <= 0) return;
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+        showMessage("Please login first");
+        window.location.href = "auth/login.html";
+        return;
+    }
+
+    try {
+let quantity = parseInt(qtyInput.value);
+
+if (!quantity || quantity < 1) {
+    quantity = 1;
+}
+
+if (quantity > availableStock) {
+
+    if (cartQty > 0) {
+        showTempMessage(`Only ${availableStock} left (${cartQty} already in cart)`);
+    } else {
+        showTempMessage(`Only ${availableStock} left in stock`);
+    }
+
+    return; // stop add to cart
+}
+        const res = await fetch("http://localhost:5000/api/cart", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({ productId, quantity })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Failed to add to cart");
+
+        // 🔥 Reduce stock in frontend
+        productStock -= quantity;
+        if (productStock < 0) productStock = 0;
+        updateStockUI();
+
+        // ---- Button transform ----
+        const originalText = addBtn.innerText;
+        addBtn.innerText = `Added (${quantity})!`;
+        addBtn.style.backgroundColor = "#28a745"; // green
+        addBtn.style.color = "#fff";
+        addBtn.disabled = true;
+
+        setTimeout(() => {
+            if (productStock > 0) {
+                addBtn.innerText = originalText;
+                addBtn.style.backgroundColor = ""; // revert
+                addBtn.style.color = "";
+                addBtn.disabled = false;
+            }
+        }, 2000);
+
+    } catch (err) {
+        console.error(err);
+        showMessage(err.message || "Error adding to cart");
+    }
+});
+
+    } catch (err) {
+        console.error(err);
+        showMessage("Failed to load product", "error");
+    }
+
+}
+
+document.addEventListener("DOMContentLoaded", loadProduct);
+
+</script>
+
+</body>
+
+</html>

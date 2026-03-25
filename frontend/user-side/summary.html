@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scentora - Order Summary</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<div id="messageBox" style="
+position: fixed;
+top: 20px;
+right: 20px;
+padding: 12px 20px;
+background: #f44336;
+color: white;
+border-radius: 6px;
+display: none;
+z-index: 9999;
+font-size: 14px;">
+</div>
+<body class="home-body">
+    
+    <!-- Navbar -->
+    <header class="header-section">
+        <div class="container-fluid top-header">
+            <div class="row align-items-center">
+                <!-- Search Bar -->
+                <div class="col-4">
+                    <div class="search-bar">
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search for Perfume...">
+                    </div>
+                </div>
+                <!-- Logo -->
+                <div class="col-4 text-center">
+                    <p class="brand-logo">SCENTORA</p>
+                </div>
+                <!-- Icons -->
+                <div class="col-4 text-end">
+                    <div class="header-icons">
+                        <a href="wishlist.html"><i class="bi bi-heart-fill heart-icon"></i></a>
+                        <a href="profile.html"><i class="bi bi-person-fill person-icon"></i></a>
+                        <a href="cart.html"><i class="bi bi-cart cart-icon"></i></a>
+                    </div>
+                </div>
+                <!-- Navigation Menu -->
+                <div class="col-12">
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a href="products.html">Shop All</a></li>
+                            <li><a href="crazy-deals.html">Crazy Deals</a></li>
+                            <li><a href="home.html#bestsellers">Bestsellers</a></li>
+                            <li><a href="home.html#categories">Categories</a></li>
+                            <li><a href="home.html#bestsellers">New Arrivals</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Summary Page Content -->
+    <main class="summary-page py-5">
+        <div class="container">
+            <!-- Checkout Progress Indicator -->
+            <div class="checkout-progress mb-5">
+                <div class="d-flex justify-content-between position-relative">
+                    <div class="progress-line progress-completed-100"></div>
+                    <div class="progress-step completed">
+                        <div class="step-icon"><i class="bi bi-check-lg"></i></div>
+                        <span class="step-label">Cart</span>
+                    </div>
+                    <div class="progress-step completed">
+                        <div class="step-icon"><i class="bi bi-check-lg"></i></div>
+                        <span class="step-label">Address</span>
+                    </div>
+                    <div class="progress-step completed">
+                        <div class="step-icon"><i class="bi bi-check-lg"></i></div>
+                        <span class="step-label">Payment</span>
+                    </div>
+                    <div class="progress-step active">
+                        <div class="step-icon">4</div>
+                        <span class="step-label">Summary</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title text-center mb-5">ORDER SUMMARY</h2>
+
+            <div class="row g-4">
+                <!-- Review Sections Column -->
+                <div class="col-lg-8">
+
+                    <!-- Delivery Address Review -->
+                    <div class="review-content bg-white border p-3 mb-3 rounded shadow-sm" id="summaryAddress">
+                        <h4>Delivery Address</h4>
+                    </div>
+
+                    <!-- Payment Method Review -->
+                    <div class="review-content bg-white border p-3 mb-3 rounded shadow-sm" id="summaryPayment">
+                        <h4>Payment Method</h4>
+                    </div>
+
+                    <!-- Order Items List -->
+                    <div class="review-items-list bg-white border p-3 mb-3 rounded shadow-sm" id="summaryItems"
+                        placeholder="Order Items">
+
+                    </div>
+                </div>
+
+                <!-- Price Breakdown Column -->
+                <div class="col-lg-4">
+                    <div class="order-summary-card p-4 position-sticky" style="top: 20px;">
+                        <h4 class="summary-title mb-4">PRICE DETAILS</h4>
+                        <div class="d-flex justify-content-between mb-3 font-sm">
+                            <span class="text-muted">Subtotal</span>
+                            <span id="summarySubtotal">₹0</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 font-sm text-success">
+                            <span>Discount</span>
+                            <span id="summaryDiscount">- ₹0</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-4 border-bottom pb-3 font-sm">
+                            <span class="text-muted">Delivery Charges</span>
+                            <span class="text-success">FREE</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-5">
+                            <h5 class="mb-0 fw-bold">Total Amount</h5>
+                            <h5 id="summaryTotal">₹0</h5>
+                        </div>
+                        <button  type="button" id="placeOrderBtn" class="btn checkout-primary-btn w-100 py-3">PLACE ORDER</button>
+
+                        <p class="text-center mt-3 small text-muted">By placing your order, you agree to our Terms and
+                            Conditions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <h4>BESTSELLERS</h4>
+                <ul>
+                    <li>Ultimate Perfume Box</li>
+                    <li>Perfume Gift Set For Men</li>
+                    <li>Men</li>
+                    <li>Perfume Gift Set For Women</li>
+                    <li>Attars</li>
+                    <li>Perfume For Men</li>
+                    <li>Perfume For Women</li>
+                    <li>Unisex Perfume</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>INFORMATION</h4>
+                <ul>
+                    <li>Blogs</li>
+                    <li>Newsroom</li>
+                    <li>Terms & Conditions</li>
+                    <li>Privacy Policy</li>
+                    <li>Refund and Return</li>
+                    <li>Shipping Policy</li>
+                    <li>Bulk Order - GST</li>
+                    <li>Invoice</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>SUPPORT</h4>
+                <ul>
+                    <li>About Us</li>
+                    <li>Contact Us</li>
+                    <li>Order Tracking</li>
+                    <li>All Products</li>
+                    <li>FAQ</li>
+                    <li>Sitemap</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <p>
+                    Office Location: Plot no. 417, Udyog Vihar Phase III,
+                    Gurgaon, Haryana, India
+                </p>
+                <p><a href="#">Contact Us on WhatsApp</a></p>
+                <p>+91-9810154380</p>
+                <p>Timing: 10:00 AM to 7:00 PM, Monday to Sunday</p>
+            </div>
+
+            <div class="footer-col newsletter">
+                <h4>EXCLUSIVE</h4>
+                <div class="newsletter-box">
+                    <input type="email" placeholder="Enter email here">
+                    <button>&rarr;</button>
+                </div>
+                <p>
+                    Sign up here to get the latest news, updates and special
+                    offers delivered to your inbox.
+                </p>
+                <p>
+                    Plus, you'll be the first to know about our discounts!
+                </p>
+
+                <div class="social-icons">
+                    <i class="bi bi-facebook"></i>
+                    <i class="bi bi-twitter"></i>
+                    <i class="bi bi-pinterest"></i>
+                    <i class="bi bi-instagram"></i>
+                    <i class="bi bi-youtube"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="scam-alert">
+            <h5>⚠ Scam Alert</h5>
+            <p>
+                We have noticed a rise in fraudulent activities through calls,
+                SMS, WhatsApp messages, emails, and other mediums.
+            </p>
+            <ul>
+                <li>
+                    Please be aware that <strong>SCENTORA and its employees</strong>
+                    never ask for your financial details for contests or deals.
+                </li>
+                <li>
+                    If you receive any such communication, reach out to us at
+                    <strong>+91 9810154380</strong> or email
+                    <strong>shop@scentoraorganic.com</strong>.
+                </li>
+                <li>
+                    If you suspect any scam, kindly report it to the Department
+                    of Telecommunications (DoT).
+                </li>
+            </ul>
+            <p><strong>Stay safe!</strong></p>
+        </div>
+    </footer>
+
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   <script>
+    function showMessage(msg, type="error", duration=3000){
+    const box = document.getElementById("messageBox");
+
+    box.innerText = msg;
+
+    if(type==="success"){
+        box.style.background="#28a745";
+    }else{
+        box.style.background="#f44336";
+    }
+
+    box.style.display="block";
+
+    setTimeout(()=>{
+        box.style.display="none";
+    },duration);
+}
+document.addEventListener("DOMContentLoaded", async function () {
+
+    const token = localStorage.getItem("token");
+    let lastOrder = JSON.parse(localStorage.getItem("lastOrder")); // ✅ changed to let
+    const address = JSON.parse(localStorage.getItem("selectedAddress"));
+    const appliedCoupon = JSON.parse(localStorage.getItem("appliedCoupon"));
+
+    if (!token || !lastOrder || !address) {
+        showMessage("Missing order data.");
+        window.location.href = "home.html";
+        return;
+    }
+
+    const itemsContainer = document.getElementById("summaryItems");
+    const subtotalEl = document.getElementById("summarySubtotal");
+    const discountEl = document.getElementById("summaryDiscount");
+    const totalEl = document.getElementById("summaryTotal");
+    const placeOrderBtn = document.getElementById("placeOrderBtn");
+
+    let cartItems = [];
+    let subtotal = 0;
+
+    // ✅ GET PAYMENT METHOD FROM ORDER
+    let paymentMethod = lastOrder.paymentMethod;
+
+    // ================= LOAD CART =================
+    try {
+        const res = await fetch("http://localhost:5000/api/cart", {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const data = await res.json();
+        cartItems = data.items?.filter(i => i.product) || [];
+
+        itemsContainer.innerHTML = "<h4>Order Items</h4>";
+
+        cartItems.forEach(item => {
+            const total = item.product.price * item.quantity;
+            subtotal += total;
+
+            itemsContainer.innerHTML += `
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                    <span>${item.product.name} x ${item.quantity}</span>
+                    <span>₹${total.toFixed(2)}</span>
+                </div>
+            `;
+        });
+
+    } catch (err) {
+        console.error("Cart load failed:", err);
+    }
+
+    // ================= ADDRESS =================
+    document.getElementById("summaryAddress").innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h4>Delivery Address</h4>
+            <a href="address-private.html" style="font-size:18px; text-decoration:none; color:red;">Change</a>
+        </div>
+        <p>
+            <strong>${address.fullName}</strong><br>
+            ${address.house || address.line1}, ${address.city}<br>
+            ${address.state} - ${address.pincode}<br>
+            Phone: ${address.phone}
+        </p>
+    `;
+
+    // ================= PAYMENT =================
+    document.getElementById("summaryPayment").innerHTML = `
+        <h4>Payment Method</h4>
+        <p>${paymentMethod}</p>
+    `;
+
+    // ================= TOTAL =================
+    const finalCheckout = JSON.parse(localStorage.getItem("finalCheckout")) || {};
+
+subtotal = finalCheckout.subtotal || subtotal;
+let discount = finalCheckout.discount || 0;
+let shippingCharge = paymentMethod === "Cash on Delivery" ? 50 : 0;
+const deliveryEl = document.querySelector(".order-summary-card .border-bottom span.text-success");
+let finalTotal = (finalCheckout.finalAmount || subtotal) + shippingCharge;
+// ✅ Update UI
+subtotalEl.innerText = `₹${subtotal.toFixed(2)}`;
+discountEl.innerText = `- ₹${discount.toFixed(2)}`;
+    deliveryEl.innerText = shippingCharge === 0 ? "FREE" : `₹${shippingCharge.toFixed(2)}`;
+totalEl.innerText = `₹${finalTotal.toFixed(2)}`;
+    // ================= PLACE ORDER =================
+    placeOrderBtn.addEventListener("click", async function (e) {
+
+    e.preventDefault();
+
+    try {
+
+        // Get fresh order every time
+        let latestOrder = JSON.parse(localStorage.getItem("lastOrder")) || {};
+        let existingOrderId = latestOrder._id || latestOrder.orderId || latestOrder.id || null;
+
+        const orderPayload = {
+            address:address,
+            items: cartItems.map(i => ({
+                product: i.product._id,
+                quantity: i.quantity
+            })),
+            paymentMethod,
+            subtotal: finalCheckout.subtotal, 
+            discount: finalCheckout.discount, 
+            shipping:shippingCharge,
+    totalAmount: (finalCheckout.finalAmount || subtotal) + shippingCharge, // ✅ includes shipping
+        };
+
+        let orderRes;
+
+        // ================= COD → CREATE ORDER =================
+        if (paymentMethod === "Cash on Delivery") {
+
+            orderRes = await fetch("http://localhost:5000/api/orders", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(orderPayload)
+            });
+
+        }
+
+        // ================= WALLET / RAZORPAY → UPDATE =================
+        else {
+
+            if (!existingOrderId) {
+                console.log("No existing order found — creating new");
+                
+                orderRes = await fetch("http://localhost:5000/api/orders", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(orderPayload)
+                });
+
+            } else {
+
+                orderRes = await fetch(`http://localhost:5000/api/orders/${existingOrderId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(orderPayload)
+                });
+
+            }
+        }
+
+        const orderData = await orderRes.json();
+
+// handle backend errors properly
+if (!orderRes.ok || orderData.success === false) {
+
+    showMessage(orderData.message || "Order failed");
+
+    setTimeout(() => {
+        window.location.href = "products.html";
+    }, 2000);
+
+    return;
+}
+
+        // Save correct order
+        localStorage.setItem("lastOrder", JSON.stringify(orderData));
+        localStorage.setItem("lastOrderId", orderData._id);
+
+        // Cleanup
+        localStorage.removeItem("appliedCoupon");
+
+        // Go to success page
+        window.location.href = `order-success.html?orderId=${orderData._id}`;
+
+    } catch (err) {
+        console.error("ORDER ERROR:", err);
+        showMessage("Order failed. Please try again.");
+    }
+
+});
+});
+</script>
+</body>
+
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scentora - Delivery Address</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+
+<body class="home-body">
+    <!-- Navbar -->
+    <header class="header-section">
+        <div class="container-fluid top-header">
+            <div class="row align-items-center">
+                <!-- Search Bar -->
+                <div class="col-4">
+                    <div class="search-bar">
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search for Perfume...">
+                    </div>
+                </div>
+                <!-- Logo -->
+                <div class="col-4 text-center">
+                    <p class="brand-logo">SCENTORA</p>
+                </div>
+                <!-- Icons -->
+                <div class="col-4 text-end">
+                    <div class="header-icons">
+                        <a href="wishlist.html"><i class="bi bi-heart-fill heart-icon"></i></a>
+                        <a href="profile.html"><i class="bi bi-person-fill person-icon"></i></a>
+                        <a href="cart.html"><i class="bi bi-cart cart-icon"></i></a>
+                    </div>
+                </div>
+                <!-- Navigation Menu -->
+                <div class="col-12">
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a href="products.html">Shop All</a></li>
+                            <li><a href="crazy-deals.html">Crazy Deals</a></li>
+                            <li><a href="home.html#bestsellers">Bestsellers</a></li>
+                            <li><a href="home.html#categories">Categories</a></li>
+                            <li><a href="home.html#bestsellers">New Arrivals</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Address Page Content -->
+    <main class="address-page py-5">
+        <div class="container">
+            <!-- Checkout Progress Indicator -->
+            <div class="checkout-progress mb-5">
+                <div class="d-flex justify-content-between position-relative">
+                    <div class="progress-line progress-completed-50"></div>
+                    <div class="progress-step completed">
+                        <div class="step-icon"><i class="bi bi-check-lg"></i></div>
+                        <span class="step-label">Cart</span>
+                    </div>
+                    <div class="progress-step active">
+                        <div class="step-icon">2</div>
+                        <span class="step-label">Address</span>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon">3</div>
+                        <span class="step-label">Payment</span>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon">4</div>
+                        <span class="step-label">Summary</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title text-center mb-5">DELIVERY ADDRESS</h2>
+<div id="uiMessage" class="alert d-none text-center"></div>
+            <!-- Saved Addresses Section -->
+            <div class="row mb-4" id="addressContainer"></div>
+
+            <!-- Add New Address Button -->
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <button id="addNewAddressBtn" class="btn btn-outline-success px-4 py-2">
+                        <i class="bi bi-plus-lg"></i> Add New Address
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- New Address Form (UI only, hidden or toggled) -->
+
+        <div class="col-lg-10">
+            <div class="row mb-5 collapse" id="newAddressForm">
+                <div class="col-lg-10 mx-auto">
+                    <div class="card p-4 shadow-sm">
+                        <h5 class="mb-3">Add / Edit Address</h5>
+
+                        <form id="checkoutAddressForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="fullName" placeholder="Full Name"
+                                        required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="phone" placeholder="Mobile Number"
+                                        required>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="pincode" placeholder="Pincode" required>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="line1" placeholder="Street / House"
+                                        required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="city" placeholder="City" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="state" placeholder="State" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <select id="addressType" class="form-select">
+                                        <option value="Home">Home</option>
+                                        <option value="Office">Office</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 mt-3">
+                                    <button type="submit" class="btn btn-primary">Save Address</button>
+                                    <button type="button" class="btn btn-secondary" id="cancelNewAddress">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Action -->
+            <div class="cart-footer text-center">
+                <a href="payment.html" class="btn checkout-primary-btn w-100 py-3">
+                    DELIVER HERE
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <h4>BESTSELLERS</h4>
+                <ul>
+                    <li>Ultimate Perfume Box</li>
+                    <li>Perfume Gift Set For Men</li>
+                    <li>Men</li>
+                    <li>Perfume Gift Set For Women</li>
+                    <li>Attars</li>
+                    <li>Perfume For Men</li>
+                    <li>Perfume For Women</li>
+                    <li>Unisex Perfume</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>INFORMATION</h4>
+                <ul>
+                    <li>Blogs</li>
+                    <li>Newsroom</li>
+                    <li>Terms & Conditions</li>
+                    <li>Privacy Policy</li>
+                    <li>Refund and Return</li>
+                    <li>Shipping Policy</li>
+                    <li>Bulk Order - GST</li>
+                    <li>Invoice</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>SUPPORT</h4>
+                <ul>
+                    <li>About Us</li>
+                    <li>Contact Us</li>
+                    <li>Order Tracking</li>
+                    <li>All Products</li>
+                    <li>FAQ</li>
+                    <li>Sitemap</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CONTACT US</h4>
+                <p>
+                    Office Location: Plot no. 417, Udyog Vihar Phase III,
+                    Gurgaon, Haryana, India
+                </p>
+                <p><a href="#">Contact Us on WhatsApp</a></p>
+                <p>+91-1234567890</p>
+                <p>Timing: 10:00 AM to 7:00 PM, Monday to Sunday</p>
+            </div>
+
+            <div class="footer-col newsletter">
+                <h4>EXCLUSIVE</h4>
+                <div class="newsletter-box">
+                    <input type="email" placeholder="Enter email here">
+                    <button>&rarr;</button>
+                </div>
+                <p>
+                    Sign up here to get the latest news, updates and special
+                    offers delivered to your inbox.
+                </p>
+                <p>
+                    Plus, you'll be the first to know about our discounts!
+                </p>
+
+                <div class="social-icons">
+                    <i class="bi bi-facebook"></i>
+                    <i class="bi bi-twitter"></i>
+                    <i class="bi bi-pinterest"></i>
+                    <i class="bi bi-instagram"></i>
+                    <i class="bi bi-youtube"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="scam-alert">
+            <h5>⚠ Scam Alert</h5>
+            <p>
+                We have noticed a rise in fraudulent activities through calls,
+                SMS, WhatsApp messages, emails, and other mediums.
+            </p>
+            <ul>
+                <li>
+                    Please be aware that <strong>SCENTORA and its employees</strong>
+                    never ask for your financial details for contests or deals.
+                </li>
+                <li>
+                    If you receive any such communication, reach out to us at
+                    <strong>+91 1234567890</strong> or email
+                    <strong>shop@scentoraorganic.com</strong>.
+                </li>
+                <li>
+                    If you suspect any scam, kindly report it to the Department
+                    of Telecommunications (DoT).
+                </li>
+            </ul>
+            <p><strong>Stay safe!</strong></p>
+        </div>
+    </footer>
+
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        
+        document.addEventListener("DOMContentLoaded", async () => {
+
+            const token = localStorage.getItem("token");
+            if (!token) return window.location.href = "auth/login.html";
+
+            const container = document.getElementById("addressContainer");
+            const addBtn = document.getElementById("addNewAddressBtn");
+            const formWrapper = document.getElementById("newAddressForm");
+            const form = document.getElementById("checkoutAddressForm");
+
+            let editingId = null;
+
+            // LOAD ADDRESSES
+            async function loadAddresses() {
+                try {
+                    const res = await fetch("http://localhost:5000/api/address", {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+
+                    const addresses = await res.json();
+                    container.innerHTML = "";
+
+                    addresses.forEach(addr => {
+
+                        const isDefault = addr.isDefault ? "border-primary" : "";
+
+                        container.innerHTML += `
+                    <div class="col-md-6 mb-3">
+                        <div class="card p-3 shadow-sm ${isDefault}">
+                            ${addr.isDefault ? '<span class="badge bg-primary mb-2">DEFAULT</span>' : ''}
+                            
+                            <h5>${addr.fullName}</h5>
+                            <p class="mb-1">${addr.phone}</p>
+                            <p class="mb-1">
+                                ${addr.house || addr.line1}, 
+                                ${addr.city}, 
+                                ${addr.state} - ${addr.pincode || addr.zip}
+                            </p>
+
+                            <div class="d-flex justify-content-between mt-2">
+                                <div>
+                                    <input type="radio" 
+                                           name="selectedAddress" 
+                                           value="${addr._id}" 
+                                           ${addr.isDefault ? "checked" : ""}>
+                                </div>
+
+                                <div>
+                                    <button class="btn btn-sm btn-outline-primary edit-btn" data-id="${addr._id}">
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${addr._id}">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                    });
+
+                    attachEvents(addresses);
+
+                } catch (err) {
+                    console.log(err);
+                    alert("Failed to load addresses");
+                }
+            }
+
+            function attachEvents(addresses) {
+
+                // EDIT
+                document.querySelectorAll(".edit-btn").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const addr = addresses.find(a => a._id === btn.dataset.id);
+                        if (!addr) return;
+
+                        editingId = addr._id;
+
+                        form.fullName.value = addr.fullName;
+                        form.phone.value = addr.phone;
+                        form.pincode.value = addr.pincode || addr.zip;
+                        form.line1.value = addr.house || addr.line1;
+                        form.city.value = addr.city;
+                        form.state.value = addr.state;
+                        form.addressType.value = addr.addressType || "Home";
+
+                        formWrapper.classList.add("show");
+                    });
+                });
+
+                // DELETE
+                document.querySelectorAll(".delete-btn").forEach(btn => {
+                    btn.addEventListener("click", async () => {
+                        await fetch(`http://localhost:5000/api/address/${btn.dataset.id}`, {
+                            method: "DELETE",
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+                        loadAddresses();
+                    });
+                });
+
+                // SELECT ADDRESS
+                document.querySelectorAll("input[name='selectedAddress']").forEach(radio => {
+                    radio.addEventListener("change", () => {
+
+                        const selectedId = radio.value;
+
+                        const selectedAddress = addresses.find(addr => addr._id === selectedId);
+
+                        if (selectedAddress) {
+                            localStorage.setItem(
+                                "selectedAddress",
+                                JSON.stringify(selectedAddress)
+                            );
+                        }
+
+                    });
+                });
+            }
+
+            // ADD NEW BUTTON
+            addBtn.addEventListener("click", () => {
+                editingId = null;
+                form.reset();
+                formWrapper.classList.add("show");
+            });
+
+            // CANCEL BUTTON
+            document.getElementById("cancelNewAddress").addEventListener("click", () => {
+                formWrapper.classList.remove("show");
+            });
+
+            // SAVE ADDRESS
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const data = {
+                    fullName: form.fullName.value,
+                    phone: form.phone.value,
+                    pincode: form.pincode.value,
+                    house: form.line1.value,
+                    city: form.city.value,
+                    state: form.state.value,
+                    addressType: form.addressType.value
+                };
+
+                const url = editingId
+                    ? `http://localhost:5000/api/address/${editingId}`
+                    : "http://localhost:5000/api/address";
+
+                const method = editingId ? "PUT" : "POST";
+
+                await fetch(url, {
+                    method,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                form.reset();
+                formWrapper.classList.remove("show");
+                editingId = null;
+
+                loadAddresses();
+            });
+
+            loadAddresses();
+        });
+    </script>
+
+
+</body>
+
+</html>

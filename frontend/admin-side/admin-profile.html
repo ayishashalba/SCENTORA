@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile - SCENTORA Admin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre+Medium&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --sidebar-bg: #2f436e;
+            --sidebar-active: #3e568a;
+            --sidebar-hover: rgba(255, 255, 255, 0.1);
+            --content-bg: #f8f9fa;
+            --primary-blue: #2f436e;
+            --text-muted: #6c757d;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'abhaya libre medium', serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #2e415f;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            z-index: 1000;
+            transition: all 0.3s;
+
+            overflow-y: auto;
+            /* 🔥 ADD THIS */
+            overflow-x: hidden;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .sidebar-brand {
+            padding: 10px 25px;
+            font-family: 'Aclonica', sans-serif;
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: block;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 400;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+            padding: 0;
+            transition: all 0.3s;
+        }
+
+        /* Header Styling */
+        .header {
+            background-color: #fff;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .header-title {
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            background-color: #ff6b6b;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        .profile-avatar-top {
+            width: 40px;
+            height: 40px;
+            background-color: #e9ecef;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        /* Profile Cards */
+        .profile-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            border: none;
+            margin-bottom: 30px;
+        }
+
+        .profile-pfp {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .role-badge {
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-admin {
+            background-color: #e7f1ff;
+            color: #0d6efd;
+        }
+
+        /* Form Styling */
+        .form-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 0.25rem rgba(47, 67, 110, 0.1);
+        }
+
+        /* Table Styling */
+        .permissions-table th {
+            font-weight: 600;
+            background-color: #f8f9fa;
+        }
+
+        .permissions-table td {
+            font-size: 0.95rem;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-blue);
+            border-color: var(--primary-blue);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-250px);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="admin-dashboard.html" class="sidebar-brand">
+            <span>SCENTORA</span>
+        </a>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="admin-dashboard.html">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-link" href="admin-products.html">
+                <i class="bi bi-box-seam"></i>
+                <span>Products</span>
+            </a>
+            <a class="nav-link" href="admin-inventory.html">
+                <i class="bi bi-box-fill"></i>
+                <span>Inventory</span>
+            </a>
+            <a class="nav-link" href="admin-orders.html">
+                <i class="bi bi-cart3"></i>
+                <span>Orders</span>
+            </a>
+            <a class="nav-link" href="admin-users.html">
+                <i class="bi bi-people"></i>
+                <span>Users</span>
+            </a>
+            <a class="nav-link" href="admin-categories.html">
+                <i class="bi bi-tags"></i>
+                <span>Categories</span>
+            </a>
+
+            <a class="nav-link" href="admin-offers.html">
+                <i class="bi bi-ticket-perforated"></i>
+                <span>Offers / Coupons</span>
+            </a>
+            <a class="nav-link" href="admin-payments.html">
+                <i class="bi bi-credit-card"></i>
+                <span>Payments</span>
+            </a>
+            <a class="nav-link" href="admin-reports.html">
+                <i class="bi bi-bar-chart-line"></i>
+                <span>Reports</span>
+            </a>
+            <a class="nav-link" href="admin-transactions.html">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Transactions</span>
+            </a>
+            <a class="nav-link" href="admin-reviews.html">
+                <i class="bi bi-star-fill"></i>
+                <span>Reviews</span>
+            </a>
+            <a class="nav-link active" href="admin-profile.html">
+                <i class="bi bi-person-circle"></i>
+                <span>Profile</span>
+            </a>
+
+            <a class="nav-link" href="settings.html">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+            <hr class="mx-3 my-3 text-white-50">
+            <a class="nav-link" href="admin-login.html">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <h2 class="header-title">Admin Profile</h2>
+            <div class="header-actions">
+                <button class="icon-btn">
+                    <i class="bi bi-bell"></i>
+                    <span class="notification-badge"></span>
+                </button>
+                <div class="profile-avatar-top">
+                    AD
+                </div>
+            </div>
+        </header>
+        <div id="messageBox"></div>
+
+        <div class="container-fluid p-4">
+            <div class="row">
+                <!-- Profile Overview Card -->
+                <div class="col-lg-4">
+                    <div class="profile-card text-center">
+                        <img src="" alt="Admin" class="profile-pfp">
+                        <h4 class="fw-bold mb-1 profile-name">Admin</h4>
+                        <p class="text-muted small mb-3 profile-email">admin@scentora.com</p>
+                        <div class="mb-4">
+                            <span class="role-badge badge-admin profile-role">Super Admin</span>
+                        </div>
+                        <button class="btn btn-outline-primary rounded-pill px-4"> <i
+                                class="bi bi-pencil-square me-2"></i> Edit Profile </button>
+                    </div>
+
+                    <div class="profile-card">
+                        <h6 class="fw-bold mb-3">Quick Stats</h6>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small">Account Created</span>
+                            <span class="small fw-500 stat-created">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small">Last Login</span>
+                            <span class="small fw-500 stat-login">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted small">Status</span>
+                            <span class="badge bg-success-subtle text-success stat-status">--</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Forms Section -->
+                <div class="col-lg-8">
+                    <!-- Personal Information Form -->
+                    <div class="profile-card">
+                        <h5 class="fw-bold mb-4">Personal Information</h5>
+                        <form id="profileForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" name="fullName" value="Admin Scentora"
+                                        placeholder="Enter Full Name">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" name="email" value="admin@scentora.com"
+                                        placeholder="Enter Email">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control" name="phone" value="+91 98765 43210"
+                                        placeholder="Enter Phone">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Username</label>
+                                    <input type="text" class="form-control" name="username" value="scentora_admin"
+                                        placeholder="Enter Username">
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <hr class="text-muted">
+                                    <h6 class="fw-bold mb-3 mt-2">Change Password</h6>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">New Password</label>
+                                    <input type="password" class="form-control" name="newPassword"
+                                        placeholder="••••••••">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Confirm Password</label>
+                                    <input type="password" class="form-control" name="confirmPassword"
+                                        placeholder="••••••••">
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-primary rounded-pill px-4 me-2">Save
+                                        Changes</button>
+                                    <button type="button" class="btn btn-light rounded-pill px-4 border">Cancel</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <!-- Role Management Section -->
+                    <div class="profile-card">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="fw-bold mb-0">Role Management</h5>
+                            <div style="width: 200px;">
+                                <select id="role-select" class="form-select">
+                                    <option>Super Admin</option>
+                                    <option>Admin</option>
+                                    <option>Manager</option>
+                                    <option>Staff</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table permissions-table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Module Name</th>
+                                        <th class="text-center">View</th>
+                                        <th class="text-center">Add</th>
+                                        <th class="text-center">Edit</th>
+                                        <th class="text-center">Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Modules list -->
+                                    <tr>
+                                        <td>Products Management</td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Orders Management</td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Categories Management</td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Users Management</td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Reports & Analytics</td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Transactions</td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Reviews & Ratings</td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Coupons & Offers</td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Settings</td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                        <td class="text-center"><input type="checkbox" class="form-check-input" checked>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-3">
+                            <button id="save-permissions-btn" class="btn btn-primary rounded-pill px-4 mt-3">Update Role
+                                & Permissions</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center text-muted mb-4 small">
+            © 2026 SCENTORA Admin Panel - Operations Control
+        </footer>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showMessage(message, type = "success") {
+    const box = document.getElementById("messageBox");
+
+    box.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show mt-3" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    `;
+
+    setTimeout(() => {
+        box.innerHTML = "";
+    }, 4000);
+}
+        document.addEventListener("DOMContentLoaded", () => {
+            // Elements
+            const profileForm = document.getElementById("profileForm");
+            const permissionsBtn = document.getElementById("save-permissions-btn");
+            const roleSelect = document.getElementById("role-select");
+
+            // Load profile from backend
+            async function loadProfile() {
+                try {
+                    const res = await fetch("http://localhost:5000/api/admin/profile");
+                    const data = await res.json();
+
+                    // Profile overview
+                    document.querySelector(".profile-pfp").src = data.avatar || "https://ui-avatars.com/api/?name=" + encodeURIComponent(data.name);
+                    document.querySelector(".profile-name").textContent = data.name;
+                    document.querySelector(".profile-email").textContent = data.email;
+                    document.querySelector(".profile-role").textContent = data.role;
+
+                    // Stats
+                    document.querySelector(".stat-created").textContent = new Date(data.createdAt).toLocaleString();
+                    document.querySelector(".stat-login").textContent = new Date(data.lastLogin).toLocaleString();
+                    document.querySelector(".stat-status").textContent = data.status || "Active";
+
+                    // Form inputs
+                    profileForm.fullName.value = data.name || "";
+                    profileForm.email.value = data.email || "";
+                    profileForm.phone.value = data.phone || "";
+                    profileForm.username.value = data.username || "";
+
+                    // Role select
+                    if (roleSelect) roleSelect.value = data.role;
+
+                    // Permissions table
+                    const modules = Object.keys(data.permissions || {});
+                    const rows = document.querySelectorAll(".permissions-table tbody tr");
+                    rows.forEach((row, i) => {
+                        const perms = data.permissions[modules[i]] || {};
+                        row.querySelectorAll("input[type='checkbox']").forEach((cb, j) => {
+                            cb.checked = Object.values(perms)[j] || false;
+                        });
+                    });
+                } catch (err) {
+                    console.error("Failed to load profile:", err);
+                }
+            }
+
+            // Save profile changes
+            async function saveProfile(event) {
+                event.preventDefault();
+                const payload = {
+                    name: profileForm.fullName.value,
+                    email: profileForm.email.value,
+                    phone: profileForm.phone.value,
+                    username: profileForm.username.value,
+                    password: profileForm.newPassword.value
+                };
+                try {
+                    const res = await fetch("/api/admin/profile", {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    showMessage(data.message || "Profile updated successfully!");
+                    loadProfile();
+                } catch (err) {
+                    console.error("Failed to save profile:", err);
+                }
+            }
+
+            // Save permissions
+            async function savePermissions() {
+                if (!roleSelect) return;
+                const role = roleSelect.value;
+                const rows = document.querySelectorAll(".permissions-table tbody tr");
+                const modules = ["products", "orders", "categories", "users", "reports", "transactions", "reviews", "coupons", "settings"];
+                let permissions = {};
+                rows.forEach((row, i) => {
+                    const checkboxes = row.querySelectorAll("input[type='checkbox']");
+                    permissions[modules[i]] = {
+                        view: checkboxes[0]?.checked || false,
+                        add: checkboxes[1]?.checked || false,
+                        edit: checkboxes[2]?.checked || false,
+                        delete: checkboxes[3]?.checked || false
+                    };
+                });
+                try {
+                    const res = await fetch("/api/admin/permissions", {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ role, permissions })
+                    });
+                    const data = await res.json();
+                    showMessage(data.message || "Permissions updated!");
+                    loadProfile();
+                } catch (err) {
+                    console.error("Failed to save permissions:", err);
+                }
+            }
+
+            // Event listeners
+            if (profileForm) profileForm.addEventListener("submit", saveProfile);
+            if (permissionsBtn) permissionsBtn.addEventListener("click", savePermissions);
+
+            // Initial load
+            loadProfile();
+        });
+    </script>
+
+</body>
+
+</html>

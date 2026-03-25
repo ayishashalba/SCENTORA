@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SCENTORA Admin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --sidebar-bg: #2f436e;
+            --sidebar-active: #3e568a;
+            --sidebar-hover: rgba(255, 255, 255, 0.1);
+            --content-bg: #f8f9fa;
+            --primary-blue: #2f436e;
+            --text-muted: #6c757d;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'abhaya libre medium', serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #2e415f;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            z-index: 1000;
+            transition: all 0.3s;
+
+            overflow-y: auto;
+            /* 🔥 ADD THIS */
+            overflow-x: hidden;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .sidebar-brand {
+            padding: 10px 25px;
+            font-family: 'Aclonica', sans-serif;
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: block;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 400;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        .menu-item {
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.2s;
+            font-weight: 400;
+        }
+
+        .menu-item:hover {
+            color: #fff;
+            background-color: var(--sidebar-hover);
+        }
+
+        .menu-item.active {
+            color: #fff;
+            background-color: var(--sidebar-active);
+            border-left: 4px solid #fff;
+        }
+
+        .menu-item i {
+            font-size: 1.2rem;
+        }
+
+        .logout-item {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 25px;
+            color: #ff6b6b;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+            padding: 0;
+            transition: all 0.3s;
+        }
+
+        /* Header Styling */
+        .header {
+            background-color: #fff;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .header-title {
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            background-color: #ff6b6b;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #e9ecef;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        /* Statistics Cards */
+        .stats-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            border: none;
+            height: 100%;
+        }
+
+        .stats-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .stats-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        /* Charts & Tables */
+        .dashboard-panel {
+            background: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            border: none;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Status Badges */
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-low-stock {
+            background-color: #fff1f1;
+            color: #ff6b6b;
+            border: 1px solid #ffd8d8;
+        }
+
+        .badge-paid {
+            background-color: #f1fcf1;
+            color: #28a745;
+            border: 1px solid #d4f2d4;
+        }
+
+        .badge-pending {
+            background-color: #fff9ed;
+            color: #f39c12;
+            border: 1px solid #fceecb;
+        }
+
+        .badge-delivered {
+            background-color: #f1f8ff;
+            color: #007bff;
+            border: 1px solid #cfe2ff;
+        }
+
+        /* Quick Actions */
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-add {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .btn-add:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-view {
+            background-color: var(--primary-blue);
+            color: #fff;
+        }
+
+        .btn-view:hover {
+            background-color: #1d2c4a;
+            transform: translateY(-2px);
+        }
+
+        .btn-inventory {
+            background-color: #f39c12;
+            color: #fff;
+        }
+
+        .btn-inventory:hover {
+            background-color: #d68910;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-250px);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="admin-dashboard.html" class="sidebar-brand">
+            <span>SCENTORA</span>
+        </a>
+        <nav class="nav flex-column">
+            <a class="nav-link active" href="admin-dashboard.html">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-link" href="admin-products.html">
+                <i class="bi bi-box-seam"></i>
+                <span>Products</span>
+            </a>
+            <a class="nav-link" href="admin-inventory.html">
+                <i class="bi bi-box-fill"></i>
+                <span>Inventory</span>
+            </a>
+            <a class="nav-link" href="admin-orders.html">
+                <i class="bi bi-cart3"></i>
+                <span>Orders</span>
+            </a>
+            <a class="nav-link" href="admin-users.html">
+                <i class="bi bi-people"></i>
+                <span>Users</span>
+            </a>
+            <a class="nav-link " href="admin-categories.html">
+                <i class="bi bi-tags"></i>
+                <span>Categories</span>
+            </a>
+
+            <a class="nav-link" href="admin-offers.html">
+                <i class="bi bi-ticket-perforated"></i>
+                <span>Offers / Coupons</span>
+            </a>
+            <a class="nav-link" href="admin-payments.html">
+                <i class="bi bi-credit-card"></i>
+                <span>Payments</span>
+            </a>
+            <a class="nav-link" href="admin-reports.html">
+                <i class="bi bi-bar-chart-line"></i>
+                <span>Reports</span>
+            </a>
+            <a class="nav-link" href="admin-transactions.html">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Transactions</span>
+            </a>
+            <a class="nav-link" href="admin-reviews.html">
+                <i class="bi bi-star-fill"></i>
+                <span>Reviews</span>
+            </a>
+            <a class="nav-link" href="admin-profile.html">
+                <i class="bi bi-person-circle"></i>
+                <span>Profile</span>
+            </a>
+            <a class="nav-link" href="settings.html">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+            <hr class="mx-3 my-3 text-white-50">
+            <a class="nav-link" href="admin-login.html">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <h2 class="header-title">Dashboard</h2>
+            <div class="header-actions">
+                <button class="icon-btn">
+                    <i class="bi bi-bell"></i>
+                    <span class="notification-badge"></span>
+                </button>
+                <div class="profile-avatar">
+                    AD
+                </div>
+            </div>
+        </header>
+        <!-- Message Container -->
+<div id="dashboardMessage" class="d-none alert alert-warning mx-4" role="alert">
+    <!-- message will appear here -->
+</div>
+        <div class="container-fluid p-4">
+            <!-- Statistics Row -->
+            <div class="row g-4 mb-4">
+
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="stats-label">Total Users</div>
+                        <div class="stats-value" id="totalUsers">0</div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="stats-label">Total Orders</div>
+                        <div class="stats-value" id="totalOrders">0</div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="stats-label">Total Revenue</div>
+                        <div class="stats-value" id="totalRevenue">₹0</div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="stats-label">Total Products</div>
+                        <div class="stats-value" id="totalProducts">0</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Dashboard Analytics Section -->
+            <div class="row">
+                <!-- Orders Overview -->
+                <div class="col-lg-8">
+                    <div class="dashboard-panel h-100">
+                        <div class="panel-header">
+                            <h5 class="panel-title">Orders Overview</h5>
+                            <div class="d-flex gap-2 align-items-center mt-2">
+    <input type="date" id="fromDate" class="form-control form-control-sm">
+    <input type="date" id="toDate" class="form-control form-control-sm">
+    <button class="btn btn-sm btn-primary" id="applyDateFilter">Apply</button>
+</div>
+                            <select id="ordersFilter" class="form-select form-select-sm" style="width: auto;">
+    <option value="today">Today</option>
+    <option value="week">This Week</option>
+    <option value="month">Month</option>
+</select>
+                        </div>
+                        <div style="height:350px;width:100%;">
+                            <canvas id="ordersChart"></canvas>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- Low Stock Alert -->
+                <div class="col-lg-4">
+                    <div class="dashboard-panel h-100">
+                        <div class="panel-header">
+                            <h5 class="panel-title">Low Stock Alert</h5>
+                            <a href="admin-inventory.html" class="small text-decoration-none">View All</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr class="text-muted small">
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lowStockTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Orders Section -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="dashboard-panel">
+                        <div class="panel-header">
+                            <h5 class="panel-title">Recent Orders</h5>
+                            <a href="admin-orders.html" class="btn btn-sm btn-outline-primary rounded-pill px-3">View
+                                All Orders</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead class="bg-light">
+                                    <tr class="text-muted small">
+                                        <th class="ps-3 py-3">Order ID</th>
+                                        <th class="py-3">Customer Email</th>
+                                        <th class="py-3">Date</th>
+                                        <th class="py-3">Total</th>
+                                        <th class="py-3">Status</th>
+                                        <th class="py-3 text-end pe-3">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentOrdersTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Section -->
+            <div class="row mt-2 g-4 pb-5">
+                <div class="col-md-4">
+                    <a href="add-product.html" class="action-btn btn-add">
+                        <i class="bi bi-plus-circle"></i>
+                        <span>+ Add Product</span>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="admin-orders.html" class="action-btn btn-view">
+                        <i class="bi bi-receipt"></i>
+                        <span>View Orders</span>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="admin-inventory.html" class="action-btn btn-inventory">
+                        <i class="bi bi-box-fill"></i>
+                        <span>Manage Inventory</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center text-muted mb-4 small">
+            © 2026 SCENTORA Admin Panel - Operations Control
+        </footer>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Dashboard Chart Initialization -->
+    <script>
+        let ordersChartInstance; 
+        function showMessage(message, type = "warning") {
+    const container = document.getElementById("dashboardMessage");
+
+    container.classList.remove("d-none");
+    container.className = `alert alert-${type} mx-4`;
+
+    container.innerText = message;
+
+    setTimeout(() => {
+        container.classList.add("d-none");
+    }, 4000);
+}
+
+        document.addEventListener("DOMContentLoaded", async () => {
+
+            const token = localStorage.getItem("adminToken");
+
+            if (!token) {
+                window.location.href = "admin-login.html";
+                return;
+            }
+
+            try {
+                
+                const res = await fetch("http://localhost:5000/api/admin/dashboard/stats", {
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    }
+                });
+
+                if (!res.ok) {
+    showMessage("Session expired. Please login again.", "danger");
+
+    setTimeout(() => {
+        localStorage.removeItem("adminToken");
+        window.location.href = "admin-login.html";
+    }, 1500);
+
+    return;
+}
+
+                const data = await res.json();
+
+                // Update Stats Cards
+                document.getElementById("totalUsers").innerText = data.totalUsers;
+                document.getElementById("totalOrders").innerText = data.totalOrders;
+                document.getElementById("totalProducts").innerText = data.totalProducts;
+                document.getElementById("totalRevenue").innerText = "₹" + data.totalRevenue;
+                
+                // Load chart first time
+    const defaultFilter = document.getElementById("ordersFilter").value;
+    await loadOrdersChart(defaultFilter);
+
+    // Change filter
+    document.getElementById("ordersFilter").addEventListener("change", (e) => {
+        loadOrdersChart(e.target.value);
+    });
+
+document.getElementById("applyDateFilter").addEventListener("click", () => {
+    const fromDate = document.getElementById("fromDate").value;
+    const toDate = document.getElementById("toDate").value;
+
+    if (!fromDate || !toDate) {
+        showMessage("Please select both dates");
+        return;
+    }
+
+    loadOrdersChart("custom", fromDate, toDate);
+});
+                // LOW STOCK PRODUCTS
+                const lowStockTable = document.getElementById("lowStockTable");
+                lowStockTable.innerHTML = "";
+                if (!data.lowStockProducts.length) {
+    lowStockTable.innerHTML = `
+        <tr>
+            <td colspan="3" class="text-center text-muted">
+                No low stock products
+            </td>
+        </tr>
+    `;
+} else {
+
+                data.lowStockProducts.forEach(product => {
+    const imgSrc = product.image
+    ? `http://localhost:5000/uploads/${encodeURIComponent(product.image.split("/").pop())}`
+    : "https://via.placeholder.com/40";
+
+    lowStockTable.innerHTML += `
+        <tr>
+            <td>
+                <div class="d-flex align-items-center gap-2">
+                    <img src="${imgSrc}" style="height:40px;width:40px;" class="rounded">
+                    <span class="small fw-500">${product.name}</span>
+                </div>
+            </td>
+            <td class="small fw-600">₹${product.price}</td>
+            <td>
+                <span class="badge-status badge-low-stock">
+                    ${product.stock} left
+                </span>
+            </td>
+        </tr>
+    `;
+});
+}
+
+const recentOrdersTable = document.getElementById("recentOrdersTable");
+recentOrdersTable.innerHTML = "";
+data.recentOrders.forEach(order => {
+    
+    const customerEmail = order.user?.email || "Unknown";
+
+    let badgeClass = "badge-status";
+    switch (order.status) {
+        case "Placed":
+            badgeClass += " badge-pending";
+            break;
+        case "Delivered":
+            badgeClass += " badge-paid";
+            break;
+        case "Cancelled":
+            badgeClass += " badge-low-stock";
+            break;
+        default:
+            badgeClass += " bg-secondary";
+    }
+
+    recentOrdersTable.innerHTML += `
+        <tr>
+            <td>#${order._id.slice(-6).toUpperCase()}</td>
+            <td>${customerEmail}</td>
+            <td>${new Date(order.createdAt).toLocaleDateString()}</td>
+            <td>₹${order.totalAmount}</td>
+            <td>
+                <span class="badge ${badgeClass}">
+                    ${order.status}
+                </span>
+            </td>
+            <td>
+                <a href="order-details.html?id=${order._id}" class="btn btn-sm btn-outline-primary">
+                    View
+                </a>
+            </td>
+        </tr>
+    `;
+});
+            } catch (err) {
+                console.error(err);
+                showMessage("Server error");
+            }
+
+async function loadOrdersChart(filter = "week",fromDate = null, toDate = null) {
+    try {
+        const token = localStorage.getItem("adminToken");
+        if (!token) return;
+let url = `http://localhost:5000/api/admin/dashboard/stats?filter=${filter}`;
+
+        if (fromDate && toDate) {
+            url += `&fromDate=${fromDate}&toDate=${toDate}`;
+        }
+
+        const res = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            cache: "no-store"
+        });
+
+        const data = await res.json();
+
+        console.log("Orders for chart:", data.ordersForChart); // ✅ moved here
+
+        // document.getElementById("totalUsers").innerText = data.totalUsers;
+        // document.getElementById("totalOrders").innerText = data.totalOrders;
+        // document.getElementById("totalProducts").innerText = data.totalProducts;
+        // document.getElementById("totalRevenue").innerText = "₹" + data.totalRevenue;
+
+        const ctx = document.getElementById('ordersChart').getContext('2d');
+
+        if (ordersChartInstance) ordersChartInstance.destroy();
+
+        const revenueByDate = {};
+
+        (data.ordersForChart || []).forEach(order => {
+            const orderDate = new Date(order.createdAt);
+
+    let key;
+
+    if (filter === "today") {
+        key = orderDate.getHours() + ":00"; // hourly
+    } else {
+        key = orderDate.toISOString().split("T")[0]; // daily
+    }
+
+    if (!revenueByDate[key]) {
+                revenueByDate[key] = 0;
+            }
+
+            revenueByDate[key] += order.totalAmount;
+        });
+
+        const labels = Object.keys(revenueByDate).sort(
+            (a,b)=> new Date(a) - new Date(b)
+        );
+
+        const revenueData = labels.map(date => revenueByDate[date]);
+
+        ordersChartInstance = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Revenue",
+                    data: revenueData,
+                    borderColor: "#2f436e",
+                    backgroundColor: "rgba(47,67,110,0.1)",
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+    } catch (err) {
+        console.error(err);
+        showMessage("Failed to load orders chart.", "danger");
+    }
+}
+
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions Management - SCENTORA Admin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --sidebar-bg: #2f436e;
+            --sidebar-active: #3e568a;
+            --sidebar-hover: rgba(255, 255, 255, 0.1);
+            --content-bg: #f8f9fa;
+            --primary-blue: #2f436e;
+            --text-muted: #6c757d;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'abhaya libre medium', serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #2e415f;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            z-index: 1000;
+            transition: all 0.3s;
+
+            overflow-y: auto;
+            /* 🔥 ADD THIS */
+            overflow-x: hidden;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .sidebar-brand {
+            padding: 10px 25px;
+            font-family: 'Aclonica', sans-serif;
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: block;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 400;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+            padding: 0;
+            transition: all 0.3s;
+        }
+
+        /* Header Styling */
+        .header {
+            background-color: #fff;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .header-title {
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        /* Transactions Section */
+        .transaction-panel {
+            background: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            border: none;
+        }
+
+        .control-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 300px;
+            width: 100%;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-box input {
+            padding-left: 35px;
+            border-radius: 8px;
+        }
+
+        /* Table Styling */
+        .custom-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            border: none;
+            padding: 15px;
+        }
+
+        .custom-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f1f1f1;
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+
+        .custom-table tr:hover {
+            background-color: rgba(0, 0, 0, 0.01);
+        }
+
+        /* Status Badges */
+        .badge-status {
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-success {
+            background-color: #e6f9ed;
+            color: #1fb955;
+        }
+
+        .status-pending {
+            background-color: #fff9ed;
+            color: #f39c12;
+        }
+
+        .status-failed {
+            background-color: #fff1f1;
+            color: #ff6b6b;
+        }
+
+        .status-refunded {
+            background-color: #f1f8ff;
+            color: #007bff;
+        }
+
+        /* Buttons */
+        .btn-export {
+            background-color: var(--primary-blue);
+            color: #fff;
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .btn-export:hover {
+            background-color: #253354;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* Pagination Styling */
+        .pagination .page-link {
+            color: var(--primary-blue);
+            border: none;
+            margin: 0 5px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary-blue);
+            color: #fff;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-250px);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="admin-dashboard.html" class="sidebar-brand">
+            <span>SCENTORA</span>
+        </a>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="admin-dashboard.html">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-link" href="admin-products.html">
+                <i class="bi bi-box-seam"></i>
+                <span>Products</span>
+            </a>
+            <a class="nav-link" href="admin-inventory.html">
+                <i class="bi bi-box-fill"></i>
+                <span>Inventory</span>
+            </a>
+            <a class="nav-link" href="admin-orders.html">
+                <i class="bi bi-cart3"></i>
+                <span>Orders</span>
+            </a>
+            <a class="nav-link" href="admin-users.html">
+                <i class="bi bi-people"></i>
+                <span>Users</span>
+            </a>
+            <a class="nav-link" href="admin-categories.html">
+                <i class="bi bi-tags"></i>
+                <span>Categories</span>
+            </a>
+            <a class="nav-link" href="admin-offers.html">
+                <i class="bi bi-ticket-perforated"></i>
+                <span>Offers / Coupons</span>
+            </a>
+            <a class="nav-link" href="admin-payments.html">
+                <i class="bi bi-credit-card"></i>
+                <span>Payments</span>
+            </a>
+            <a class="nav-link" href="admin-reports.html">
+                <i class="bi bi-bar-chart-line"></i>
+                <span>Reports</span>
+            </a>
+            <a class="nav-link active" href="admin-transactions.html">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Transactions</span>
+            </a>
+            <a class="nav-link" href="admin-reviews.html">
+                <i class="bi bi-star"></i>
+                <span>Reviews</span>
+            </a>
+            <a class="nav-link" href="admin-profile.html">
+                <i class="bi bi-person-circle"></i>
+                <span>Profile</span>
+            </a>
+            <a class="nav-link" href="settings.html">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+            <hr class="mx-3 my-3 text-white-50">
+            <a class="nav-link" href="admin-login.html">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <h2 class="header-title">Transactions Management</h2>
+            <div class="header-actions">
+                <a href="#" class="btn btn-export">
+                    <i class="bi bi-download"></i>
+                    Export Report
+                </a>
+            </div>
+        </header>
+
+        <div class="container-fluid p-4">
+            <div class="transaction-panel">
+                <!-- Control Bar -->
+                <div class="control-bar">
+                    <div class="d-flex gap-3 flex-grow-1">
+                        <div class="search-box">
+    <i class="bi bi-search"></i>
+    <input type="text" id="searchInput" class="form-control" placeholder="Search by Transaction ID...">
+</div>
+                        <select id="statusFilter" class="form-select" style="width: auto; min-width: 150px;">
+    <option value="">All</option>
+    <option value="Refund">Refund</option>
+    <option value="Payment">Payment</option>
+</select>
+
+                        <select id="dateFilter" class="form-select" style="width: auto; min-width: 150px;">
+                            <option value="thisMonth">This Month</option>
+                            <option value="lastMonth">Last Month</option>
+                            <option value="thisYear">This Year</option>
+                        </select>
+
+                    </div>
+                </div>
+
+                <!-- Table Content -->
+                <div class="table-responsive">
+                    <table class="table custom-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Order ID</th>
+                                <th>Payment Method</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>TYPE</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTableBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <footer class="text-center text-muted py-4 small">
+            © 2026 SCENTORA Admin - Financial Ledger
+        </footer>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+
+            let transactions = [];
+
+            async function loadTransactions() {
+                try {
+                    const res = await fetch("http://localhost:5000/api/admin/transactions");
+                    transactions = await res.json();
+                    applyFilters();
+                } catch (err) {
+                    console.error("Failed to load transactions:", err);
+                }
+            }
+
+            function applyFilters() {
+
+                const searchValue = document.getElementById("searchInput").value.toLowerCase();
+                const statusValue = document.getElementById("statusFilter").value;
+                const dateValue = document.getElementById("dateFilter").value;
+
+                let filtered = [...transactions];
+
+                // 🔍 Search Filter
+                if (searchValue) {
+                    filtered = filtered.filter(txn =>
+    ("#" + txn.transactionId).toLowerCase().includes(searchValue)
+);
+                }
+
+                // 📌 Status Filter
+               if (statusValue) {
+    if (statusValue === "Refund") {
+        filtered = filtered.filter(txn => txn.type === "credit");
+    } else if (statusValue === "Payment") {
+        filtered = filtered.filter(txn => txn.type === "debit");
+    }
+}
+                // 📅 Date Filter
+                const now = new Date();
+
+                if (dateValue === "thisMonth") {
+                    filtered = filtered.filter(txn => {
+                        const d = new Date(txn.date);
+                        return d.getMonth() === now.getMonth() &&
+                            d.getFullYear() === now.getFullYear();
+                    });
+                }
+
+                if (dateValue === "lastMonth") {
+                    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1);
+                    filtered = filtered.filter(txn => {
+                        const d = new Date(txn.date);
+                        return d.getMonth() === lastMonth.getMonth() &&
+                            d.getFullYear() === lastMonth.getFullYear();
+                    });
+                }
+
+                if (dateValue === "thisYear") {
+                    filtered = filtered.filter(txn => {
+                        const d = new Date(txn.date);
+                        return d.getFullYear() === now.getFullYear();
+                    });
+                }
+
+                renderTable(filtered);
+            }
+
+            function renderTable(data) {
+    const tbody = document.getElementById("transactionTableBody");
+    tbody.innerHTML = "";
+
+    if (data.length === 0) {
+        tbody.innerHTML = `
+        <tr>
+            <td colspan="7" class="text-center text-muted">No transactions found</td>
+        </tr>`;
+        return;
+    }
+
+    data.forEach(txn => {
+        const orderId = txn.orderId || "-";
+        const paymentMethod = txn.paymentMethod || "-";
+        const statusText = txn.status || "Pending";
+
+        let statusClass = "status-success";
+        if (statusText === "Pending") statusClass = "status-pending";
+        if (statusText === "Cancelled") statusClass = "status-failed";
+
+        tbody.innerHTML += `
+<tr>
+    <td>#${txn.transactionId}</td>
+    <td>#${orderId}</td>
+    <td>${paymentMethod}</td>
+    <td>₹${txn.amount}</td>
+    <td><span class="badge-status ${statusClass}">${statusText}</span></td>
+    <td>${txn.type === "credit" ? '<span style="color:#007bff;font-weight:600;">Refund</span>' : '<span style="color:#28a745;font-weight:600;">Payment</span>'}</td>
+    <td>${new Date(txn.date).toLocaleDateString()}</td>
+</tr>`;
+    });
+}
+
+            // 🎯 Event Listeners
+            document.getElementById("searchInput").addEventListener("input", applyFilters);
+            document.getElementById("statusFilter").addEventListener("change", applyFilters);
+            document.getElementById("dateFilter").addEventListener("change", applyFilters);
+
+            loadTransactions();
+        });
+    </script>
+    
+</body>
+
+</html>

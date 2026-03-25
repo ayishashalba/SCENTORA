@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management - Scentora Admin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=abhaya+libre:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-blue: #1E50A0;
+            --neon-blue: #00f2ff;
+            --neon-amber: #ff9f00;
+            --bg-light: #f3f4f6;
+            --sidebar-bg: #2e415f;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            font-family: 'abhaya libre medium', serif;
+            background-color: var(--bg-light);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #2e415f;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            z-index: 1000;
+            transition: all 0.3s;
+
+            overflow-y: auto;
+            /* 🔥 ADD THIS */
+            overflow-x: hidden;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .sidebar-brand {
+            padding: 10px 25px;
+            font-family: 'Aclonica', sans-serif;
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: block;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 400;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header Styling */
+        .header {
+            background-color: #fff;
+            padding: 15px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-weight: 600;
+            margin: 0;
+            font-size: 1.5rem;
+            color: #212529;
+            font-family: 'abhaya libre', serif;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #e9ecef;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--sidebar-bg);
+        }
+
+        /* Summary Cards */
+        .summary-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .summary-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Antigravity Filter Bar */
+        .filter-bar {
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+        }
+
+        .search-wrapper .form-control {
+            padding-left: 40px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        /* Inventory Table - Antigravity Row Style */
+        .inventory-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        .inventory-table th {
+            color: #adb5bd;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            padding: 0 15px;
+        }
+
+        .inventory-row {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .inventory-row:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+        }
+
+        .inventory-cell {
+            padding: 18px 15px;
+            font-size: 0.95rem;
+            vertical-align: middle;
+        }
+
+        .inventory-cell:first-child {
+            border-radius: 16px 0 0 16px;
+            border-left: 4px solid transparent;
+        }
+
+        .inventory-cell:last-child {
+            border-radius: 0 16px 16px 0;
+        }
+
+        /* Neon Warn for Low Stock */
+        .inventory-row.low-stock {
+            border-left-color: var(--neon-amber);
+        }
+
+        .inventory-row.low-stock:hover {
+            box-shadow: 0 12px 25px rgba(255, 159, 0, 0.1);
+        }
+
+        .inventory-row.out-of-stock {
+            border-left-color: #dc3545;
+        }
+
+        /* Status Badges */
+        .badge-status {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 50px;
+            text-transform: uppercase;
+        }
+
+        .badge-in-stock {
+            background: rgba(0, 242, 255, 0.08);
+            color: #00acc1;
+        }
+
+        .badge-low-stock {
+            background: rgba(255, 159, 0, 0.1);
+            color: #e68a00;
+            border: 1px solid rgba(255, 159, 0, 0.2);
+        }
+
+        .badge-out-stock {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        /* Action Buttons */
+        .btn-stock {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            background: #f8f9fa;
+            color: #6c757d;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-stock:hover {
+            transform: scale(1.1);
+            color: white;
+        }
+
+        .btn-add:hover {
+            background-color: var(--primary-blue);
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 8px rgba(30, 80, 160, 0.3);
+        }
+
+        .btn-reduce:hover {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            box-shadow: 0 0 8px rgba(220, 53, 69, 0.3);
+        }
+
+        .sku-tag {
+            font-family: 'Aclonica', sans-serif;
+            font-size: 0.75rem;
+            color: var(--primary-blue);
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .sidebar-brand span,
+            .nav-link span {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 70px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="admin-dashboard.html" class="sidebar-brand">
+            <span>SCENTORA</span>
+        </a>
+        <nav class="nav flex-column">
+            <a class="nav-link " href="admin-dashboard.html">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-link" href="admin-products.html">
+                <i class="bi bi-box-seam"></i>
+                <span>Products</span>
+            </a>
+            <a class="nav-link active" href="admin-inventory.html">
+                <i class="bi bi-box-fill"></i>
+                <span>Inventory</span>
+            </a>
+            <a class="nav-link" href="admin-orders.html">
+                <i class="bi bi-cart3"></i>
+                <span>Orders</span>
+            </a>
+            <a class="nav-link" href="admin-users.html">
+                <i class="bi bi-people"></i>
+                <span>Users</span>
+            </a>
+            <a class="nav-link " href="admin-categories.html">
+                <i class="bi bi-tags"></i>
+                <span>Categories</span>
+            </a>
+
+            <a class="nav-link" href="admin-offers.html">
+                <i class="bi bi-ticket-perforated"></i>
+                <span>Offers / Coupons</span>
+            </a>
+            <a class="nav-link" href="admin-payments.html">
+                <i class="bi bi-credit-card"></i>
+                <span>Payments</span>
+            </a>
+            <a class="nav-link" href="admin-reports.html">
+                <i class="bi bi-bar-chart-line"></i>
+                <span>Reports</span>
+            </a>
+            <a class="nav-link" href="admin-transactions.html">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Transactions</span>
+            </a>
+            <a class="nav-link" href="admin-reviews.html">
+                <i class="bi bi-star-fill"></i>
+                <span>Reviews</span>
+            </a>
+            <a class="nav-link" href="admin-profile.html">
+                <i class="bi bi-person-circle"></i>
+                <span>Profile</span>
+            </a>
+            <a class="nav-link" href="settings.html">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+            <hr class="mx-3 my-3 text-white-50">
+            <a class="nav-link" href="admin-login.html">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h2 class="header-title">Inventory Control</h2>
+            <div class="admin-profile">
+                <span>Stock Manager</span>
+                <div class="profile-icon">
+                    <i class="bi bi-archive"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <!-- Summary Dashboard -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <div class="summary-icon"
+                            style="background: rgba(30, 80, 160, 0.1); color: var(--primary-blue);">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+                        <div>
+                            <p class="text-muted small mb-0">Total Products</p>
+                            <h4 class="fw-700 mb-0">124</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card" style="border-right: 4px solid var(--neon-amber);">
+                        <div class="summary-icon" style="background: rgba(255, 159, 0, 0.1); color: var(--neon-amber);">
+                            <i class="bi bi-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <p class="text-muted small mb-0">Low Stock Alerts</p>
+                            <h4 class="fw-700 mb-0">8 Items</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card" style="border-right: 4px solid #dc3545;">
+                        <div class="summary-icon" style="background: rgba(220, 53, 69, 0.1); color: #dc3545;">
+                            <i class="bi bi-x-circle"></i>
+                        </div>
+                        <div>
+                            <p class="text-muted small mb-0">Out of Stock</p>
+                            <h4 class="fw-700 mb-0">3 Items</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter & Search -->
+            <div class="filter-bar">
+                <div class="search-wrapper">
+                    <i class="bi bi-search"></i>
+                    <input type="text" class="form-control" placeholder="Search by Product Name or SKU...">
+                </div>
+                <div class="ms-auto d-flex gap-3">
+                    <select class="form-select" style="width: 180px; border-radius: 8px;">
+                        <option value="all">All Status</option>
+                        <option value="in-stock">In Stock</option>
+                        <option value="low-stock">Low Stock</option>
+                        <option value="out-stock">Out of Stock</option>
+                    </select>
+                    <button class="btn btn-outline-secondary" style="border-radius: 8px;"><i class="bi bi-download"></i>
+                        Export</button>
+                </div>
+            </div>
+
+            <!-- Inventory Management Table -->
+            <div class="table-responsive">
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>SKU / ID</th>
+                            <th>Current Stock</th>
+                            <th>Min. Level</th>
+                            <th>Status Cat.</th>
+                            <th class="text-end">Update Qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- In Stock Item -->
+                        <tr class="inventory-row">
+                            <td class="inventory-cell">
+                                <div class="fw-600">Blue Oud Intense</div>
+                            </td>
+                            <td class="inventory-cell text-muted"><span class="sku-tag">SC-BLU-001</span></td>
+                            <td class="inventory-cell fw-700">85 Units</td>
+                            <td class="inventory-cell">15</td>
+                            <td class="inventory-cell"><span class="badge-status badge-in-stock">In Stock</span></td>
+                            <td class="inventory-cell text-end">
+                                <a href="#" class="btn-stock btn-reduce me-2" title="Reduce Stock"><i
+                                        class="bi bi-dash"></i></a>
+                                <a href="#" class="btn-stock btn-add me-2" title="Add Stock"><i
+                                        class="bi bi-plus"></i></a>
+                                <a href="#" class="btn-stock" title="Edit Item"><i class="bi bi-pencil-fill"
+                                        style="font-size: 0.8rem;"></i></a>
+                            </td>
+                        </tr>
+
+                        <!-- Low Stock Item -->
+                        <tr class="inventory-row low-stock">
+                            <td class="inventory-cell">
+                                <div class="fw-600">Velvet Rose Musk</div>
+                            </td>
+                            <td class="inventory-cell text-muted"><span class="sku-tag">SC-VEL-023</span></td>
+                            <td class="inventory-cell fw-700 text-warning">12 Units</td>
+                            <td class="inventory-cell">20</td>
+                            <td class="inventory-cell"><span class="badge-status badge-low-stock">Low Stock</span></td>
+                            <td class="inventory-cell text-end">
+                                <a href="#" class="btn-stock btn-reduce me-2" title="Reduce Stock"><i
+                                        class="bi bi-dash"></i></a>
+                                <a href="#" class="btn-stock btn-add me-2" title="Add Stock"><i
+                                        class="bi bi-plus"></i></a>
+                                <a href="#" class="btn-stock" title="Edit Item"><i class="bi bi-pencil-fill"
+                                        style="font-size: 0.8rem;"></i></a>
+                            </td>
+                        </tr>
+
+                        <!-- Out of Stock Item -->
+                        <tr class="inventory-row out-of-stock">
+                            <td class="inventory-cell">
+                                <div class="fw-600">Midnight Jasmine</div>
+                            </td>
+                            <td class="inventory-cell text-muted"><span class="sku-tag">SC-MID-045</span></td>
+                            <td class="inventory-cell fw-700 text-danger">0 Units</td>
+                            <td class="inventory-cell">10</td>
+                            <td class="inventory-cell"><span class="badge-status badge-out-stock">Out Stock</span></td>
+                            <td class="inventory-cell text-end">
+                                <a href="#" class="btn-stock btn-reduce me-2 disabled" title="Reduce Stock"><i
+                                        class="bi bi-dash"></i></a>
+                                <a href="#" class="btn-stock btn-add me-2" title="Add Stock"><i
+                                        class="bi bi-plus"></i></a>
+                                <a href="#" class="btn-stock" title="Edit Item"><i class="bi bi-pencil-fill"
+                                        style="font-size: 0.8rem;"></i></a>
+                            </td>
+                        </tr>
+
+                        <!-- Another In Stock Item -->
+                        <tr class="inventory-row">
+                            <td class="inventory-cell">
+                                <div class="fw-600">Sandalwood Essence</div>
+                            </td>
+                            <td class="inventory-cell text-muted"><span class="sku-tag">SC-SAN-098</span></td>
+                            <td class="inventory-cell fw-700">42 Units</td>
+                            <td class="inventory-cell">10</td>
+                            <td class="inventory-cell"><span class="badge-status badge-in-stock">In Stock</span></td>
+                            <td class="inventory-cell text-end">
+                                <a href="#" class="btn-stock btn-reduce me-2" title="Reduce Stock"><i
+                                        class="bi bi-dash"></i></a>
+                                <a href="#" class="btn-stock btn-add me-2" title="Add Stock"><i
+                                        class="bi bi-plus"></i></a>
+                                <a href="#" class="btn-stock" title="Edit Item"><i class="bi bi-pencil-fill"
+                                        style="font-size: 0.8rem;"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination Placeholder -->
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center border-0">
+                    <li class="page-item disabled"><a class="page-link" href="#"
+                            style="border-radius: 8px 0 0 8px;">Previous</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#" style="border-radius: 0 8px 10px 0;">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Footer -->
+        <div class="row mt-4 pb-5">
+            <div class="col-12 text-center text-muted">
+                <p>© Scentora Operations Control - Inventory HUB</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+    <script>
+        async function loadInventory() {
+    try {
+        const res = await fetch("http://localhost:5000/api/products");
+        const data = await res.json();
+        const products = data.products || data;
+
+        const tbody = document.querySelector("tbody");
+        tbody.innerHTML = "";
+
+        let totalProducts = products.length;
+        let lowStockCount = 0;
+        let outStockCount = 0;
+
+        products.forEach(product => {
+
+            let rowClass = "inventory-row";
+            let badgeClass = "badge-in-stock";
+
+            if (product.stock === 0) {
+                rowClass += " out-of-stock";
+                badgeClass = "badge-out-stock";
+                outStockCount++;
+            } 
+            else if (product.stock < (product.minStock || 10)) {
+                rowClass += " low-stock";
+                badgeClass = "badge-low-stock";
+                lowStockCount++;
+            }
+
+            const stockText = product.stock + " Units";
+
+            tbody.innerHTML += `
+                <tr class="${rowClass}">
+                    <td class="inventory-cell">${product.name}</td>
+                    <td class="inventory-cell text-muted">
+                        <span class="sku-tag">${product._id}</span>
+                    </td>
+                    <td class="inventory-cell fw-700 ${rowClass.includes('out-of-stock') ? 'text-danger' : rowClass.includes('low-stock') ? 'text-warning' : ''}">
+                        ${stockText}
+                    </td>
+                    <td class="inventory-cell">${product.minStock || 10}</td>
+                    <td class="inventory-cell">
+                        <span class="badge-status ${badgeClass}">
+                            ${rowClass.includes('out-of-stock') ? 'Out Stock' : rowClass.includes('low-stock') ? 'Low Stock' : 'In Stock'}
+                        </span>
+                    </td>
+                    <td class="inventory-cell text-end">
+                        <a href="#" class="btn-stock btn-reduce me-2" onclick="updateStock('${product._id}', -1)">
+                            <i class="bi bi-dash"></i>
+                        </a>
+                        <a href="#" class="btn-stock btn-add me-2" onclick="updateStock('${product._id}', 1)">
+                            <i class="bi bi-plus"></i>
+                        </a>
+                        <a href="add-product.html?id=${product._id}" class="btn-stock">
+                            <i class="bi bi-pencil-fill" style="font-size: 0.8rem;"></i>
+                        </a>
+                    </td>
+                </tr>
+            `;
+        });
+
+        // ✅ Update Summary Cards
+        document.querySelectorAll(".summary-card h4")[0].innerText = totalProducts;
+        document.querySelectorAll(".summary-card h4")[1].innerText = lowStockCount + " Items";
+        document.querySelectorAll(".summary-card h4")[2].innerText = outStockCount + " Items";
+
+    } catch (err) {
+        console.error("Error loading inventory:", err);
+    }
+}
+        // Update stock function
+        async function updateStock(id, change) {
+            try {
+                const res = await fetch(`http://localhost:5000/api/products/${id}`);
+                const productData = await res.json();
+                const product = productData.product || productData;
+
+                const newStock = Math.max(0, product.stock + change);
+
+                await fetch(`http://localhost:5000/api/products/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ ...product, stock: newStock })
+                });
+
+                loadInventory(); // reload table
+            } catch (err) {
+                console.error("Failed to update stock:", err);
+            }
+        }
+
+        // Status filter
+        const statusFilter = document.querySelector(".filter-bar select");
+        statusFilter.addEventListener("change", () => {
+            const selected = statusFilter.value;
+            const rows = document.querySelectorAll("tbody tr");
+
+            rows.forEach(row => {
+                row.style.display = "table-row"; // reset
+
+                if (selected === "all") return; // show all
+
+                if (selected === "in-stock") {
+                    // show only rows that are NOT low-stock and NOT out-of-stock
+                    if (row.classList.contains("low-stock") || row.classList.contains("out-of-stock")) {
+                        row.style.display = "none";
+                    }
+                }
+
+                if (selected === "low-stock") {
+                    if (!row.classList.contains("low-stock")) {
+                        row.style.display = "none";
+                    }
+                }
+
+                if (selected === "out-stock") {
+                    if (!row.classList.contains("out-of-stock")) {
+                        row.style.display = "none";
+                    }
+                }
+            });
+        });
+        // 🔎 Search Function
+const searchInput = document.querySelector(".search-wrapper input");
+
+searchInput.addEventListener("input", () => {
+    const searchValue = searchInput.value.toLowerCase();
+    const rows = document.querySelectorAll("tbody tr");
+
+    rows.forEach(row => {
+        const productName = row.children[0].innerText.toLowerCase();
+        const sku = row.children[1].innerText.toLowerCase();
+
+        if (productName.includes(searchValue) || sku.includes(searchValue)) {
+            row.style.display = "table-row";
+        } else {
+            row.style.display = "none";
+        }
+    });
+});
+        // Load inventory on page ready
+        document.addEventListener("DOMContentLoaded", loadInventory);
+        const exportBtn = document.querySelector(".filter-bar .btn-outline-secondary");
+
+exportBtn.addEventListener("click", async () => {
+    try {
+        const res = await fetch("http://localhost:5000/api/products");
+        const data = await res.json();
+        const products = data.products || data;
+
+        // Prepare export data
+        const exportData = products.map(p => ({
+            "Product Name": p.name,
+            "SKU / ID": p._id,
+            "Current Stock": p.stock,
+            "Stock Status": p.stock === 0 ? "Out Stock" : p.stock < (p.minStock || 10) ? "Low Stock" : "In Stock"
+        }));
+
+        // Convert to worksheet
+        const worksheet = XLSX.utils.json_to_sheet(exportData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
+
+        // Export as Excel
+        XLSX.writeFile(workbook, "Inventory_List.xlsx");
+    } catch (err) {
+        console.error("Export failed:", err);
+        alert("Failed to export inventory. Check console for details.");
+    }
+});
+    </script>
+
+
+</body>
+
+</html>
