@@ -332,26 +332,7 @@ async function checkLoginStatus() {
 });
 
 </script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const msg = params.get("msg");
-  const uiMessage = document.getElementById("uiMessage");
 
-  if (msg === "login-required") {
-    uiMessage.textContent = "Please login first";
-    uiMessage.classList.remove("d-none");
-    uiMessage.classList.add("alert-warning");
-
-    setTimeout(() => {
-      uiMessage.classList.add("d-none");
-    }, 3000);
-
-    // remove msg from URL
-    window.history.replaceState({}, document.title, window.location.pathname);
-  }
-});
-</script>
 </body>
 
 </html>
