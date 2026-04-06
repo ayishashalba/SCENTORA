@@ -571,7 +571,7 @@
 }
 async function loadProducts() {
     try {
-        const res = await fetch("http://localhost:5000/api/products");
+        const res = await fetch("http://51.20.253.239:5000/api/products");
         const products = await res.json();
 
         const tableBody = document.getElementById("productTableBody");
@@ -584,7 +584,7 @@ async function loadProducts() {
 
 if (product.image) {
     if (product.image.startsWith("uploads/")) {
-        imgSrc = `http://localhost:5000/${product.image}`;
+        imgSrc = `http://51.20.253.239:5000/${product.image}`;
     } else {
         imgSrc = `./${product.image}`;
     }
@@ -628,7 +628,7 @@ async function deleteProduct(id) {
     showMessage("Deleting product...", "warning");
 
     try {
-        await fetch(`http://localhost:5000/api/products/${id}`, { method: "DELETE" });
+        await fetch(`http://51.20.253.239:5000/api/products/${id}`, { method: "DELETE" });
 
         showMessage("Product deleted successfully", "danger");
 
@@ -657,10 +657,10 @@ document.addEventListener("DOMContentLoaded", loadProducts);
   
 document.getElementById("exportBtn").addEventListener("click", async () => {
     try {
-        const resProducts = await fetch("http://localhost:5000/api/products");
+        const resProducts = await fetch("http://51.20.253.239:5000/api/products");
         const products = await resProducts.json();
 
-        const resCategories = await fetch("http://localhost:5000/api/admin/categories", {
+        const resCategories = await fetch("http://51.20.253.239:5000/api/admin/categories", {
             headers: { "Authorization": "Bearer " + localStorage.getItem("adminToken") }
         });
         const categories = await resCategories.json();

@@ -564,7 +564,7 @@ function showMessage(message, type = "danger") {
 const fromDate = document.getElementById("fromDate").value;
 const toDate = document.getElementById("toDate").value;
 
-let url = "http://localhost:5000/api/admin/reports";
+let url = "http://51.20.253.239:5000/api/admin/reports";
 
 if (fromDate && toDate) {
     url += `?filter=custom&fromDate=${fromDate}&toDate=${toDate}`;
@@ -633,7 +633,7 @@ revenueChart = new Chart(document.getElementById('revenueChart'), {
 
                 row.innerHTML = `
 <td class="d-flex align-items-center gap-2">
-<img src="${p.image ? `http://localhost:5000/${p.image.replace(/^\/+/,'')}` : 'https://via.placeholder.com/40'}" class="product-img">
+<img src="${p.image ? `http://51.20.253.239:5000/${p.image.replace(/^\/+/,'')}` : 'https://via.placeholder.com/40'}" class="product-img">
     ${p.name}
 </td>                    <td>${p.totalSold}</td>
                     <td>₹${p.revenue}</td>

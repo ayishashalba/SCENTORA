@@ -681,7 +681,7 @@ document.getElementById("statusFilter").addEventListener("change", applyFilters)
 // Load payments from API
 async function loadPayments() {
     try {
-        const res = await fetch("http://localhost:5000/api/admin/orders", {
+        const res = await fetch("http://51.20.253.239:5000/api/admin/orders", {
             headers: { Authorization: "Bearer " + localStorage.getItem("adminToken") }
         });
 

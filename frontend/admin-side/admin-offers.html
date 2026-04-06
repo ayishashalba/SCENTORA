@@ -696,7 +696,7 @@
 }
         document.addEventListener("DOMContentLoaded", () => {
 
-            const API = "http://localhost:5000/api/admin/coupons";
+            const API = "http://51.20.253.239:5000/api/admin/coupons";
             const form = document.getElementById("couponForm");
             const container = document.getElementById("couponContainer");
 
@@ -872,7 +872,7 @@ window.location.href = "admin-offers.html?success=1";
         });
         document.getElementById("exportCouponsBtn").addEventListener("click", async () => {
     try {
-        const res = await fetch("http://localhost:5000/api/admin/coupons");
+        const res = await fetch("http://51.20.253.239:5000/api/admin/coupons");
         const coupons = await res.json();
 
         if (!coupons.length) {

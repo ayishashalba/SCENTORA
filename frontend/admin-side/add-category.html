@@ -761,7 +761,7 @@ function handleFile(file) {
 }
         document.addEventListener("DOMContentLoaded", () => {
 
-            const API_URL = "http://localhost:5000/api/admin/categories";
+            const API_URL = "http://51.20.253.239:5000/api/admin/categories";
             const token = localStorage.getItem("adminToken");
 
             const form = document.getElementById("categoryForm");
@@ -874,7 +874,7 @@ if (categoryId) {
 if (cat.image) {  
     // Remove extra slashes if any
     let imagePath = cat.image.startsWith('/') ? cat.image.slice(1) : cat.image;
-    preview.src = `http://localhost:5000/${imagePath}`;
+    preview.src = `http://51.20.253.239:5000/${imagePath}`;
     preview.style.display = "block";
 }
 

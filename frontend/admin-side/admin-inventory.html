@@ -766,7 +766,7 @@
     <script>
         async function loadInventory() {
     try {
-        const res = await fetch("http://localhost:5000/api/products");
+        const res = await fetch("http://51.20.253.239:5000/api/products");
         const data = await res.json();
         const products = data.products || data;
 
@@ -837,13 +837,13 @@
         // Update stock function
         async function updateStock(id, change) {
             try {
-                const res = await fetch(`http://localhost:5000/api/products/${id}`);
+                const res = await fetch(`http://51.20.253.239:5000/api/products/${id}`);
                 const productData = await res.json();
                 const product = productData.product || productData;
 
                 const newStock = Math.max(0, product.stock + change);
 
-                await fetch(`http://localhost:5000/api/products/${id}`, {
+                await fetch(`http://51.20.253.239:5000/api/products/${id}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ ...product, stock: newStock })
@@ -910,7 +910,7 @@ searchInput.addEventListener("input", () => {
 
 exportBtn.addEventListener("click", async () => {
     try {
-        const res = await fetch("http://localhost:5000/api/products");
+        const res = await fetch("http://51.20.253.239:5000/api/products");
         const data = await res.json();
         const products = data.products || data;
 

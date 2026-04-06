@@ -126,7 +126,7 @@
             const token = localStorage.getItem('adminToken'); // must be logged in as superadmin
             if (!token) return alert('Please login as superadmin first!');
 
-            const res = await fetch('http://localhost:5000/api/admin/create', {
+            const res = await fetch('http://51.20.253.239:5000/api/admin/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -496,7 +496,7 @@
         async function loadUsers() {
             try {
                 // Fetch users from backend
-                const res = await fetch("http://localhost:5000/api/admin/users", {
+                const res = await fetch("http://51.20.253.239:5000/api/admin/users", {
                     headers: {
                         "Authorization": `Bearer ${localStorage.getItem("adminToken")}` // use your admin token
                     }
@@ -543,7 +543,7 @@ const tbody = document.getElementById("usersTableBody");
                         const action = btn.classList.contains("btn-block") ? "block" : "unblock";
 
                         try {
-                            const res = await fetch(`http://localhost:5000/api/admin/users/${userId}/${action}`, {
+                            const res = await fetch(`http://51.20.253.239:5000/api/admin/users/${userId}/${action}`, {
                                 method: "PUT",
                                 headers: {
                                     "Authorization": `Bearer ${localStorage.getItem("adminToken")}`,
@@ -570,7 +570,7 @@ const tbody = document.getElementById("usersTableBody");
                         const userId = btn.getAttribute("data-id");
 
                         try {
-                            const res = await fetch(`http://localhost:5000/api/admin/users/${userId}`, {
+                            const res = await fetch(`http://51.20.253.239:5000/api/admin/users/${userId}`, {
                                 headers: {
                                     "Authorization": `Bearer ${localStorage.getItem("adminToken")}`
                                 }
@@ -611,13 +611,13 @@ Registered At: ${new Date(user.createdAt).toLocaleDateString()}
         const token = localStorage.getItem("adminToken");
 
         // Fetch users
-        const usersRes = await fetch("http://localhost:5000/api/admin/users", {
+        const usersRes = await fetch("http://51.20.253.239:5000/api/admin/users", {
             headers: { Authorization: "Bearer " + token }
         });
         const users = await usersRes.json();
 
         // Fetch orders
-        const ordersRes = await fetch("http://localhost:5000/api/admin/orders", {
+        const ordersRes = await fetch("http://51.20.253.239:5000/api/admin/orders", {
             headers: { Authorization: "Bearer " + token }
         });
         const orders = await ordersRes.json();

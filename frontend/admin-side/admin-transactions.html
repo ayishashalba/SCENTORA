@@ -551,7 +551,7 @@
 
             async function loadTransactions() {
                 try {
-                    const res = await fetch("http://localhost:5000/api/admin/transactions");
+                    const res = await fetch("http://51.20.253.239:5000/api/admin/transactions");
                     transactions = await res.json();
                     applyFilters();
                 } catch (err) {

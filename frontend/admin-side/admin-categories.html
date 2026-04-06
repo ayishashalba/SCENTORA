@@ -514,7 +514,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ===============================
     async function loadCategories() {
         try {
-            const res = await fetch("http://localhost:5000/api/admin/categories", {
+            const res = await fetch("http://51.20.253.239:5000/api/admin/categories", {
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem("adminToken")
                 }
@@ -542,7 +542,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 let imgSrc = "https://via.placeholder.com/50";
 
 if (cat.image) {
-    imgSrc = `http://localhost:5000${cat.image}`;
+    imgSrc = `http://51.20.253.239:5000${cat.image}`;
 }
 
                 tableBody.innerHTML += `
@@ -596,7 +596,7 @@ if (cat.image) {
     // ===============================
     window.toggleStatus = async function (id) {
     try {
-        const res = await fetch(`http://localhost:5000/api/admin/categories/toggle/${id}`, {
+        const res = await fetch(`http://51.20.253.239:5000/api/admin/categories/toggle/${id}`, {
             method: "PUT",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("adminToken")
@@ -620,7 +620,7 @@ if (cat.image) {
 document.getElementById("exportCategoriesBtn").addEventListener("click", async () => {
     try {
         // Fetch categories
-        const res = await fetch("http://localhost:5000/api/admin/categories", {
+        const res = await fetch("http://51.20.253.239:5000/api/admin/categories", {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("adminToken")
             }
@@ -629,7 +629,7 @@ document.getElementById("exportCategoriesBtn").addEventListener("click", async (
         const categories = await res.json();
 
         // Fetch products (for mapping collections → products)
-        const prodRes = await fetch("http://localhost:5000/api/products");
+        const prodRes = await fetch("http://51.20.253.239:5000/api/products");
         const products = await prodRes.json();
 
         // Format export data

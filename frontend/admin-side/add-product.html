@@ -171,7 +171,7 @@
         pageTitle.innerText = "Edit Product";
 
                 try {
-                    const res = await fetch(`http://localhost:5000/api/products/${productId}`);
+                    const res = await fetch(`http://51.20.253.239:5000/api/products/${productId}`);
                     const data = await res.json();
 
                     // handle backend response structure
@@ -185,7 +185,7 @@
                     document.getElementById("description").value = product.description || "";
                     document.querySelector(`input[name="status"][value="${product.status}"]`).checked = true;
 if (product.image) {
-    preview.src = `http://localhost:5000/${product.image}`;
+    preview.src = `http://51.20.253.239:5000/${product.image}`;
     preview.style.display = "block";
 }
                     document.querySelector(".btn-save").textContent = "Update Product";
@@ -284,12 +284,12 @@ if (stockValue !== "") {
         let res;
 
         if (productId) {
-            res = await fetch(`http://localhost:5000/api/products/${productId}`, {
+            res = await fetch(`http://51.20.253.239:5000/api/products/${productId}`, {
                 method: "PUT",
                 body: formData
             });
         } else {
-            res = await fetch("http://localhost:5000/api/products", {
+            res = await fetch("http://51.20.253.239:5000/api/products", {
                 method: "POST",
                 body: formData
             });

@@ -482,7 +482,7 @@ border:1px solid rgba(255,193,7,0.2);
             if (!orderId) return showMessage("No order ID provided!");
 
             try {
-                const res = await fetch(`http://localhost:5000/api/admin/orders/${orderId}`, {
+                const res = await fetch(`http://51.20.253.239:5000/api/admin/orders/${orderId}`, {
     headers: { Authorization: "Bearer " + token }
 });
                 const order = await res.json();
@@ -671,7 +671,7 @@ if (current === "Delivered" || current === "Cancelled") {
             document.querySelector(".btn-update").addEventListener("click", async () => {
                 const newStatus = document.querySelector(".status-update-card select").value;
                 try {
-const res = await fetch(`http://localhost:5000/api/admin/orders/${orderId}/status`, {
+const res = await fetch(`http://51.20.253.239:5000/api/admin/orders/${orderId}/status`, {
                                 method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
