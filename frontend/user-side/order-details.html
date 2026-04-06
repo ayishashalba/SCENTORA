@@ -66,85 +66,180 @@ footer {
 }
 
 /* ===== Mobile Responsive ===== */
+/* REMOVE your old mobile table fix blocks first, then add this */
+
 @media (max-width: 767.98px) {
+    .order-items-section .table-responsive {
+        overflow: visible !important;
+    }
 
-    /* Header */
-    .top-header .col-4,
-    .top-header .col-12 {
+    .order-items-section .table {
+        min-width: 100% !important;
+        width: 100% !important;
+        margin-bottom: 0;
+    }
+
+    .order-items-section .table thead {
+        display: none;
+    }
+
+    .order-items-section .table,
+    .order-items-section .table tbody,
+    .order-items-section .table tr,
+    .order-items-section .table td {
+        display: block;
         width: 100%;
-        text-align: center !important;
-        margin-bottom: 10px;
     }
 
-    .header-icons {
-        display: flex;
-        justify-content: center;
-        gap: 16px;
+    .order-items-section .table tr {
+        border-bottom: 1px solid #eee;
+        padding: 10px 0;
     }
 
-    .nav-menu ul {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+    .order-items-section .table td {
+        border: none !important;
+        text-align: left !important;
+        white-space: normal !important;
+        padding: 6px 10px !important;
+        position: relative;
+    }
+
+    .order-items-section .table td::before {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        color: #6c757d;
+        margin-bottom: 3px;
+    }
+
+    .order-items-section .table td:nth-child(1)::before {
+        content: "Product";
+    }
+
+    .order-items-section .table td:nth-child(2)::before {
+        content: "Variant";
+    }
+
+    .order-items-section .table td:nth-child(3)::before {
+        content: "Qty";
+    }
+
+    .order-items-section .table td:nth-child(4)::before {
+        content: "Price";
+    }
+
+    .order-items-section .table td:nth-child(5)::before {
+        content: "Action";
+    }
+
+    .order-items-section .table td:first-child .d-flex {
+        display: flex !important;
+        align-items: center !important;
         gap: 10px;
     }
 
-    /* Page padding */
-    .order-details-page {
-        padding: 1.2rem !important;
+    .order-items-section .table td:first-child img {
+        width: 42px !important;
+        height: auto;
+        flex-shrink: 0;
     }
 
-    .order-details-page .container {
-        padding-left: 12px;
-        padding-right: 12px;
+    .order-items-section .table td:first-child h6 {
+        font-size: 12px;
+        line-height: 1.3;
+        margin-bottom: 0;
     }
 
-    /* Summary */
-    .order-summary-header .row {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .track-shipment-btn {
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    /* Timeline scroll */
-    .order-timeline-wrapper {
-        overflow-x: auto;
+    .order-items-section .table td:nth-child(5) {
         display: flex;
-        gap: 20px;
-    }
-
-    .timeline-step {
-        min-width: 100px;
-    }
-
-    /* Table */
-    .table {
-        font-size: 13px;
-    }
-
-    .table img {
-        width: 50px;
-    }
-
-    /* Actions */
-    .order-actions {
         flex-direction: column;
-        align-items: stretch;
+        gap: 6px;
     }
 
-    .order-actions .btn {
-        width: 100%;
+    .action-btn {
+        width: 100% !important;
+        min-width: 100% !important;
+        height: 30px !important;
+        font-size: 11px !important;
+        padding: 4px 8px !important;
     }
 
-    /* Footer */
-    .footer-top {
-        display: grid !important;
-        grid-template-columns: 1fr !important;
-        gap: 24px;
+    .order-items-section .card {
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 320px) {
+    .order-items-section .table td {
+        padding: 4px 6px !important;
+    }
+
+    .order-items-section .table td::before {
+        font-size: 9px;
+    }
+
+    .order-items-section .table td:first-child h6 {
+        font-size: 10px;
+    }
+
+    .action-btn {
+        height: 26px !important;
+        font-size: 9px !important;
+        padding: 3px 6px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .order-items-section table {
+        min-width: 500px !important;
+    }
+
+    .order-items-section th,
+    .order-items-section td {
+        font-size: 10px !important;
+        padding: 5px !important;
+    }
+
+    .order-items-section th:first-child,
+    .order-items-section td:first-child {
+        min-width: 145px;
+    }
+
+    .order-items-section th:last-child,
+    .order-items-section td:last-child {
+        min-width: 120px;
+    }
+
+    .action-btn {
+        min-width: 58px !important;
+        font-size: 9px !important;
+        height: 24px !important;
+        padding: 2px 5px !important;
+    }
+}
+
+@media (max-width: 320px) {
+    .order-items-section table {
+        min-width: 470px !important;
+    }
+
+    .order-items-section th:first-child,
+    .order-items-section td:first-child {
+        min-width: 130px;
+    }
+
+    .order-items-section img {
+        width: 36px !important;
+    }
+
+    .order-items-section td:first-child h6 {
+        font-size: 11px;
+    }
+
+    .action-btn {
+        min-width: 52px !important;
+        font-size: 8px !important;
+        height: 22px !important;
     }
 }
 
@@ -198,6 +293,36 @@ footer {
         padding: 6px 10px;
     }
 }
+/* 🔥 FINAL GAP FIX */
+.order-details-page .container {
+    margin: 0 auto !important;
+}
+
+@media (max-width: 991.98px) {
+    .order-details-page .container {
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* remove hidden overflow spacing */
+.header-section .top-header {
+    margin: 0 !important;
+}
+
+/* fix nav width */
+.nav-menu {
+    width: 100%;
+}
+
+/* extra safety */
+body,
+html {
+    overflow-x: hidden !important;
+}
+
+
 </style>
 <body class="home-body">
 
