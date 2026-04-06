@@ -8,14 +8,10 @@ const passport = require("passport");
 dotenv.config();
 connectDB();
 
-require("./config/googleAuth"); // ✅ VERY IMPORTANT
+require("./config/googleAuth");
 
 const app = express();
 
-
-// ================= MIDDLEWARE =================
-
-// CORS (Allow frontend)
 app.use(cors({
   origin: [
     "http://127.0.0.1:5500",
@@ -30,14 +26,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 
 
-// ================= SESSION =================
 app.use(session({
   secret: "scentora_secret",
   resave: false,
   saveUninitialized: false
 }));
-
-// ================= PASSPORT =================
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -72,7 +65,6 @@ app.use("/api/coupons", require("./routes/couponRoutes"));
 app.use("/api/settings", require("./routes/settings"));
 app.use("/api/transactions", require("./routes/transactionRoutes"));
 
-// Serve frontend
 // Serve frontend
 app.use(express.static(path.join(__dirname, "../frontend")));
 
