@@ -766,7 +766,7 @@ sidebarOverlay?.addEventListener("click", () => {
 
             try {
                 
-                const res = await fetch("http://localhost:5000/api/admin/dashboard/stats", {
+                const res = await fetch("http://51.20.253.239:5000/api/admin/dashboard/stats", {
                     headers: {
                         "Authorization": "Bearer " + token
                     }
@@ -826,7 +826,7 @@ document.getElementById("applyDateFilter").addEventListener("click", () => {
 
                 data.lowStockProducts.forEach(product => {
     const imgSrc = product.image
-    ? `http://localhost:5000/uploads/${encodeURIComponent(product.image.split("/").pop())}`
+    ? `http://51.20.253.239:5000/uploads/${encodeURIComponent(product.image.split("/").pop())}`
     : "https://via.placeholder.com/40";
 
     lowStockTable.innerHTML += `
@@ -897,7 +897,7 @@ async function loadOrdersChart(filter = "week",fromDate = null, toDate = null) {
     try {
         const token = localStorage.getItem("adminToken");
         if (!token) return;
-let url = `http://localhost:5000/api/admin/dashboard/stats?filter=${filter}`;
+let url = `http://51.20.253.239:5000/api/admin/dashboard/stats?filter=${filter}`;
 
         if (fromDate && toDate) {
             url += `&fromDate=${fromDate}&toDate=${toDate}`;

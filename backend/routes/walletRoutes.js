@@ -20,7 +20,7 @@ router.get("/", protect, async (req, res) => {
                 balance: defaultBalance,
                 transactions: [
                     {
-                        type: "credit",
+                        type:"credit",
                         amount: defaultBalance,
                         description: "Welcome Bonus",
                         status: "Completed",
