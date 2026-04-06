@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=abhaya+libre:wght@300;400;500;600&display=swap"
         rel="stylesheet">
+        <link rel="stylesheet" href="assets/css/style.css">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
@@ -330,20 +331,160 @@
         }
 
         /* Responsive */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 70px;
-            }
+        .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 999;
+    display: none;
+}
 
-            .sidebar-brand span,
-            .nav-link span {
-                display: none;
-            }
+.sidebar-overlay.show {
+    display: block;
+}
 
-            .main-content {
-                margin-left: 70px;
-            }
-        }
+@media (max-width: 1199px) {
+    .main-content {
+        padding: 16px;
+    }
+
+    .header {
+        padding: 14px 20px;
+    }
+
+    .holographic-card,
+    .filter-bar {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 250px;
+        position: fixed;
+        z-index: 1050;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .sidebar-brand span,
+    .nav-link span {
+        display: inline;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 14px;
+    }
+
+    .header {
+        padding: 14px 16px;
+        margin-bottom: 20px;
+    }
+
+    .header-title {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .header {
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .admin-profile {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .holographic-card {
+        padding: 16px;
+    }
+
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .search-wrapper {
+        min-width: 100%;
+    }
+
+    .filter-bar .ms-auto {
+        width: 100%;
+        margin-left: 0 !important;
+        flex-direction: column;
+        gap: 12px !important;
+    }
+
+    .filter-bar .form-select,
+    .filter-bar .btn-group,
+    .filter-bar #exportCouponsBtn {
+        width: 100%;
+    }
+
+    .filter-bar .btn-group button {
+        flex: 1;
+    }
+
+    .btn-save {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .offer-card {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 575px) {
+    .main-content {
+        padding: 10px;
+    }
+
+    .header {
+        padding: 12px 14px;
+        border-radius: 10px;
+    }
+
+    .header-title {
+        font-size: 1.1rem;
+    }
+
+    .admin-profile span {
+        font-size: 0.9rem;
+    }
+
+    .profile-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        flex-wrap: wrap;
+    }
+
+    .holographic-card {
+        padding: 14px;
+    }
+
+    .coupon-code {
+        font-size: 0.8rem;
+    }
+
+    .discount-value {
+        font-size: 1.2rem;
+    }
+}
     </style>
 </head>
 
@@ -415,20 +556,27 @@
             </a>
         </nav>
     </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- Main Content -->
     <div class="main-content">
         <div id="messageBox"></div>
         <!-- Header -->
         <div class="header">
-            <h2 class="header-title">Promotions Management</h2>
-            <div class="admin-profile">
-                <span>Admin Control</span>
-                <div class="profile-icon">
-                    <i class="bi bi-lightning-charge"></i>
-                </div>
-            </div>
+    <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-secondary d-lg-none" id="menuToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        <h2 class="header-title">Promotions Management</h2>
+    </div>
+
+    <div class="admin-profile">
+        <span>Admin Control</span>
+        <div class="profile-icon">
+            <i class="bi bi-lightning-charge"></i>
         </div>
+    </div>
+</div>
 
         <!-- Add Coupon Form -->
         <h4 class="section-title"><i class="bi bi-plus-circle"></i> Create New Coupon</h4>
@@ -553,6 +701,10 @@
             const container = document.getElementById("couponContainer");
 
             const params = new URLSearchParams(window.location.search);
+
+if (params.get("success")) {
+    showMessage("Coupon saved successfully", "success");
+}
             const couponId = params.get("id");
 
             // Load Coupons
@@ -692,7 +844,7 @@ if (usageLimit < 1) {
 }
 
                 const data = {
-    code: document.getElementById("code").value,
+    code: document.getElementById("code").value.toUpperCase(),
     description: document.getElementById("description").value,
     discountType: document.getElementById("discountType").value,
     value: document.getElementById("value").value,
@@ -712,7 +864,7 @@ if (usageLimit < 1) {
                     body: JSON.stringify(data)
                 });
 
-                window.location.href = "admin-offers.html";
+window.location.href = "admin-offers.html?success=1";
             });
 
             loadCoupons();
@@ -731,21 +883,28 @@ if (usageLimit < 1) {
         const header = ["Coupon Code", "Description", "Discount Type", "Value", "Min Order", "Usage Limit", "Status", "Expiry Date"];
 
         const rows = coupons.map(c => {
-            const today = new Date();
-            const expiryStr = expiry ? expiry.toISOString().slice(0, 10) : "No Expiry";
-            const status = expiry && expiry < today ? "Expired" : (c.isActive ? "Active" : "Inactive");
+    const today = new Date();
+    const expiry = c.expiryDate ? new Date(c.expiryDate) : null;
 
-            return [
-                c.code,
-                c.description || "",
-                c.discountType,
-                c.discountType === "percentage" ? c.value + "%" : "₹" + c.value,
-                c.minOrder || 0,
-                c.usageLimit || 0,
-                status,
-                expiryStr
-            ];
-        });
+    const expiryStr = expiry
+        ? expiry.toISOString().slice(0, 10)
+        : "No Expiry";
+
+    const status = expiry && expiry < today
+        ? "Expired"
+        : (c.isActive ? "Active" : "Inactive");
+
+    return [
+        c.code,
+        c.description || "",
+        c.discountType,
+        c.discountType === "percentage" ? c.value + "%" : "₹" + c.value,
+        c.minOrder || 0,
+        c.usageLimit || 0,
+        status,
+        expiryStr
+    ];
+});
 
         // Build CSV
         let csvContent = header.join(",") + "\n";
@@ -768,6 +927,19 @@ if (usageLimit < 1) {
         console.error(err);
         showMessage("Failed to export coupons", "danger");
     }
+});
+const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.querySelector(".sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+menuToggle?.addEventListener("click", () => {
+    sidebar.classList.toggle("show");
+    sidebarOverlay.classList.toggle("show");
+});
+
+sidebarOverlay?.addEventListener("click", () => {
+    sidebar.classList.remove("show");
+    sidebarOverlay.classList.remove("show");
 });
     </script>
 

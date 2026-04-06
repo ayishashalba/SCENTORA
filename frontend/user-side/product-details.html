@@ -91,6 +91,373 @@
             font-weight: 500;
             color: #555;
         }
+        /* ================= TABLET FIX ================= */
+@media (max-width: 991px) {
+
+    .product-details-container {
+        padding: 20px !important;
+    }
+
+    .product-details-container .row {
+        flex-direction: column;
+    }
+
+    .main-product-img {
+        width: 100%;
+        max-height: 350px;
+        object-fit: contain;
+    }
+
+    .product-thumb-gallery {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .product-thumb-gallery img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .wishlist-detail-icon {
+        font-size: 24px;
+    }
+
+    .quantity-selector {
+        justify-content: center;
+    }
+
+    #addToCartBtn {
+        width: 100%;
+        padding: 12px;
+    }
+}
+
+/* ================= MOBILE FIX ================= */
+@media (max-width: 767px) {
+
+    .product-details-page {
+        padding: 20px 10px !important;
+    }
+
+    .product-details-container {
+        padding: 15px !important;
+    }
+
+    #productName {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    #productPrice {
+        font-size: 18px;
+        text-align: center;
+    }
+
+    #productDescription {
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .quantity-selector {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .quantity-selector button {
+        width: 40px;
+        height: 35px;
+    }
+
+    .quantity-selector input {
+        width: 40px;
+    }
+
+    #addToCartBtn {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .stock {
+        text-align: center;
+    }
+}
+
+/* ================= PERFUME NOTES ================= */
+@media (max-width: 767px) {
+
+    .perfume-notes-section .col-md-4 {
+        width: 100%;
+    }
+
+    .note-info-card {
+        padding: 20px;
+    }
+}
+
+/* ================= REVIEWS ================= */
+@media (max-width: 767px) {
+
+    .review-item {
+        padding: 15px;
+    }
+
+    .review-text {
+        font-size: 14px;
+    }
+}
+
+/* ================= HEADER FIX ================= */
+@media (max-width: 991px) {
+
+    .top-header .col-4,
+    .top-header .col-12 {
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    .header-icons {
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .nav-menu ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 15px;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+}
+/* ================= FORCE FULL WIDTH ON MOBILE ================= */
+@media (max-width: 767px) {
+
+    .container,
+    .container-fluid {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .product-details-container {
+        width: 100% !important;
+        margin: 0 !important;
+        border-radius: 12px;
+    }
+
+    .product-details-container .row {
+        margin: 0 !important;
+    }
+
+    .product-details-container .col-lg-6 {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+
+    /* IMAGE CENTER */
+    .main-product-img {
+        display: block;
+        margin: 0 auto;
+        max-width: 220px;
+    }
+
+    /* TEXT CENTER */
+    #productName,
+    #productPrice,
+    #productDescription,
+    .stock {
+        text-align: center;
+    }
+
+    /* BUTTON FULL */
+    #addToCartBtn {
+        width: 100%;
+    }
+}
+/* ================= TABLET WIDTH FIX ================= */
+@media (max-width: 1024px) {
+
+    .product-details-container {
+        width: 100%;
+    }
+
+    .main-product-img {
+        max-width: 300px;
+        margin: auto;
+        display: block;
+    }
+}
+/* ===== RESET PAGE LAYOUT FOR PRODUCT DETAILS ===== */
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body.home-body {
+    display: block !important;
+    min-height: 100vh;
+    margin: 0 !important;
+    padding: 0 !important;
+    justify-content: unset !important;
+    align-items: unset !important;
+}
+
+/* full width header/main/footer */
+.header-section,
+.product-details-page,
+.perfume-notes-section,
+.reviews-section,
+.footer {
+    width: 100%;
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 1024px) {
+    .product-details-page .container,
+    .perfume-notes-section,
+    .reviews-section {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    .product-details-container {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .main-product-img {
+        display: block;
+        margin: 0 auto;
+        max-width: 280px;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 767px) {
+    .container,
+    .container-fluid {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .top-header {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .top-header .row {
+        row-gap: 12px;
+    }
+
+    .top-header .col-4,
+    .top-header .col-12 {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+        text-align: center !important;
+    }
+
+    .header-icons {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .nav-menu ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding-left: 0;
+    }
+
+    .product-details-page {
+        padding: 20px 0 !important;
+    }
+
+    .product-details-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 15px !important;
+        margin: 0 !important;
+        border-radius: 12px;
+    }
+
+    .product-details-container .row {
+        margin: 0 !important;
+        flex-direction: column;
+    }
+
+    .product-details-container .col-lg-6 {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .main-product-img {
+        display: block;
+        margin: 0 auto;
+        max-width: 200px !important;
+        width: 100%;
+        height: auto;
+    }
+
+    .product-thumb-gallery {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    #productName,
+    #productPrice,
+    #productDescription,
+    .stock,
+    #productCategory {
+        text-align: center;
+    }
+
+    .quantity-selector {
+        width: 100%;
+        justify-content: center;
+    }
+
+    #addToCartBtn {
+        width: 100% !important;
+        padding: 12px !important;
+        font-size: 14px;
+    }
+
+    .perfume-notes-section .row,
+    .reviews-section .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .perfume-notes-section .col-md-4 {
+        width: 100%;
+    }
+
+    .note-info-card,
+    .review-item {
+        width: 100%;
+    }
+
+    .footer-top {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        text-align: center;
+    }
+}
     </style>
 </head>
 
@@ -396,7 +763,7 @@ async function loadProduct() {
 
     try {
 
-        const res = await fetch(`http://localhost:5000/api/products/${productId}`);
+        const res = await fetch(`http://51.20.253.239:5000/api/products/${productId}`);
         const data = await res.json();
 const product = data.product || data;
 
@@ -424,7 +791,7 @@ else {
     stockStatus.style.color = "green";
 }
 const imgSrc = product.image
-  ? "http://localhost:5000/" + product.image
+  ? "http://51.20.253.239:5000/" + product.image
   : "assets/images/no-image.png";
 
 document.getElementById("productImage").src = imgSrc;
@@ -534,7 +901,7 @@ if (quantity > availableStock) {
 
     return; // stop add to cart
 }
-        const res = await fetch("http://localhost:5000/api/cart", {
+        const res = await fetch("http://51.20.253.239:5000/api/cart", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

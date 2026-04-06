@@ -326,7 +326,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function loadAttarProducts() {
     try {
-        const res = await fetch("http://localhost:5000/api/products?gender=attar");
+        const res = await fetch("http://51.20.253.239:5000/api/products?gender=attar");
         const products = await res.json();
         attarProducts = products;
 
@@ -373,7 +373,7 @@ function renderProducts(products) {
             <div class="product-image-container">
                 ${badgeHTML}
                 <a href="${product.stock === 0 ? "#" : `product-details.html?id=${product._id}`}">
-                    <img src="http://localhost:5000/uploads/${product.image.split('/').pop()}" 
+                    <img src="http://51.20.253.239:5000/uploads/${product.image.split('/').pop()}" 
                          class="img-fluid ${product.stock === 0 ? 'out-of-stock-img' : ''}">
                 </a>
             </div>
@@ -430,7 +430,7 @@ function attachCartEvents() {
             btn.disabled = true;
 
             try {
-                const res = await fetch("http://localhost:5000/api/cart", {
+                const res = await fetch("http://51.20.253.239:5000/api/cart", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

@@ -243,19 +243,151 @@
         }
 
         /* Responsive Adjustments */
-        @media (max-width: 992px) {
-            .sidebar {
-                transform: translateX(-250px);
-            }
+        .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 999;
+    display: none;
+}
 
-            .sidebar.show {
-                transform: translateX(0);
-            }
+.sidebar-overlay.show {
+    display: block;
+}
 
-            .main-content {
-                margin-left: 0;
-            }
-        }
+/* Tablet */
+@media (max-width: 1199px) {
+    .container-fluid.p-4 {
+        padding: 16px !important;
+    }
+
+    .transaction-panel {
+        padding: 20px;
+    }
+
+    .header {
+        padding: 14px 20px;
+    }
+}
+
+/* Mobile sidebar */
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 250px;
+        z-index: 1050;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .header {
+        padding: 14px 16px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .header-title {
+        font-size: 1.2rem;
+    }
+
+    .header-actions {
+        width: 100%;
+    }
+
+    .header-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Small devices */
+@media (max-width: 767px) {
+    .control-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .control-bar > div {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .search-box {
+        max-width: 100%;
+    }
+
+    .form-select {
+        width: 100% !important;
+    }
+
+    .table {
+        min-width: 700px;
+    }
+}
+
+/* Extra small */
+@media (max-width: 575px) {
+    .transaction-panel {
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .header {
+        padding: 10px 12px;
+    }
+
+    .header-title {
+        font-size: 1rem;
+        line-height: 1.2;
+    }
+
+    .btn-export {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+        border-radius: 6px;
+    }
+
+    .control-bar {
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .search-box input,
+    .form-select {
+        font-size: 0.85rem;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    .search-box i {
+        left: 10px;
+        font-size: 0.9rem;
+    }
+
+    .custom-table th,
+    .custom-table td {
+        padding: 10px 8px;
+        font-size: 0.78rem;
+        white-space: nowrap;
+    }
+
+    .badge-status {
+        font-size: 0.65rem;
+        padding: 4px 8px;
+    }
+
+    .pagination .page-link {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+        margin: 0 2px;
+    }
+}
     </style>
 </head>
 
@@ -326,19 +458,25 @@
             </a>
         </nav>
     </div>
-
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
     <!-- Main Content -->
     <div class="main-content">
         <!-- Header -->
         <header class="header">
-            <h2 class="header-title">Transactions Management</h2>
-            <div class="header-actions">
-                <a href="#" class="btn btn-export">
-                    <i class="bi bi-download"></i>
-                    Export Report
-                </a>
-            </div>
-        </header>
+    <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-secondary d-lg-none" id="menuToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        <h2 class="header-title">Transactions Management</h2>
+    </div>
+
+    <div class="header-actions">
+        <a href="#" class="btn btn-export">
+            <i class="bi bi-download"></i>
+            Export Report
+        </a>
+    </div>
+</header>
 
         <div class="container-fluid p-4">
             <div class="transaction-panel">
@@ -515,6 +653,19 @@
 
             loadTransactions();
         });
+        const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.querySelector(".sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+menuToggle?.addEventListener("click", () => {
+    sidebar.classList.toggle("show");
+    sidebarOverlay.classList.toggle("show");
+});
+
+sidebarOverlay?.addEventListener("click", () => {
+    sidebar.classList.remove("show");
+    sidebarOverlay.classList.remove("show");
+});
     </script>
     
 </body>

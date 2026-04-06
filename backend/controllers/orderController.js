@@ -6,6 +6,20 @@ const Transaction = require("../models/Transaction");
 const User = require("../models/User");
 const Coupon = require("../models/Coupon");
 
+async function ensureWallet(userId) {
+    let wallet = await Wallet.findOne({ user: userId });
+
+    if (!wallet) {
+        wallet = await Wallet.create({
+            user: userId,
+            balance: 0,
+            transactions: []
+        });
+    }
+
+    return wallet;
+}
+
 exports.createOrder = async (req, res) => {
     try {
 
@@ -33,13 +47,16 @@ exports.createOrder = async (req, res) => {
         );
 
         let discount = 0;
+        let coupon = null;
 
         if (couponCode) {
-
-            const coupon = await Coupon.findOne({
-                code: couponCode,
-                status: "Active"
-            });
+    coupon = await Coupon.findOne({
+        code: { $regex: `^${String(couponCode).trim()}$`, $options: "i" },
+        $or: [
+            { isActive: true },
+            { isActive: { $exists: false } }
+        ]
+    });
 
             if (coupon) {
                 if (coupon.discountType === "flat") {
@@ -107,8 +124,9 @@ for (const item of orderItems) {
 }
 if (method === "wallet") {
     const user = await User.findById(req.user.id);
+    const wallet = await ensureWallet(req.user.id);
 
-    if (!user || user.walletBalance < totalAmount) {
+    if (!user || (user.walletBalance || 0) < totalAmount || (wallet.balance || 0) < totalAmount) {
         return res.status(400).json({
             message: "Insufficient wallet balance"
         });
@@ -116,15 +134,28 @@ if (method === "wallet") {
 
     user.walletBalance -= totalAmount;
     await user.save();
+
+    wallet.balance -= totalAmount;
+    wallet.transactions.push({
+        amount: totalAmount,
+        type: "debit",
+        description: "Wallet payment for order",
+        status: "Completed",
+        date: new Date()
+    });
+    await wallet.save();
 }
-// After creating the order
+
 const order = await Order.create({
     user: req.user.id,
     items: orderItems,
     address,
     subtotal,
     discount,
-    couponCode: couponCode || null, // ✅ ADD THIS
+    couponCode: coupon ? coupon.code : null,
+    couponMinOrder: coupon ? coupon.minOrder : null,
+    couponDiscountType: coupon ? coupon.discountType : null,
+    couponValue: coupon ? coupon.value : null,
     shipping,
     totalAmount,
     paymentMethod: method,
@@ -177,30 +208,55 @@ exports.cancelFullOrder = async (req, res) => {
     }
 
     // 3️⃣ Refund to wallet if not COD
-    if (order.paymentMethod !== "Cash on Delivery" && order.paymentInfo?.status !== "Refunded") {
+    if ((order.paymentMethod || "").trim().toLowerCase() !== "cash on delivery" &&
+    order.paymentInfo?.status !== "Refunded") {
 
-      // Fetch the latest user doc
-      const user = await User.findById(order.user._id);
+    const userId = order.user?._id || order.user;
 
-      user.walletBalance = (user.walletBalance || 0) + order.totalAmount;
-      await user.save();
+    const user = await User.findById(userId);
+    const wallet = await ensureWallet(userId);
 
-      // Update order payment status
-      order.paymentInfo = order.paymentInfo || {};
-      order.paymentInfo.status = "Refunded";
+    if (!user) {
+        return res.status(404).json({ message: "User not found for refund" });
+    }
 
-      // Create transaction
-      await Transaction.create({
-        user: user._id,
+    wallet.balance = Number(wallet.balance || 0) + Number(order.totalAmount);
+    wallet.transactions = wallet.transactions || [];
+
+    wallet.transactions.push({
+        amount: Number(order.totalAmount),
+        type: "credit",
+        description: `Refund for cancelled order (${order._id})`,
+        status: "Completed",
+        date: new Date()
+    });
+
+    await wallet.save();
+
+    user.walletBalance = Number(user.walletBalance || 0) + Number(order.totalAmount);
+    await user.save();
+
+    order.paymentInfo = order.paymentInfo || {};
+    order.paymentInfo.status = "Refunded";
+
+    await Transaction.create({
+        user: userId,
         transactionId: "TXN-" + Date.now(),
-        orderId: order._id,
+        orderId: "ORD-" + order._id.toString().slice(-5).toUpperCase(),
         paymentMethod: "Wallet",
-        amount: order.totalAmount,
+        amount: Number(order.totalAmount),
         status: "Completed",
         type: "credit",
         referenceId: "WALLET_REFUND_" + Date.now()
-      });
-    }
+    });
+
+    console.log("Full refund saved to wallet:", {
+        userId,
+        refundAmount: order.totalAmount,
+        walletBalance: wallet.balance,
+        txCount: wallet.transactions.length
+    });
+}
 
     await order.save();
 
@@ -219,133 +275,132 @@ exports.cancelFullOrder = async (req, res) => {
 
 exports.cancelSingleItem = async (req, res) => {
     console.log("Cancel item request:", req.body);
-    try {
 
+    try {
         const { orderId, productId } = req.body;
 
-        const order = await Order.findById(orderId).populate("user","name");
-
-if (!order) {
-    return res.status(404).json({ message: "Order not found" });
-}
+        const order = await Order.findById(orderId).populate("user", "name");
+        if (!order) {
+            return res.status(404).json({ message: "Order not found" });
+        }
 
         const item = order.items.find(i => i.product.toString() === productId);
-
         if (!item) {
             return res.status(404).json({ message: "Item not found" });
         }
+
         if (item.status === "Cancelled") {
-    return res.status(400).json({ message: "Item already cancelled" });
-}
-
-        item.status = "Cancelled";
-        const activeItems = order.items.filter(i => i.status !== "Cancelled");
-        const itemTotal = item.price * item.quantity;
-
-const originalSubtotal = order.subtotal;
-const originalTotalAmount = order.totalAmount;
-
-const refundAmount = parseFloat(
-  ((itemTotal / originalSubtotal) * originalTotalAmount).toFixed(2)
-);
-        // Recalculate totals from active items
-order.subtotal = activeItems.reduce(
-    (sum, i) => sum + (i.price * i.quantity),
-    0
-);
-// ✅ REAPPLY COUPON LOGIC CORRECTLY
-if (order.couponCode) {
-
-    const coupon = await Coupon.findOne({
-        code: order.couponCode,
-        status: "Active"
-    });
-
-    if (coupon) {
-
-        // ❗ CHECK MINIMUM ORDER CONDITION
-        if (order.subtotal < coupon.minOrderValue) {
-
-            // ❌ Coupon invalid now
-            order.discount = 0;
-
-        } else {
-
-            // ✅ Apply discount again
-            if (coupon.discountType === "flat") {
-                order.discount = coupon.value;
-            } else {
-                order.discount = (order.subtotal * coupon.value) / 100;
-            }
-
-            // safety
-            if (order.discount > order.subtotal) {
-                order.discount = order.subtotal;
-            }
+            return res.status(400).json({ message: "Item already cancelled" });
         }
 
-    } else {
-        order.discount = 0;
-    }
+        const originalTotalAmount = Number(order.totalAmount || 0);
+        const originalDiscount = Number(order.discount || 0);
 
+        item.status = "Cancelled";
+
+        const activeItems = order.items.filter(i => i.status !== "Cancelled");
+
+        order.subtotal = activeItems.reduce(
+            (sum, i) => sum + (Number(i.price) * Number(i.quantity)),
+            0
+        );
+
+        // Recalculate coupon/discount
+        // Recalculate coupon/discount
+if (order.couponCode && order.couponMinOrder != null) {
+    if (order.subtotal < Number(order.couponMinOrder || 0)) {
+        order.discount = 0;
+        order.couponCode = null;
+    } else {
+        if (order.couponDiscountType === "flat") {
+            order.discount = Number(order.couponValue || 0);
+        } else {
+            order.discount = (order.subtotal * Number(order.couponValue || 0)) / 100;
+        }
+
+        if (order.discount > order.subtotal) {
+            order.discount = order.subtotal;
+        }
+    }
 } else {
     order.discount = 0;
 }
 
-order.totalAmount = order.subtotal - (order.discount || 0) + (order.shipping || 0);
+        order.totalAmount = Number(order.subtotal || 0) - Number(order.discount || 0) + Number(order.shipping || 0);
 
-        if (order.paymentMethod !== "Cash on Delivery") {
+        const refundAmount = parseFloat(
+            (originalTotalAmount - order.totalAmount).toFixed(2)
+        );
 
-            // let wallet = await Wallet.findOne({ user: order.user });
+        if (refundAmount < 0) {
+            return res.status(400).json({ message: "Refund calculation error" });
+        }
 
-            // if (!wallet) {
-            //     wallet = new Wallet({ user: order.user });
-            // }
+        if ((order.paymentMethod || "").trim().toLowerCase() !== "cash on delivery") {
+            const userId = order.user?._id || order.user;
 
-            // wallet.balance += refundAmount;
-            const user = await User.findById(order.user);
+            const user = await User.findById(userId);
+            const wallet = await ensureWallet(userId);
 
-user.walletBalance = (user.walletBalance || 0) + refundAmount;
-await user.save();
+            if (!user) {
+                return res.status(404).json({ message: "User not found for refund" });
+            }
 
-            // wallet.transactions.push({
-            //     amount: refundAmount,
-            //     type: "credit",
-            //     description: `Refund for cancelled item (${item.name})`,
-            //     status: "Completed"
-            // });
+            wallet.balance = Number(wallet.balance || 0) + Number(refundAmount);
+            wallet.transactions = wallet.transactions || [];
 
-            // await wallet.save();
+            wallet.transactions.push({
+                amount: Number(refundAmount),
+                type: "credit",
+                description: `Refund for cancelled item (${item.name})`,
+                status: "Completed",
+                date: new Date()
+            });
 
-            // ✅ REFUND TRANSACTION
+            await wallet.save();
+
+            user.walletBalance = Number(user.walletBalance || 0) + Number(refundAmount);
+            await user.save();
+
             await Transaction.create({
-                user: order.user,
-                transactionId: "TXN-" + Date.now() + "-" + Math.floor(Math.random()*1000),
+                user: userId,
+                transactionId: "TXN-" + Date.now() + "-" + Math.floor(Math.random() * 1000),
                 orderId: "ORD-" + order._id.toString().slice(-5).toUpperCase(),
                 paymentMethod: order.paymentMethod,
-                amount: refundAmount,
+                amount: Number(refundAmount),
                 status: "Completed",
                 type: "credit"
             });
-
         }
-        const product = await Product.findById(productId);
-if (product) {
-    product.stock += item.quantity;
-    await product.save();
-}
-const remainingItems = order.items.filter(i => i.status !== "Cancelled");
 
-if (remainingItems.length === 0) {
-    order.status = "Cancelled";
-}
+        const product = await Product.findById(productId);
+        if (product) {
+            product.stock += item.quantity;
+            await product.save();
+        }
+
+        const remainingItems = order.items.filter(i => i.status !== "Cancelled");
+        if (remainingItems.length === 0) {
+            order.status = "Cancelled";
+        }
+        console.log("AFTER CANCEL subtotal:", order.subtotal);
+console.log("AFTER CANCEL discount:", order.discount);
+console.log("AFTER CANCEL totalAmount:", order.totalAmount);
+console.log("AFTER CANCEL couponCode:", order.couponCode);
 
         await order.save();
 
-        res.json({ message: "Item cancelled successfully" });
+        res.json({
+            message: "Item cancelled successfully",
+            refundAmount,
+            subtotal: order.subtotal,
+            discount: order.discount,
+            totalAmount: order.totalAmount,
+            couponCode: order.couponCode
+        });
 
     } catch (err) {
-        console.error(err);
+        console.error("cancelSingleItem error:", err);
         res.status(500).json({ message: "Server error" });
     }
 };

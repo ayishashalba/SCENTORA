@@ -208,7 +208,7 @@ printBtn.addEventListener("click", async () => {
 
     try {
         // Fetch order data from backend
-        const res = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
+        const res = await fetch(`http://51.20.253.239:5000/api/orders/${orderId}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         const order = await res.json();

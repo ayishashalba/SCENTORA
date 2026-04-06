@@ -487,9 +487,12 @@ h3 {
     <script>
 const token = localStorage.getItem("token");
 
+if (!token) {
+    window.location.href = "login.html";
+}
 async function loadSettings() {
     try {
-        const res = await fetch("http://localhost:5000/api/settings", {
+        const res = await fetch("http://51.20.253.239:5000/api/settings", {
             headers: {
                 "Authorization": "Bearer " + token
             }
@@ -536,7 +539,7 @@ document.querySelectorAll("input.form-check-input").forEach(input => {
         if (!setting) return;
 
         try {
-            await fetch("http://localhost:5000/api/settings", {
+            await fetch("http://51.20.253.239:5000/api/settings", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -567,7 +570,7 @@ if (setting === "language") {
 }
 
         try {
-            await fetch("http://localhost:5000/api/settings", {
+            await fetch("http://51.20.253.239:5000/api/settings", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

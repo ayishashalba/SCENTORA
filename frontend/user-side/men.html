@@ -313,7 +313,7 @@
     <script>
        async function loadMenProducts() {
     try {
-        const res = await fetch("http://localhost:5000/api/products?gender=Men");
+        const res = await fetch("http://51.20.253.239:5000/api/products?gender=Men");
         const products = await res.json();
 
         const container = document.getElementById("products-container");
@@ -333,7 +333,7 @@
                         ${product.stock > 0 && product.stock <= 5 ? 
                             `<div class="low-stock-badge">Only ${product.stock} left</div>` : ""}
                         <a href="product-details.html?id=${product._id}">
-                            <img src="http://localhost:5000/uploads/${product.image.split('/').pop()}" class="img-fluid">
+                            <img src="http://51.20.253.239:5000/uploads/${product.image.split('/').pop()}" class="img-fluid">
                         </a>
                     </div>
 
@@ -377,7 +377,7 @@
         btn.disabled = true;
         btn.innerText = "Adding...";
 
-        const res = await fetch("http://localhost:5000/api/cart", {
+        const res = await fetch("http://51.20.253.239:5000/api/cart", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

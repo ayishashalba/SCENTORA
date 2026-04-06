@@ -526,8 +526,7 @@
         
         async function loadSettings() {
             try {
-                const res = await fetch("http://localhost:5000/api/admin/settings");
-
+                const res = await fetch("/api/admin/settings");
                 const data = await res.json();
 
                 // General Info
@@ -537,7 +536,7 @@
                 // document.getElementById("site-logo").style.backgroundImage = `url(${data.siteLogo})`;
 
                 // Security
-                document.getElementById("two-factor").checked = data.twoFactorAuth;
+document.getElementById("two-factor-checkbox").checked = data.twoFactorAuth;
 
                 // Theme/Display
                 document.getElementById("theme-select").value = data.theme;
@@ -545,10 +544,11 @@
                 document.getElementById("language-select").value = data.language;
 
                 // Notifications
-                document.getElementById("order-alerts").checked = data.notifications.orderAlerts;
-                document.getElementById("payment-alerts").checked = data.notifications.paymentAlerts;
-                document.getElementById("user-growth").checked = data.notifications.userGrowth;
-                document.getElementById("low-stock").checked = data.notifications.lowStock;
+                
+document.getElementById("order-alerts-checkbox").checked = data.notifications.orderAlerts;
+document.getElementById("payment-alerts-checkbox").checked = data.notifications.paymentAlerts;
+document.getElementById("user-growth-checkbox").checked = data.notifications.userGrowth;
+document.getElementById("low-stock-checkbox").checked = data.notifications.lowStock;
 
             } catch (err) {
                 console.error("Failed to load settings:", err);

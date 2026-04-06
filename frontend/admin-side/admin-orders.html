@@ -153,6 +153,11 @@ background-color: rgba(102,16,242,0.1);
 color: #6610f2;
 border: 1px solid rgba(102,16,242,0.2);
 }
+.badge-packed {
+    background-color: rgba(253, 169, 13, 0.1);
+    color: #fd950d;
+    border: 1px solid rgba(253, 137, 13, 0.2);
+}
 
         .badge-shipped {
             background-color: rgba(13, 110, 253, 0.1);
@@ -196,25 +201,155 @@ border: 1px solid rgba(102,16,242,0.2);
         }
 
         /* Responsive Improvements */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 70px;
-            }
+        .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 999;
+    display: none;
+}
 
-            .sidebar-brand span,
-            .nav-link span {
-                display: none;
-            }
+.sidebar-overlay.show {
+    display: block;
+}
 
-            .main-content {
-                margin-left: 70px;
-            }
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
 
-            .sidebar-brand {
-                text-align: center;
-                padding: 10px;
-            }
-        }
+@media (max-width: 1199px) {
+    .main-content {
+        padding: 16px;
+    }
+
+    .header {
+        padding: 14px 20px;
+    }
+
+    .orders-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 250px;
+        position: fixed;
+        z-index: 1050;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .sidebar-brand span,
+    .nav-link span {
+        display: inline;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 14px;
+    }
+
+    .header {
+        padding: 14px 16px;
+        margin-bottom: 20px;
+    }
+
+    .header-title {
+        font-size: 1.25rem;
+    }
+
+    .orders-card {
+        padding: 18px;
+    }
+}
+
+@media (max-width: 767px) {
+    .header {
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .admin-profile {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .table-title-area {
+        margin-bottom: 16px;
+    }
+
+    .mb-3.d-flex.gap-2 {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+
+    #orderSearch,
+    #orderFilter,
+    #exportOrdersBtn {
+        width: 100% !important;
+    }
+
+    #exportOrdersBtn {
+        margin-left: 0 !important;
+    }
+
+    .orders-card {
+        padding: 16px;
+    }
+
+    .table {
+        min-width: 900px;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+}
+
+@media (max-width: 575px) {
+    .main-content {
+        padding: 10px;
+    }
+
+    .header {
+        padding: 12px 14px;
+        border-radius: 10px;
+    }
+
+    .header-title {
+        font-size: 1.1rem;
+    }
+
+    .admin-profile span {
+        font-size: 0.9rem;
+    }
+
+    .profile-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .orders-card {
+        border-radius: 10px;
+        padding: 14px;
+    }
+
+    .btn-view {
+        white-space: nowrap;
+    }
+
+    .form-select.form-select-sm {
+        min-width: 140px;
+    }
+}
     </style>
 </head>
 
@@ -292,14 +427,20 @@ border: 1px solid rgba(102,16,242,0.2);
     <div class="main-content">
         <!-- Header -->
         <div class="header">
-            <h2 class="header-title">Admin Panel</h2>
-            <div class="admin-profile">
-                <span>Welcome, Admin</span>
-                <div class="profile-icon">
-                    <i class="bi bi-person"></i>
-                </div>
-            </div>
+    <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-secondary d-lg-none" id="menuToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        <h2 class="header-title">Admin Panel</h2>
+    </div>
+
+    <div class="admin-profile">
+        <span>Welcome, Admin</span>
+        <div class="profile-icon">
+            <i class="bi bi-person"></i>
         </div>
+    </div>
+</div>
         <div id="messageBox"></div>
 
         <!-- Orders Management Content -->
@@ -383,7 +524,7 @@ border: 1px solid rgba(102,16,242,0.2);
 
         async function loadOrders() {
             try {
-                const res = await fetch("http://localhost:5000/api/admin/orders", {
+                const res = await fetch("http://51.20.253.239:5000/api/admin/orders", {
     headers: { Authorization: "Bearer " + token }
                 });
 
@@ -422,6 +563,7 @@ border: 1px solid rgba(102,16,242,0.2);
                         case "Placed":
 badgeClass = "badge-placed";
 break;
+case "Packed": badgeClass = "badge-packed"; break;
                         case "Shipped": badgeClass = "badge-shipped"; break;
                         case "Delivered": badgeClass = "badge-delivered"; break;
                         case "Cancelled": badgeClass = "badge-cancelled"; break;
@@ -475,7 +617,7 @@ View Details
                     tr.querySelector(".status-select").addEventListener("change", async function () {
                         const newStatus = this.value;
                         try {
-                            const res = await fetch(`http://localhost:5000/api/admin/orders/${order._id}/status`, {
+                            const res = await fetch(`http://51.20.253.239:5000/api/admin/orders/${order._id}/status`, {
     method: "PUT",
     headers: {
         "Content-Type": "application/json",
@@ -501,15 +643,18 @@ loadOrders();
 // ✅ Update UI
 const badge = tr.querySelector(".status-badge");
 badge.textContent = data.status;
-badge.className = "badge status-badge";
+let badgeClass = "";
 
 switch (data.status) {
-    case "Pending": badge.classList.add("bg-warning"); break;
-    case "Placed": badge.classList.add("bg-primary"); break;
-    case "Shipped": badge.classList.add("bg-info"); break;
-    case "Delivered": badge.classList.add("bg-success"); break;
-    case "Cancelled": badge.classList.add("bg-danger"); break;
+    case "Pending": badgeClass = "badge-pending"; break;
+    case "Placed": badgeClass = "badge-placed"; break;
+    case "Packed": badgeClass = "badge-packed"; break; // or create badge-packed
+    case "Shipped": badgeClass = "badge-shipped"; break;
+    case "Delivered": badgeClass = "badge-delivered"; break;
+    case "Cancelled": badgeClass = "badge-cancelled"; break;
 }
+
+badge.className = `badge ${badgeClass} status-badge`;
                         } catch (err) {
                             console.error(err);
                             showMessage("Failed to update status");
@@ -524,7 +669,7 @@ switch (data.status) {
         }
         document.getElementById("exportOrdersBtn").addEventListener("click", async () => {
     try {
-        const res = await fetch("http://localhost:5000/api/admin/orders", {
+        const res = await fetch("http://51.20.253.239:5000/api/admin/orders", {
             headers: { Authorization: "Bearer " + token }
         });
         const orders = await res.json();
@@ -601,6 +746,19 @@ switch (data.status) {
         document.getElementById("orderSearch").addEventListener("input", loadOrders);
         
         window.addEventListener("DOMContentLoaded", loadOrders);
+        const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.querySelector(".sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+menuToggle?.addEventListener("click", () => {
+    sidebar.classList.toggle("show");
+    sidebarOverlay.classList.toggle("show");
+});
+
+sidebarOverlay?.addEventListener("click", () => {
+    sidebar.classList.remove("show");
+    sidebarOverlay.classList.remove("show");
+});
     </script>
 
     <!-- Bootstrap 5 JS -->

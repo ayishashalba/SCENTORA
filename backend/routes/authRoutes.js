@@ -11,47 +11,64 @@ const router = express.Router();
 // ================= REGISTER =================
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    console.log("REGISTER BODY:", req.body);
+
+    const { name, email, password, phone } = req.body;
+    const cleanEmail = email.trim().toLowerCase();
+
+    console.log("REGISTER EMAIL:", cleanEmail);
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const userExists = await User.findOne({ email });
-    if (userExists) return res.status(400).json({ message: "User already exists" });
+    const userExists = await User.findOne({ email: cleanEmail });
+    console.log("USER EXISTS:", userExists);
+
+    if (userExists) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const otp = Math.floor(1000 + Math.random() * 9000).toString();
 
     const user = await User.create({
       fullName: name,
-      email,
+      email: cleanEmail,
       password: hashedPassword,
+      phone,
       otp,
       otpExpiry: Date.now() + 5 * 60 * 1000
     });
 
-    await sendEmail(email, otp);
+    console.log("USER CREATED:", user.email, user._id);
+
+    await sendEmail(cleanEmail, otp);
+    console.log("OTP email sent successfully");
 
     const defaultBalance = 100;
-const newWallet = new Wallet({
-    user: user._id, // ✅ use 'user', not 'newUser'
-    balance: defaultBalance,
-    transactions: [
+    const newWallet = new Wallet({
+      user: user._id,
+      balance: defaultBalance,
+      transactions: [
         {
-            date: new Date(),
-            type: "credit",
-            description: "Welcome Bonus",
-            status: "Completed",
-            amount: defaultBalance
+          date: new Date(),
+          type: "credit",
+          description: "Welcome Bonus",
+          status: "Completed",
+          amount: defaultBalance
         }
-    ]
-});
-await newWallet.save();
+      ]
+    });
 
-    res.status(201).json({ message: "Signup successful. OTP sent to email.", email: user.email });
+    await newWallet.save();
+
+    res.status(201).json({
+      message: "Signup successful. OTP sent to email.",
+      email: user.email
+    });
   } catch (error) {
-    console.error(error);
+    console.error("REGISTER ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 });

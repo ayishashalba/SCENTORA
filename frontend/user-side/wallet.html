@@ -5,34 +5,324 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scentora - My Wallet</title>
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        html,
+body {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+body.home-body {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+main {
+    flex: 1;
+    width: 100%;
+}
+
+footer {
+    width: 100%;
+    margin-top: auto;
+}
+
+.header-section,
+.wallet-page,
+.footer,
+.footer-top {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* desktop */
+.wallet-page .container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* remove right gap on tablet/mobile */
+@media (max-width: 991.98px) {
+    .wallet-page .container {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        box-sizing: border-box;
+    }
+
+    .top-header {
+        width: 100%;
+        max-width: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+        box-sizing: border-box;
+    }
+
+    .desktop-sidebar {
+        display: none;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .top-header .col-4,
+    .top-header .col-12 {
+        width: 100%;
+        text-align: center !important;
+        margin-bottom: 10px;
+    }
+
+    .header-icons {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .nav-menu ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 18px;
+        padding-left: 0;
+    }
+
+    .wallet-page {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
+
+    .wallet-page .container {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+        box-sizing: border-box;
+    }
+
+    .mobile-sidebar-toggle,
+    .wallet-summary-card,
+    .transaction-history-card {
+        margin-bottom: 1rem;
+    }
+
+    .wallet-summary-card {
+        padding: 1rem !important;
+        text-align: center;
+        border-radius: 16px;
+    }
+
+    .wallet-summary-card .btn {
+        width: 100%;
+        margin-top: 0.75rem;
+    }
+
+    .transaction-history-card {
+        overflow: hidden;
+        border-radius: 16px;
+    }
+
+    .card-header,
+    .card-body {
+        padding: 1rem !important;
+    }
+
+    .table th,
+    .table td {
+        white-space: nowrap;
+        font-size: 13px;
+    }
+
+    .footer-top {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 24px;
+    }
+
+    .footer-col {
+        width: 100% !important;
+    }
+
+    .newsletter-box {
+        display: flex;
+        width: 100%;
+    }
+
+    .newsletter-box input {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .scam-alert {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-logo {
+        font-size: 18px;
+    }
+
+    .nav-menu ul {
+        gap: 6px;
+        font-size: 12px;
+    }
+
+    .d-lg-none .btn {
+        font-size: 13px;
+        padding: 7px 10px;
+        border-radius: 8px;
+    }
+
+    .wallet-page {
+        padding-top: 0.8rem !important;
+        padding-bottom: 0.8rem !important;
+    }
+
+    .wallet-page .container {
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+    }
+
+    .wallet-summary-card {
+        padding: 12px !important;
+        border-radius: 12px;
+    }
+
+    .wallet-summary-card h4 {
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+    .wallet-summary-card h2 {
+        font-size: 20px;
+    }
+
+    .add-money-btn {
+        font-size: 12px;
+        padding: 7px;
+        border-radius: 8px;
+    }
+
+    .table th,
+    .table td {
+        font-size: 11px;
+        padding: 6px !important;
+    }
+
+    .transaction-history-card {
+        border-radius: 12px;
+    }
+}
+
+@media (max-width: 375px) {
+    .wallet-page .container {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
+
+    .brand-logo {
+        font-size: 17px;
+    }
+
+    .nav-menu ul {
+        font-size: 10px;
+        gap: 5px 6px;
+    }
+
+    .wallet-summary-card h4 {
+        font-size: 13px;
+    }
+
+    .wallet-summary-card h2 {
+        font-size: 18px;
+    }
+
+    .add-money-btn {
+        font-size: 11px;
+        padding: 6px 8px;
+    }
+
+    .table th,
+    .table td {
+        font-size: 10px;
+        padding: 5px !important;
+    }
+}
+
+@media (max-width: 320px) {
+    .wallet-page .container {
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+    }
+
+    .brand-logo {
+        font-size: 16px;
+    }
+
+    .nav-menu ul {
+        font-size: 9px;
+        gap: 4px 5px;
+    }
+
+    .wallet-summary-card {
+        padding: 10px !important;
+    }
+
+    .wallet-summary-card h4 {
+        font-size: 12px;
+    }
+
+    .wallet-summary-card h2 {
+        font-size: 16px;
+    }
+
+    .add-money-btn {
+        font-size: 10px;
+        padding: 6px 7px;
+    }
+
+    .table th,
+    .table td {
+        font-size: 9px;
+        padding: 4px !important;
+    }
+}
+    </style>
 </head>
 
 <body class="home-body">
-    <!-- Navbar -->
     <header class="header-section">
         <div class="container-fluid top-header">
             <div class="row align-items-center">
-                <!-- Search Bar -->
                 <div class="col-4">
                     <div class="search-bar">
                         <i class="bi bi-search"></i>
                         <input type="text" placeholder="Search for Perfume...">
                     </div>
                 </div>
-                <!-- Logo -->
                 <div class="col-4 text-center">
                     <p class="brand-logo">SCENTORA</p>
                 </div>
-                <!-- Icons -->
                 <div class="col-4 text-end">
                     <div class="header-icons">
                         <a href="wishlist.html"><i class="bi bi-heart-fill heart-icon"></i></a>
@@ -40,7 +330,6 @@
                         <a href="cart.html"><i class="bi bi-cart cart-icon"></i></a>
                     </div>
                 </div>
-                <!-- Navigation Menu -->
                 <div class="col-12">
                     <nav class="nav-menu">
                         <ul>
@@ -52,26 +341,27 @@
                         </ul>
                     </nav>
                 </div>
-
             </div>
         </div>
     </header>
 
-    <!-- Wallet Page Content -->
     <main class="wallet-page py-5">
         <div class="container">
+            <button class="btn btn-outline-dark mobile-sidebar-toggle" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#mobileWalletSidebar" aria-controls="mobileWalletSidebar">
+                <i class="bi bi-list"></i>
+                Account Menu
+            </button>
+            
             <div class="row g-4">
-                <!-- Left Sidebar: Account Menu -->
-                <div class="col-lg-3 col-md-4">
+                <div class="col-lg-3 col-md-4 desktop-sidebar">
                     <div class="account-sidebar shadow-sm">
                         <div class="sidebar-user-info p-4 border-bottom text-center">
                             <div class="user-avatar-circle mx-auto mb-3">
-                                <img src="assets/images/user-placeholder.png" alt="User"
-                                    class="img-fluid rounded-circle">
+                                
                             </div>
-                            <h5 id="walletUserName" class="mb-0 fw-600">John Doe</h5>
-                            <p id="walletUserEmail" class="text-muted small">john.doe@example.com</p>
-
+                            <h5 id="walletUserName" class="mb-0 fw-600"></h5>
+                            <p id="walletUserEmail" class="text-muted small mb-0"></p>
                         </div>
                         <ul class="sidebar-menu list-unstyled mb-0">
                             <li><a href="profile.html"><i class="bi bi-person me-3"></i>Profile</a></li>
@@ -80,19 +370,17 @@
                             <li><a href="wishlist.html"><i class="bi bi-heart me-3"></i>Wishlist</a></li>
                             <li><a href="wallet.html" class="active"><i class="bi bi-wallet2 me-3"></i>Wallet</a></li>
                             <li><a href="coupons.html"><i class="bi bi-ticket-perforated me-3"></i>Coupons</a></li>
-                             <li><a href="settings.html"><i class="bi bi-gear me-3"></i>Settings</a></li>
+                            <li><a href="settings.html"><i class="bi bi-gear me-3"></i>Settings</a></li>
                             <li class="border-top mt-2"><a href="auth/login.html" class="text-danger"><i
                                         class="bi bi-box-arrow-right me-3"></i>Logout</a></li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- Right Content Area: Wallet Details -->
-                <div class="col-lg-9 col-md-8">
-                    <!-- Wallet Summary Card -->
+                <div class="col-lg-9 col-md-8 col-12">
                     <div class="wallet-summary-card p-4 mb-4 text-center text-md-start">
-                        <div class="row align-items-center">
-                            <div class="col-md-7 mb-3 mb-md-0">
+                        <div class="row align-items-center g-3">
+                            <div class="col-md-7">
                                 <h4 class="mb-2 fw-600 text-white">Wallet Balance</h4>
                                 <h2 class="mb-0 fw-bold text-white" id="walletBalance">₹0.00</h2>
                             </div>
@@ -101,41 +389,10 @@
                                     data-bs-target="#addMoneyModal">
                                     <i class="bi bi-plus-lg me-2"></i>ADD MONEY
                                 </button>
-
                             </div>
-                            <!-- Add Money Modal -->
-                            <div class="modal fade" id="addMoneyModal" tabindex="-1"
-                                aria-labelledby="addMoneyModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title fw-600" id="addMoneyModalLabel">Add Money to Wallet
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <label for="addAmount" class="form-label">Enter Amount</label>
-                                                <input type="number" class="form-control" id="addAmount" min="1"
-                                                    placeholder="₹">
-                                            </div>
-                                            <div id="addMoneyError" class="text-danger small"></div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn btn-primary" id="confirmAddMoneyBtn">Add
-                                                Money</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
 
-                    <!-- Transaction History -->
                     <div class="transaction-history-card card shadow-sm border-0">
                         <div class="card-header bg-white p-4 border-bottom">
                             <h5 class="mb-0 fw-600">Transaction History</h5>
@@ -165,7 +422,34 @@
         </div>
     </main>
 
-    <!-- Footer -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileWalletSidebar"
+        aria-labelledby="mobileWalletSidebarLabel">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title" id="mobileWalletSidebarLabel">My Account</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <div class="sidebar-user-info p-4 border-bottom text-center">
+                <div class="user-avatar-circle mx-auto mb-3">
+                    <img src="assets/images/user-placeholder.png" alt="User" class="img-fluid rounded-circle">
+                </div>
+                <h5 id="walletUserNameMobile" class="mb-0 fw-600">John Doe</h5>
+                <p id="walletUserEmailMobile" class="text-muted small mb-0">john.doe@example.com</p>
+            </div>
+            <ul class="sidebar-menu list-unstyled mb-0">
+                <li><a href="profile.html"><i class="bi bi-person me-3"></i>Profile</a></li>
+                <li><a href="orders.html"><i class="bi bi-bag me-3"></i>Orders</a></li>
+                <li><a href="address-private.html"><i class="bi bi-geo-alt me-3"></i>Addresses</a></li>
+                <li><a href="wishlist.html"><i class="bi bi-heart me-3"></i>Wishlist</a></li>
+                <li><a href="wallet.html" class="active"><i class="bi bi-wallet2 me-3"></i>Wallet</a></li>
+                <li><a href="coupons.html"><i class="bi bi-ticket-perforated me-3"></i>Coupons</a></li>
+                <li><a href="settings.html"><i class="bi bi-gear me-3"></i>Settings</a></li>
+                <li class="border-top mt-2"><a href="auth/login.html" class="text-danger"><i
+                            class="bi bi-box-arrow-right me-3"></i>Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
     <footer class="footer">
         <div class="footer-top">
             <div class="footer-col">
@@ -268,114 +552,108 @@
         </div>
     </footer>
 
-<div id="messageBox" class="position-fixed top-0 end-0 p-3" style="z-index:9999;"></div>
-    <!-- Bootstrap 5 JS -->
+    <div id="messageBox" class="position-fixed top-0 end-0 p-3" style="z-index:9999;"></div>
+
+    <div class="modal fade" id="addMoneyModal" tabindex="-1" aria-labelledby="addMoneyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-600" id="addMoneyModalLabel">Add Money to Wallet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="addAmount" class="form-label">Enter Amount</label>
+                        <input type="number" class="form-control" id="addAmount" min="1" placeholder="₹">
+                    </div>
+                    <div id="addMoneyError" class="text-danger small"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmAddMoneyBtn">Add Money</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function showMessage(text, type = "success") {
-    const box = document.getElementById("messageBox");
+            const box = document.getElementById("messageBox");
+            const msg = document.createElement("div");
+            msg.className = `alert alert-${type} shadow`;
+            msg.innerText = text;
+            box.appendChild(msg);
+            setTimeout(() => msg.remove(), 3000);
+        }
 
-    const msg = document.createElement("div");
-    msg.className = `alert alert-${type} shadow`;
-    msg.innerText = text;
-
-    box.appendChild(msg);
-
-    setTimeout(() => {
-        msg.remove();
-    }, 3000);
-}
         const token = localStorage.getItem("token");
+
+        function setText(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = value || "";
+        }
 
         async function loadWallet() {
             if (!token) {
-                window.location.href = "login.html";
+                window.location.href = "auth/login.html";
                 return;
             }
 
             try {
-                // 1️⃣ Fetch user profile
-                const profileRes = await fetch("http://localhost:5000/api/auth/profile", {
+                const profileRes = await fetch("http://51.20.253.239:5000/api/auth/profile", {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
 
                 if (!profileRes.ok) throw new Error("Failed to load user profile");
                 const user = await profileRes.json();
 
-                // Update sidebar user info
-                document.getElementById("walletUserName").innerText = user.fullname || "";
-                document.getElementById("walletUserEmail").innerText = user.email || "";
+                const userName = user.fullName || user.fullname || "";
+                const userEmail = user.email || "";
 
-                // 2️⃣ Fetch wallet info
-                const walletRes = await fetch("http://localhost:5000/api/wallet", {
+                setText("walletUserName", userName);
+                setText("walletUserEmail", userEmail);
+                setText("walletUserNameMobile", userName);
+                setText("walletUserEmailMobile", userEmail);
+
+                const walletRes = await fetch("http://51.20.253.239:5000/api/wallet", {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
 
                 if (!walletRes.ok) throw new Error("Failed to load wallet");
                 const wallet = await walletRes.json();
 
-                // Update balance
-                document.getElementById("walletBalance").innerText = `₹${wallet.balance.toFixed(2)}`;
+                document.getElementById("walletBalance").innerText = `₹${Number(wallet.balance || 0).toFixed(2)}`;
 
-                // Update transaction history
                 const tbody = document.getElementById("walletTransactions");
                 tbody.innerHTML = "";
 
-                if (!wallet.transactions.length) {
+                if (!wallet.transactions || !wallet.transactions.length) {
                     tbody.innerHTML = `<tr><td colspan="4" class="text-center py-3">No transactions yet</td></tr>`;
                     return;
                 }
 
-                wallet.transactions.reverse().forEach(tx => {
+                [...wallet.transactions].reverse().forEach(tx => {
                     const color = tx.type === "credit" ? "text-success" : "text-danger";
                     const sign = tx.type === "credit" ? "+" : "-";
                     const statusClass = tx.status === "Completed" ? "badge-success" : "badge-warning";
                     tbody.innerHTML += `
-                <tr>
-                    <td class="px-4 py-3 align-middle">${new Date(tx.date).toLocaleDateString()}</td>
-                    <td class="px-4 py-3 align-middle">${tx.description}</td>
-                    <td class="px-4 py-3 align-middle">
-                        <span class="badge status-badge ${statusClass}">${tx.status}</span>
-                    </td>
-                    <td class="px-4 py-3 align-middle text-end fw-600 ${color}">${sign} ₹${tx.amount.toFixed(2)}</td>
-                </tr>
-            `;
+                        <tr>
+                            <td class="px-4 py-3 align-middle">${new Date(tx.date).toLocaleDateString()}</td>
+                            <td class="px-4 py-3 align-middle">${tx.description || "-"}</td>
+                            <td class="px-4 py-3 align-middle">
+                                <span class="badge status-badge ${statusClass}">${tx.status || "Pending"}</span>
+                            </td>
+                            <td class="px-4 py-3 align-middle text-end fw-600 ${color}">${sign} ₹${Number(tx.amount || 0).toFixed(2)}</td>
+                        </tr>
+                    `;
                 });
-
             } catch (err) {
                 console.error(err);
                 document.getElementById("walletTransactions").innerHTML = `<tr><td colspan="4" class="text-center py-3 text-danger">Failed to load wallet</td></tr>`;
             }
         }
-        async function addMoney() {
-            const amount = prompt("Enter amount to add to wallet (₹):");
-            if (!amount || isNaN(amount) || amount <= 0) return showMessage("Invalid amount");
 
-            try {
-                const token = localStorage.getItem("token");
-                const res = await fetch("http://localhost:5000/api/wallet/add", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ amount: parseFloat(amount) })
-                });
-
-                if (!res.ok) throw new Error("Failed to add money");
-                const data = await res.json();
-
-                showMessage(`₹${amount} added to wallet successfully!`);
-                document.getElementById("walletBalance").innerText = `₹${data.balance.toFixed(2)}`;
-
-                // Optionally reload transaction history
-                loadWallet();
-
-            } catch (err) {
-                console.error(err);
-                showMessage("Error adding money. Try again.");
-            }
-        }
         document.getElementById("confirmAddMoneyBtn").addEventListener("click", async () => {
             const amountInput = document.getElementById("addAmount");
             const errorDiv = document.getElementById("addMoneyError");
@@ -387,7 +665,7 @@
             }
 
             try {
-                const res = await fetch("http://localhost:5000/api/wallet/add", {
+                const res = await fetch("http://51.20.253.239:5000/api/wallet/add", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -399,21 +677,16 @@
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.message || "Failed to add money");
 
-                // Update wallet balance
-                document.getElementById("walletBalance").innerText = `₹${data.balance.toFixed(2)}`;
+                document.getElementById("walletBalance").innerText = `₹${Number(data.balance || 0).toFixed(2)}`;
+                await loadWallet();
 
-                // Optionally refresh transactions
-                loadWallet();
-
-                // Close modal
-                const modalEl = document.getElementById('addMoneyModal');
+                const modalEl = document.getElementById("addMoneyModal");
                 const modal = bootstrap.Modal.getInstance(modalEl);
                 modal.hide();
 
-                // Clear input
                 amountInput.value = "";
                 errorDiv.innerText = "";
-
+                showMessage("Money added successfully!", "success");
             } catch (err) {
                 errorDiv.innerText = err.message;
             }
@@ -421,7 +694,6 @@
 
         document.addEventListener("DOMContentLoaded", loadWallet);
     </script>
-
 </body>
 
 </html>

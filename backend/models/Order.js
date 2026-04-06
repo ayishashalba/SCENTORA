@@ -55,10 +55,21 @@ const orderSchema = new mongoose.Schema(
             method: { type: String },
             status: { type: String }
         },
-        coupon: {
-    code: String,
-    discountType: String,
-    value: Number
+        couponCode: {
+    type: String,
+    default: null
+},
+couponMinOrder: {
+    type: Number,
+    default: null
+},
+couponDiscountType: {
+    type: String,
+    default: null
+},
+couponValue: {
+    type: Number,
+    default: null
 },
 
 

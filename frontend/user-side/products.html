@@ -93,6 +93,158 @@
     z-index: 2;
     font-weight: 500;
 }
+/* ================= MOBILE + TABLET FIX ================= */
+
+@media (max-width: 991px) {
+
+    .top-header .row {
+        row-gap: 12px;
+    }
+
+    .top-header .col-4,
+    .top-header .col-12 {
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        text-align: center !important;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+
+    .header-icons {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+    }
+
+    .nav-menu ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 18px;
+        padding-left: 0;
+    }
+
+    /* toolbar */
+    .product-toolbar {
+        flex-direction: column !important;
+        gap: 12px;
+        align-items: center !important;
+        text-align: center;
+    }
+
+    .product-count {
+        text-align: center;
+    }
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 767px) {
+
+    .brand-logo {
+        font-size: 26px;
+    }
+
+    .nav-menu ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* product grid */
+    .product-grid .col-6 {
+        width: 100% !important;
+    }
+
+    .product-listing-card {
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .product-image-container img {
+        height: 180px;
+    }
+
+    .product-title {
+        font-size: 16px;
+    }
+
+    .product-desc {
+        font-size: 13px;
+    }
+
+    .product-price {
+        font-size: 14px;
+    }
+
+    /* buttons */
+    .add-to-cart-btn {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    /* filter button */
+    .filter-toggle-btn,
+    .sort-dropdown-btn {
+        width: 100%;
+    }
+
+    /* offcanvas */
+    .filter-panel {
+        width: 80% !important;
+    }
+
+    /* footer */
+    .footer-top {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        text-align: center;
+    }
+}
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width: 480px) {
+
+    .brand-logo {
+        font-size: 22px;
+    }
+
+    .header-icons i {
+        font-size: 20px;
+    }
+
+    .product-image-container img {
+        height: 160px;
+    }
+
+    .product-title {
+        font-size: 15px;
+    }
+
+    .product-desc {
+        font-size: 12px;
+    }
+
+    .product-price {
+        font-size: 13px;
+    }
+
+    .filter-panel {
+        width: 90% !important;
+    }
+
+    .product-toolbar {
+        gap: 10px;
+    }
+
+    .btn {
+        font-size: 13px;
+        padding: 10px;
+    }
+}
 </style>
 
 <body class="home-body">
@@ -426,9 +578,9 @@
         </div>
     </footer>
     <!-- Bootstrap 5 JS -->
-     <script src="assets/js/auth-check.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        const BASE_URL = "http://51.20.253.239:5000";
         function showMessage(msg, type = "error") {
     const box = document.getElementById("messageBox");
     box.innerText = msg;
@@ -478,7 +630,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
         async function loadProducts() {
             try {
-        const res = await fetch("http://localhost:5000/api/products");
+        const res = await fetch(`${BASE_URL}/api/products`);
         const products = await res.json();
         allProducts = products;
 
@@ -494,11 +646,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // Load wishlist if logged in
         // --------------------------
         if (token) {
-            const wishlistRes = await fetch("http://localhost:5000/api/wishlist", {
+            const wishlistRes = await fetch(`${BASE_URL}/api/wishlist`, {
                 headers: { "Authorization": "Bearer " + token }
             });
             if (wishlistRes.ok) {
                 wishlistItems = await wishlistRes.json();
+                wishlistItems = wishlistItems.filter(item => item && item.product);
             }
         }
 
@@ -508,9 +661,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     const col = document.createElement("div");
                     col.className = "col-6 col-md-4 col-lg-3";
 
+                    // const isWishlisted = wishlistItems.find(
+                    //     item => item.product._id === product._id
+                    // );
                     const isWishlisted = wishlistItems.find(
-                        item => item.product._id === product._id
-                    );
+    item => item?.product?._id === product._id
+);
 
                     col.innerHTML = `
                 <div class="product-listing-card">
@@ -529,8 +685,8 @@ document.addEventListener("DOMContentLoaded", () => {
         : ""}
 
     <a ${product.stock === 0 ? "" : `href="product-details.html?id=${product._id}"`}>
-        <img src="${product.image && product.image.startsWith('uploads/') 
-    ? 'http://localhost:5000/' + product.image 
+        <img src="${product.image && product.image.startsWith('uploads/')
+    ? `${BASE_URL}/${product.image}`
     : product.image}" 
      class="img-fluid ${product.stock === 0 ? "out-of-stock-img" : ""}">
     </a>
@@ -580,7 +736,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                             if (icon.classList.contains("active")) {
                                 // REMOVE
-                                await fetch(`http://localhost:5000/api/wishlist/${productId}`, {
+                                await fetch(`${BASE_URL}/api/wishlist/${productId}`, {
                                     method: "DELETE",
                                     headers: {
                                         "Authorization": "Bearer " + token
@@ -592,7 +748,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                             } else {
                                 // ADD
-                                await fetch("http://localhost:5000/api/wishlist", {
+                                await fetch(`${BASE_URL}/api/wishlist`, {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json",
@@ -630,7 +786,7 @@ showMessage("Please login first", "info");
         }
 
         try {
-            const res = await fetch("http://localhost:5000/api/cart", {
+            const res = await fetch(`${BASE_URL}/api/cart`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -719,7 +875,7 @@ currentFilters = params;
     let products;
 
     if (params.toString()) {
-        const res = await fetch(`http://localhost:5000/api/filter?${params.toString()}`);
+        const res = await fetch(`${BASE_URL}/api/filter?${params.toString()}`);
         products = await res.json();
     } else {
         products = allProducts;
@@ -774,7 +930,7 @@ function attachWishlistEvents() {
 }
 
 // Check if user is blocked (optional extra safety)
-const userRes = await fetch("http://localhost:5000/api/user", {
+const userRes = await fetch(`${BASE_URL}/api/user`, {
     headers: { "Authorization": "Bearer " + token }
 });
 const user = await userRes.json();
@@ -788,7 +944,7 @@ if (user.isBlocked) {
 
                 if (icon.classList.contains("active")) {
 
-                    await fetch(`http://localhost:5000/api/wishlist/${productId}`, {
+                    await fetch(`${BASE_URL}/api/wishlist/${productId}`, {
                         method: "DELETE",
                         headers: { "Authorization": "Bearer " + token }
                     });
@@ -798,7 +954,7 @@ if (user.isBlocked) {
 
                 } else {
 
-                    await fetch("http://localhost:5000/api/wishlist", {
+                    await fetch(`${BASE_URL}/api/wishlist`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -833,7 +989,7 @@ function attachCartEvents() {
 }
 
 // Check if user is blocked (optional extra safety)
-const userRes = await fetch("http://localhost:5000/api/user", {
+const userRes = await fetch(`${BASE_URL}/api/user`, {
     headers: { "Authorization": "Bearer " + token }
 });
 const user = await userRes.json();
@@ -861,7 +1017,7 @@ if (user.isBlocked) {
 
             // Add to cart
             try {
-                const res = await fetch("http://localhost:5000/api/cart", {
+                const res = await fetch(`${BASE_URL}/api/cart`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -882,7 +1038,6 @@ if (!res.ok && data.message === "Already in Cart") {
 
                     return;
                 }
-// Handle other errors normallyconst data = await res.json();
 
 if (!res.ok) {
     if (data.message.includes("Only") || data.message === "Already in Cart") {
@@ -984,7 +1139,7 @@ function renderProducts(products) {
 
     <a ${product.stock === 0 ? "" : `href="product-details.html?id=${product._id}"`}>
         <img src="${product.image && product.image.startsWith('uploads/') 
-    ? 'http://localhost:5000/' + product.image 
+    ? `${BASE_URL}/${product.image}`
     : product.image}" 
      class="img-fluid ${product.stock === 0 ? "out-of-stock-img" : ""}">
     </a>

@@ -219,25 +219,30 @@
         }
 
         /* Responsive Improvements */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 70px;
-            }
+        @media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 250px;
+    }
 
-            .sidebar-brand span,
-            .nav-link span {
-                display: none;
-            }
+    .sidebar.show {
+        transform: translateX(0);
+    }
 
-            .main-content {
-                margin-left: 70px;
-            }
+    .sidebar-brand span,
+    .nav-link span {
+        display: inline;
+    }
 
-            .sidebar-brand {
-                text-align: center;
-                padding: 10px;
-            }
-        }
+    .main-content {
+        margin-left: 0;
+    }
+
+    .sidebar-brand {
+        text-align: left;
+        padding: 10px 25px;
+    }
+}
 
         @media (max-width: 576px) {
             .table-title-area {
@@ -251,6 +256,153 @@
                 justify-content: center;
             }
         }
+        .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 999;
+    display: none;
+}
+
+.sidebar-overlay.show {
+    display: block;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 1199px) {
+    .main-content {
+        padding: 16px;
+    }
+
+    .header {
+        padding: 14px 20px;
+    }
+
+    .products-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 250px;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 14px;
+    }
+
+    .header {
+        padding: 14px 16px;
+        margin-bottom: 20px;
+    }
+
+    .products-card {
+        padding: 18px;
+    }
+
+    .header-title {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .header {
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .admin-profile {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .table-title-area {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .table-title-area h4 {
+        margin-bottom: 0;
+    }
+
+    .table-title-area .d-flex.gap-2.ms-auto {
+        margin-left: 0 !important;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .add-product-btn,
+    #exportBtn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .products-card {
+        padding: 16px;
+    }
+
+    .table {
+        min-width: 760px;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+}
+
+@media (max-width: 575px) {
+    .main-content {
+        padding: 10px;
+    }
+
+    .header {
+        padding: 12px 14px;
+        border-radius: 10px;
+    }
+
+    .header-title {
+        font-size: 1.1rem;
+    }
+
+    .admin-profile span {
+        font-size: 0.9rem;
+    }
+
+    .profile-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .products-card {
+        border-radius: 10px;
+        padding: 14px;
+    }
+
+    .action-btn {
+        width: 30px;
+        height: 30px;
+    }
+
+    .product-img-thumb {
+        width: 44px;
+        height: 44px;
+    }
+}
     </style>
 </head>
 
@@ -322,31 +474,42 @@
             </a>
         </nav>
     </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- Main Content -->
     <div class="main-content">
         <!-- Header -->
         <div class="header">
-            <h2 class="header-title">Admin Panel</h2>
-            <div class="admin-profile">
-                <span>Welcome, Admin</span>
-                <div class="profile-icon">
-                    <i class="bi bi-person"></i>
-                </div>
-            </div>
+    <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-secondary d-lg-none" id="menuToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        <h2 class="header-title">Admin Panel</h2>
+    </div>
+
+    <div class="admin-profile">
+        <span>Welcome, Admin</span>
+        <div class="profile-icon">
+            <i class="bi bi-person"></i>
         </div>
+    </div>
+</div>
         <div id="messageBox"></div>
 
         <!-- Products Management Content -->
         <div class="products-card">
             <div class="table-title-area">
     <h4 class="m-0">Products Management</h4>
-    <a href="add-product.html" class="add-product-btn">
-        <i class="bi bi-plus-lg"></i> Add Product
-    </a>
-    <button id="exportBtn" class="add-product-btn">
-        <i class="bi bi-download"></i> Export
-    </button>
+
+    <div class="d-flex gap-2 ms-auto">
+        <a href="add-product.html" class="add-product-btn">
+            <i class="bi bi-plus-lg"></i> Add Product
+        </a>
+
+        <button id="exportBtn" class="add-product-btn">
+            <i class="bi bi-download"></i> Export
+        </button>
+    </div>
 </div>
 
             <div class="table-responsive">
@@ -476,7 +639,19 @@ async function deleteProduct(id) {
         showMessage("Delete failed. Check console for details.", "danger");
     }
 }
+const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.querySelector(".sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
 
+menuToggle?.addEventListener("click", () => {
+    sidebar.classList.toggle("show");
+    sidebarOverlay.classList.toggle("show");
+});
+
+sidebarOverlay?.addEventListener("click", () => {
+    sidebar.classList.remove("show");
+    sidebarOverlay.classList.remove("show");
+});
 // Load products when page loads
 document.addEventListener("DOMContentLoaded", loadProducts);
   

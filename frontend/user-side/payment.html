@@ -303,6 +303,207 @@
     margin-top: 6px;
     opacity: 0.85;
 }
+/* ===== FIX OVERFLOW ===== */
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 100%;
+}
+
+/* ===== TABLET & MOBILE ===== */
+@media (max-width: 767.98px) {
+
+    .main-header {
+        padding: 15px 10px;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .logo {
+        font-size: 24px;
+        letter-spacing: 3px;
+    }
+
+    .header-icons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .main-nav {
+        margin-top: 10px;
+    }
+
+    .main-nav a {
+        display: inline-block;
+        margin: 5px 8px;
+        font-size: 12px;
+    }
+
+    /* ===== LAYOUT STACK ===== */
+    .row {
+        flex-direction: column;
+    }
+
+    .col-lg-8,
+    .col-lg-4 {
+        width: 100%;
+    }
+
+    /* ===== ORDER SUMMARY ===== */
+    .order-summary-card {
+        position: static;
+        margin-top: 20px;
+    }
+
+    /* ===== PAYMENT CARDS ===== */
+    .payment-header {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 8px;
+    }
+
+    .payment-header img {
+        height: 18px;
+    }
+
+    /* ===== COUPONS ===== */
+    .coupon-container {
+        flex-direction: column;
+    }
+
+    /* ===== PROGRESS BAR SCROLL ===== */
+    .checkout-progress {
+        overflow-x: auto;
+    }
+
+    .checkout-progress .d-flex {
+        min-width: 420px;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer-top {
+        display: grid !important;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .footer-col {
+        width: 100%;
+    }
+}
+
+
+/* ===== MOBILE M ===== */
+@media (max-width: 375px) {
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .main-nav a {
+        font-size: 11px;
+    }
+
+    .section-title {
+        font-size: 18px;
+    }
+
+    .payment-header {
+        padding: 12px !important;
+    }
+
+    .order-summary-card {
+        padding: 15px !important;
+    }
+
+    .checkout-primary-btn {
+        font-size: 12px;
+        padding: 10px !important;
+    }
+
+    .checkout-progress .d-flex {
+        min-width: 340px;
+    }
+}
+
+
+/* ===== MOBILE S ===== */
+@media (max-width: 320px) {
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .main-nav a {
+        font-size: 10px;
+        margin: 4px;
+    }
+
+    .section-title {
+        font-size: 16px;
+    }
+
+    .payment-header {
+        padding: 10px !important;
+    }
+
+    .order-summary-card {
+        padding: 12px !important;
+    }
+
+    .checkout-primary-btn {
+        font-size: 11px;
+        padding: 8px !important;
+    }
+
+    .checkout-progress .d-flex {
+        min-width: 300px;
+    }
+}
+.coupon-card {
+    flex: 1 1 200px;
+    max-width: 100%;
+    height: auto !important;
+    padding: 12px 14px;
+    border-radius: 10px;
+}
+
+/* reduce inner spacing */
+.coupon-code {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.coupon-desc {
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+/* container spacing */
+.coupon-container {
+    gap: 10px;
+}
+
+/* MOBILE FIX */
+@media (max-width: 480px) {
+    .coupon-card {
+        padding: 10px 12px;
+        border-radius: 8px;
+    }
+}
     </style>
 </head>
 
@@ -536,7 +737,7 @@ const placeOrderBtn = document.getElementById("placeOrderBtn");
 // ================= LOAD CART =================
 async function loadCartTotal() {
     try {
-        const res = await fetch("http://localhost:5000/api/cart", {
+        const res = await fetch("http://51.20.253.239:5000/api/cart", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -569,13 +770,12 @@ async function loadCartTotal() {
     }
 }
 
-loadCartTotal();
 // ================= LOAD COUPONS =================
 const couponContainer = document.getElementById("couponContainer");
 
 async function loadCoupons() {
     try {
-        const res = await fetch("http://localhost:5000/api/coupons", {
+        const res = await fetch("http://51.20.253.239:5000/api/coupons", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -618,6 +818,11 @@ async function loadCoupons() {
 }
 
 loadCoupons();
+
+loadCartTotal().then(() => {
+    loadAppliedCoupon();
+});
+
 // ===== UTILITY FUNCTION TO UPDATE GRAND TOTAL =====
 function updateGrandTotal() {
     const total = currentSubtotal - currentDiscount + shippingCharge;
@@ -700,6 +905,36 @@ function applyCoupon(selected) {
     couponMessage.innerText = `Coupon "${selected.code}" applied successfully`;
     couponMessage.style.color = "green";
 }
+function loadAppliedCoupon() {
+    const saved = JSON.parse(localStorage.getItem("appliedCoupon"));
+
+    if (!saved) return;
+
+    // 🔥 IMPORTANT: match coupon from backend list
+    const matched = coupons.find(c => c.code === saved.code);
+
+    if (!matched) {
+        console.log("Coupon not found in backend list");
+        return;
+    }
+
+    if (currentSubtotal < matched.minOrder) return;
+
+    selectedCoupon = matched.code;
+
+    let discountAmount = matched.discountType === "flat"
+        ? matched.value
+        : (currentSubtotal * matched.value) / 100;
+
+    currentDiscount = discountAmount;
+
+    discountEl.textContent = `- ₹${currentDiscount.toFixed(2)}`;
+
+    updateGrandTotal();
+
+    couponMessage.innerText = `Coupon "${matched.code}" applied`;
+    couponMessage.style.color = "green";
+}
     updateGrandTotal();
 
 // ================= PLACE ORDER =================
@@ -756,7 +991,7 @@ if (isRazorpay) {
         // Convert rupees to paise only here
         const amountInPaise = Math.round(finalCheckout.finalAmount * 100);
 
-        const response = await fetch("http://localhost:5000/api/orders/create-razorpay-order", {
+        const response = await fetch("http://51.20.253.239:5000/api/orders/create-razorpay-order", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -784,7 +1019,7 @@ if (isRazorpay) {
 
     try {
 
-        const verifyRes = await fetch("http://localhost:5000/api/orders/verify-razorpay-payment", {
+        const verifyRes = await fetch("http://51.20.253.239:5000/api/orders/verify-razorpay-payment", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -837,7 +1072,7 @@ if (isWallet) {
 
     const finalCheckout = JSON.parse(localStorage.getItem("finalCheckout"));
 
-    const res = await fetch("http://localhost:5000/api/wallet/pay", {
+    const res = await fetch("http://51.20.253.239:5000/api/wallet/pay", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

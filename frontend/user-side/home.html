@@ -15,7 +15,259 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
+<style>
 
+    .nav-menu ul {
+    position: relative;
+}
+
+.categories-dropdown {
+    position: relative;
+}
+
+.categories-submenu[hidden] {
+    display: none !important;
+}
+
+.categories-submenu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 180px;
+    background: #fff;
+    padding: 8px 0;
+    margin: 8px 0 0 0;
+    list-style: none;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    z-index: 9999;
+}
+
+.categories-submenu li {
+    width: 100%;
+}
+
+.categories-submenu li a {
+    display: block;
+    padding: 10px 16px;
+    text-decoration: none;
+    color: #2e415f;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.categories-submenu li a:hover {
+    background: #f5f5f5;
+}
+
+.categories-submenu,
+.categories-submenu li,
+.categories-submenu li a {
+    white-space: nowrap;
+}
+@media (max-width: 991px) {
+    .top-header .row {
+        row-gap: 12px;
+    }
+
+    .top-header .col-4,
+    .top-header .col-12 {
+        width: 100%;
+        max-width: 100%;
+        flex: 0 0 100%;
+        text-align: center !important;
+    }
+
+    .search-bar {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .header-icons {
+        justify-content: center;
+        display: flex;
+        gap: 18px;
+    }
+
+    .nav-menu ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 18px;
+        padding-left: 0;
+    }
+
+    .hero-section {
+        min-height: 420px;
+    }
+
+    .hero-text {
+        font-size: 42px;
+        text-align: center;
+    }
+
+    .category-wrapper,
+    .deals-wrapper,
+    .why-wrapper,
+    .notes-wrapper {
+        gap: 18px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .footer-top {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+}
+
+@media (max-width: 767px) {
+    .top-header {
+        padding: 14px 12px;
+    }
+
+    .brand-logo {
+        font-size: 28px;
+        margin: 0;
+    }
+
+    .search-bar input {
+        font-size: 14px;
+    }
+
+    .nav-menu ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .categories-submenu {
+        position: static;
+        transform: none;
+        margin-top: 8px;
+        box-shadow: none;
+        border: 1px solid #eee;
+        width: 100%;
+        max-width: 220px;
+    }
+
+    .hero-section {
+        min-height: 340px;
+        padding: 40px 0;
+    }
+
+    .hero-text {
+        font-size: 30px;
+        line-height: 1.2;
+        text-align: center;
+    }
+
+    .section-title,
+    .section-heading {
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .product-showcase .col-6,
+    .luxury-categories .category-card,
+    .crazy-deals .deal-card,
+    .why-wrapper .why-card {
+        width: 100%;
+    }
+
+    .category-wrapper,
+    .deals-wrapper,
+    .why-wrapper,
+    .notes-wrapper {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .note-card,
+    .category-card,
+    .deal-card,
+    .why-card {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .view-all-btn {
+        width: 100%;
+        max-width: 220px;
+    }
+
+    .footer-top {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .footer-col,
+    .newsletter,
+    .scam-alert {
+        text-align: center;
+    }
+
+    .newsletter-box {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-header {
+        padding: 12px 10px;
+    }
+
+    .brand-logo {
+        font-size: 24px;
+    }
+
+    .header-icons i {
+        font-size: 20px;
+    }
+
+    .hero-section {
+        min-height: 280px;
+    }
+
+    .hero-text {
+        font-size: 24px;
+    }
+
+    .section-title,
+    .section-heading {
+        font-size: 20px;
+    }
+
+    .product-card,
+    .deal-card,
+    .why-card,
+    .category-card,
+    .note-card {
+        max-width: 100%;
+    }
+
+    .note-circle img,
+    .category-img img,
+    .deal-img img,
+    .product-img img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .footer {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .scam-alert ul {
+        padding-left: 18px;
+        text-align: left;
+    }
+}
+</style>
 <body class="home-body">
     <!-- Navbar -->
     <header class="header-section">
@@ -49,7 +301,14 @@
                             <li><a href="products.html">Shop All</a></li>
                             <li><a href="crazy-deals.html">Crazy Deals</a></li>
                             <li><a href="home.html#bestsellers">Bestsellers</a></li>
-                            <li><a href="home.html#categories">Categories</a></li>
+                            <li class="categories-dropdown">
+    <a href="#" id="categoriesToggle">Categories</a>
+
+    <ul class="categories-submenu" id="categoriesSubmenu" hidden>
+        <li><a href="#categories">Gender</a></li>
+        <li><a href="#shop-notes">Notes</a></li>
+    </ul>
+</li>
                             <li><a href="home.html#bestsellers">New Arrivals</a></li>
                         </ul>
                     </nav>
@@ -202,7 +461,7 @@
             </div>
         </div>
     </section>
-    <section class="shop-notes">
+    <section id="shop-notes" class="shop-notes">
     <h2 class="section-title">SHOP BY NOTES</h2>
 
     <div class="notes-wrapper" id="notesContainer">
@@ -393,17 +652,36 @@
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const params = new URLSearchParams(window.location.search);
+document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.getElementById("categoriesToggle");
+    const submenu = document.getElementById("categoriesSubmenu");
+    const dropdown = document.querySelector(".categories-dropdown");
+
+    submenu.hidden = true;
+
+    toggle.addEventListener("click", function (e) {
+        e.preventDefault();
+        submenu.hidden = !submenu.hidden;
+    });
+
+    document.querySelectorAll("#categoriesSubmenu a").forEach(link => {
+        link.addEventListener("click", function () {
+            submenu.hidden = true;
+        });
+    });
+
+    document.addEventListener("click", function (e) {
+        if (!dropdown.contains(e.target)) {
+            submenu.hidden = true;
+        }
+    });
+});
+const params = new URLSearchParams(window.location.search);
 const tokenFromGoogle = params.get("token");
 
 if (tokenFromGoogle) {
     localStorage.setItem("token", tokenFromGoogle);
     window.history.replaceState({}, document.title, window.location.pathname);
-}
-const token = localStorage.getItem("token");
-
-if (!token) {
-    window.location.replace("/frontend/user-side/auth/login.html");
 }
 
 // Prevent back to login
@@ -418,7 +696,7 @@ async function loadNotes() {
 
     try {
 
-        const res = await fetch("http://localhost:5000/api/categories");
+        const res = await fetch("http://51.20.253.239:5000/api/categories");
 
         if (!res.ok) {
             throw new Error("API error: " + res.status);
@@ -434,7 +712,7 @@ async function loadNotes() {
             const note = cat.name.toLowerCase();
 
             const image = cat.image
-                ? `http://localhost:5000${cat.image}`
+                ? `http://51.20.253.239:5000${cat.image}`
                 : "assets/images/default-note.png";
 
             container.innerHTML += `
@@ -453,6 +731,7 @@ async function loadNotes() {
 }
 
 loadNotes();
+
 </script>
 </body>
 

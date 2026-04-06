@@ -121,9 +121,7 @@
     <script>
 function logout() {
     localStorage.removeItem("token");
-
-    // destroy history also
-    window.location.replace("/frontend/user-side/auth/login.html");
+    window.location.replace("/user-side/auth/login.html");
 }
 </script>
 </body>

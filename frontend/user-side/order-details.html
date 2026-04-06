@@ -44,6 +44,160 @@
     font-weight: 500;
     text-align: center;
 }
+/* ===== Layout Fix ===== */
+html, body {
+    min-height: 100%;
+}
+
+body.home-body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    margin-top: auto;
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 767.98px) {
+
+    /* Header */
+    .top-header .col-4,
+    .top-header .col-12 {
+        width: 100%;
+        text-align: center !important;
+        margin-bottom: 10px;
+    }
+
+    .header-icons {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .nav-menu ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    /* Page padding */
+    .order-details-page {
+        padding: 1.2rem !important;
+    }
+
+    .order-details-page .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    /* Summary */
+    .order-summary-header .row {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .track-shipment-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* Timeline scroll */
+    .order-timeline-wrapper {
+        overflow-x: auto;
+        display: flex;
+        gap: 20px;
+    }
+
+    .timeline-step {
+        min-width: 100px;
+    }
+
+    /* Table */
+    .table {
+        font-size: 13px;
+    }
+
+    .table img {
+        width: 50px;
+    }
+
+    /* Actions */
+    .order-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .order-actions .btn {
+        width: 100%;
+    }
+
+    /* Footer */
+    .footer-top {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 24px;
+    }
+}
+
+/* ===== Small Mobile (320px) ===== */
+@media (max-width: 480px) {
+
+    .brand-logo {
+        font-size: 18px;
+    }
+
+    .nav-menu ul {
+        font-size: 12px;
+        gap: 6px;
+    }
+
+    .breadcrumb {
+        font-size: 12px;
+    }
+
+    /* Order title */
+    #orderNumber {
+        font-size: 16px;
+    }
+
+    #orderMeta {
+        font-size: 12px;
+    }
+
+    /* Cards */
+    .card {
+        padding: 12px !important;
+        border-radius: 12px;
+    }
+
+    /* Table */
+    .table th,
+    .table td {
+        font-size: 11px;
+        padding: 6px !important;
+    }
+
+    /* Buttons */
+    .action-btn {
+        font-size: 12px;
+        height: 30px;
+        min-width: 90px;
+    }
+
+    .btn {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}
 </style>
 <body class="home-body">
 
@@ -288,7 +442,9 @@
     }, 3000);
 }
 const token = localStorage.getItem("token");
-
+if (!token) {
+    window.location.href = "auth/login.html";
+}
 // Get order ID from URL
 const urlParams = new URLSearchParams(window.location.search);
 let orderId = new URLSearchParams(window.location.search).get("id");
@@ -307,7 +463,7 @@ const timelineSteps = ["Placed", "Packed", "Shipped", "Delivered"];
 
 async function loadOrderDetails() {
     try {
-        const res = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
+        const res = await fetch(`/api/orders/${orderId}`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -333,7 +489,7 @@ async function loadOrderDetails() {
     tr.innerHTML = `
         <td>
             <div class="d-flex align-items-center">
-                <img src="http://localhost:5000/${item.image}" width="60" />
+                <img src="/${item.image}" width="60" />
                 <div>
                     <h6 class="mb-0 ms-2">
                         ${item.name}
@@ -385,7 +541,7 @@ async function loadOrderDetails() {
 
     try {
 
-        const res = await fetch("http://localhost:5000/api/orders/cancel-item", {
+        const res = await fetch("/api/orders/cancel-item", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -489,7 +645,7 @@ async function cancelOrder(orderId) {
 
         try {
 
-            const res = await fetch(`http://localhost:5000/api/orders/cancel/${orderId}`, {
+            const res = await fetch(`/api/orders/cancel/${orderId}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -519,7 +675,7 @@ async function cancelSingleItem(orderId, productId) {
     if (!confirm("Cancel this item only?")) return;
 
     try {
-        const res = await fetch(`http://localhost:5000/api/orders/cancel-item`, {
+        const res = await fetch(`/api/orders/cancel-item`, {
             method: "PUT",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -548,7 +704,7 @@ async function cancelSingleItem(orderId, productId) {
 
 async function reorder(productId, quantity) {
     try {
-        const res = await fetch(`http://localhost:5000/api/cart`, {
+        const res = await fetch(`/api/cart`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

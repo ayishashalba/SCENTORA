@@ -97,10 +97,15 @@ function showMessage(msg, type = "danger") {
     }, 3000);
 }
 const signupForm = document.querySelector("#signup-form");
+let isSubmitting = false;
 
 signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
- const name = document.querySelector("#name").value.trim();
+
+    if (isSubmitting) return;
+    isSubmitting = true;
+
+    const name = document.querySelector("#name").value.trim();
     const phone = document.querySelector("#phone").value.trim();
     const email = document.querySelector("#email").value.trim();
     const password = document.querySelector("#password").value;
@@ -120,14 +125,16 @@ signupForm.addEventListener("submit", async (e) => {
     // ================= NAME =================
     if (!/^[A-Za-z ]+$/.test(name)) {
         nameError.innerHTML = "Only alphabets allowed (A–Z, a–z)";
+        isSubmitting = false;
         return;
     }
 
-    const words = name.split(/\s+/); // FIX: handles multiple spaces
+    const words = name.split(/\s+/);
 
     for (let word of words) {
         if (word.length < 2) {
             nameError.innerHTML = "Each name must have at least 2 characters";
+            isSubmitting = false;
             return;
         }
     }
@@ -135,12 +142,14 @@ signupForm.addEventListener("submit", async (e) => {
     if (words.length === 1) {
         if (name[0] !== name[0].toUpperCase()) {
             nameError.innerHTML = "Name must start with a capital letter";
+            isSubmitting = false;
             return;
         }
     } else {
         for (let word of words) {
             if (word[0] !== word[0].toUpperCase()) {
                 nameError.innerHTML = "Each word must start with a capital letter";
+                isSubmitting = false;
                 return;
             }
         }
@@ -149,22 +158,26 @@ signupForm.addEventListener("submit", async (e) => {
     // ================= PHONE =================
     if (!/^\d+$/.test(phone)) {
         phoneError.innerHTML = "Phone number must contain only digits";
+        isSubmitting = false;
         return;
     }
 
     if (phone.length !== 10) {
         phoneError.innerHTML = "Phone number must be exactly 10 digits";
+        isSubmitting = false;
         return;
     }
 
     if (!/^[6-9]/.test(phone)) {
         phoneError.innerHTML = "Phone number must start with 6, 7, 8, or 9";
+        isSubmitting = false;
         return;
     }
 
     // ================= EMAIL =================
     if (!email.includes("@")) {
         emailError.innerHTML = "Email must contain @ symbol";
+        isSubmitting = false;
         return;
     }
 
@@ -172,11 +185,13 @@ signupForm.addEventListener("submit", async (e) => {
 
     if (parts[0].length === 0) {
         emailError.innerHTML = "Email username cannot be empty";
+        isSubmitting = false;
         return;
     }
 
     if (!parts[1] || !parts[1].includes(".")) {
         emailError.innerHTML = "Email must contain a valid domain (e.g., gmail.com)";
+        isSubmitting = false;
         return;
     }
 
@@ -184,50 +199,60 @@ signupForm.addEventListener("submit", async (e) => {
 
     if (domainParts[0].length < 2) {
         emailError.innerHTML = "Domain must be at least 2 characters";
+        isSubmitting = false;
         return;
     }
 
     if (domainParts[1].length < 2) {
         emailError.innerHTML = "TLD must be at least 2 letters (e.g., .com)";
+        isSubmitting = false;
         return;
     }
 
     // ================= PASSWORD =================
     if (password.length < 6) {
         passwordError.innerHTML = "Password must be at least 6 characters";
+        isSubmitting = false;
         return;
     }
 
     if (!/[A-Za-z]/.test(password)) {
         passwordError.innerHTML = "Password must contain at least one letter";
+        isSubmitting = false;
         return;
     }
 
     if (!/\d/.test(password)) {
         passwordError.innerHTML = "Password must contain at least one number";
+        isSubmitting = false;
         return;
     }
 
-    // ================= PINCODE (NEW) =================
+    // ================= PINCODE =================
     if (pincode) {
         if (!/^\d+$/.test(pincode)) {
             showMessage("Pincode must contain only numbers");
+            isSubmitting = false;
             return;
         }
 
         if (pincode.length !== 6) {
             showMessage("Pincode must be exactly 6 digits");
+            isSubmitting = false;
             return;
         }
 
         if (pincode.startsWith("0")) {
             showMessage("Pincode cannot start with 0");
+            isSubmitting = false;
             return;
         }
     }
 
     try {
-        const res = await fetch("http://localhost:5000/api/auth/register", {
+        console.log("FRONTEND EMAIL:", email);
+
+        const res = await fetch("http://51.20.253.239:5000/api/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -245,12 +270,14 @@ signupForm.addEventListener("submit", async (e) => {
         if (res.ok) {
             window.location.href = `otp-verification.html?email=${email}`;
         } else {
-             showMessage(data.message || "Registration failed");
+            showMessage(data.message || "Registration failed");
         }
     } catch (error) {
-    console.error("REGISTER ERROR:", error);
-    showMessage("Something went wrong");
-}
+        console.error("REGISTER ERROR:", error);
+        showMessage("Something went wrong");
+    } finally {
+        isSubmitting = false;
+    }
 });
 </script>
 

@@ -17,7 +17,11 @@ const app = express();
 
 // CORS (Allow frontend)
 app.use(cors({
-  origin: "http://127.0.0.1:5500",
+  origin: [
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+    "http://51.20.253.239:5000"
+  ],
   credentials: true
 }));
 
@@ -69,7 +73,9 @@ app.use("/api/settings", require("./routes/settings"));
 app.use("/api/transactions", require("./routes/transactionRoutes"));
 
 // Serve frontend
-app.use(express.static(path.join(__dirname, "frontend")));
+// Serve frontend
+app.use(express.static(path.join(__dirname, "../frontend")));
+
 // ================= TEST =================
 app.get("/", (req, res) => {
   res.send("Scentora Backend Running...");

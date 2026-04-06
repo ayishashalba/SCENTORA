@@ -6,7 +6,7 @@ const Order = require("../models/Order");
 const Cart = require("../models/Cart");
 const Product = require("../models/Product");
 const Transaction = require("../models/Transaction");
-
+const Coupon = require("../models/Coupon");
 const protect = require("../middleware/authMiddleware");
 
 // GET wallet info
@@ -127,18 +127,33 @@ for (const item of orderItems) {
   }
 }
     // ✅ Create order FIRST
-    const order = await Order.create({
-      user: req.user.id,
-      items: orderItems,
-      address,
-      subtotal,
-      discount,
-      totalAmount,
-      couponCode,
-      paymentMethod: "Wallet",
-      paymentStatus: "Paid",
-      status: "Placed"
-    });
+    let appliedCoupon = null;
+
+if (couponCode) {
+  appliedCoupon = await Coupon.findOne({
+    code: { $regex: `^${String(couponCode).trim()}$`, $options: "i" },
+    $or: [
+      { isActive: true },
+      { isActive: { $exists: false } }
+    ]
+  });
+}
+
+const order = await Order.create({
+  user: req.user.id,
+  items: orderItems,
+  address,
+  subtotal,
+  discount,
+  totalAmount,
+  couponCode: appliedCoupon ? appliedCoupon.code : null,
+  couponMinOrder: appliedCoupon ? appliedCoupon.minOrder : null,
+  couponDiscountType: appliedCoupon ? appliedCoupon.discountType : null,
+  couponValue: appliedCoupon ? appliedCoupon.value : null,
+  paymentMethod: "Wallet",
+  paymentStatus: "Paid",
+  status: "Placed"
+});
 
     // ✅ Deduct wallet AFTER order creation
     wallet.balance -= amount;
@@ -207,20 +222,31 @@ router.put('/cancel/:orderId', protect, async (req, res) => {
         await order.save();
 
         // Refund to wallet if paid via Wallet OR Razorpay
-        if (["Wallet", "Razorpay"].includes(order.paymentMethod)) {
-            const wallet = await Wallet.findOne({ user: order.user });
-            if (wallet) {
-                wallet.balance += order.totalAmount;
-                wallet.transactions.push({
-                    type: "credit",
-                    amount: order.totalAmount,
-                    description: `Refund for cancelled order ${order._id} (${order.paymentMethod})`,
-                    status: "Completed",
-                    date: new Date()
-                });
-                await wallet.save();
-            }
-        }
+       if (["wallet", "razorpay"].includes((order.paymentMethod || "").toLowerCase())) {
+
+    const wallet = await Wallet.findOne({ user: order.user });
+    const user = await require("../models/User").findById(order.user);
+
+    if (wallet && user) {
+
+        // ✅ update wallet
+        wallet.balance += order.totalAmount;
+
+        wallet.transactions.push({
+            type: "credit",
+            amount: order.totalAmount,
+            description: `Refund for cancelled order ${order._id} (${order.paymentMethod})`,
+            status: "Completed",
+            date: new Date()
+        });
+
+        await wallet.save();
+
+        // ✅ IMPORTANT: update user also
+        user.walletBalance = (user.walletBalance || 0) + order.totalAmount;
+        await user.save();
+    }
+}
 
         res.json({ message: "Order cancelled successfully and amount refunded to wallet" });
 

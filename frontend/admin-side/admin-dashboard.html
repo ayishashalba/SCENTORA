@@ -328,6 +328,166 @@
                 margin-left: 0;
             }
         }
+        .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 999;
+    display: none;
+}
+
+.sidebar-overlay.show {
+    display: block;
+}
+
+@media (max-width: 1199px) {
+    .header {
+        padding: 14px 20px;
+    }
+
+    .container-fluid.p-4 {
+        padding: 20px !important;
+    }
+
+    .stats-value {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 250px;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .header {
+        padding: 14px 18px;
+    }
+
+    .dashboard-panel,
+    .stats-card {
+        padding: 18px;
+    }
+
+    .panel-header {
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .panel-header > div,
+    .panel-header > select {
+        width: 100%;
+    }
+
+    #ordersFilter {
+        width: 100% !important;
+    }
+
+    .header-title {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .container-fluid.p-4 {
+        padding: 14px !important;
+    }
+
+    .header {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .stats-card {
+        padding: 16px;
+    }
+
+    .stats-label {
+        font-size: 0.85rem;
+    }
+
+    .stats-value {
+        font-size: 1.35rem;
+    }
+
+    .dashboard-panel {
+        padding: 16px;
+    }
+
+    .panel-title {
+        font-size: 1rem;
+    }
+
+    .table {
+        min-width: 650px;
+    }
+
+    .action-btn {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .row.mt-2.g-4.pb-5 > div {
+        width: 100%;
+    }
+
+    .profile-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .header {
+        padding: 12px 14px;
+    }
+
+    .header-title {
+        font-size: 1.1rem;
+    }
+
+    .icon-btn {
+        font-size: 1.1rem;
+    }
+
+    .stats-card {
+        text-align: center;
+    }
+
+    .stats-value {
+        font-size: 1.25rem;
+    }
+
+    .dashboard-panel {
+        border-radius: 10px;
+    }
+
+    .panel-header {
+        margin-bottom: 14px;
+    }
+
+    #fromDate,
+    #toDate,
+    #applyDateFilter {
+        width: 100%;
+    }
+}
     </style>
 </head>
 
@@ -399,22 +559,28 @@
             </a>
         </nav>
     </div>
-
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
     <!-- Main Content -->
     <div class="main-content">
         <!-- Header -->
         <header class="header">
-            <h2 class="header-title">Dashboard</h2>
-            <div class="header-actions">
-                <button class="icon-btn">
-                    <i class="bi bi-bell"></i>
-                    <span class="notification-badge"></span>
-                </button>
-                <div class="profile-avatar">
-                    AD
-                </div>
-            </div>
-        </header>
+    <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-secondary d-lg-none" id="menuToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        <h2 class="header-title">Dashboard</h2>
+    </div>
+
+    <div class="header-actions">
+        <button class="icon-btn">
+            <i class="bi bi-bell"></i>
+            <span class="notification-badge"></span>
+        </button>
+        <div class="profile-avatar">
+            AD
+        </div>
+    </div>
+</header>
         <!-- Message Container -->
 <div id="dashboardMessage" class="d-none alert alert-warning mx-4" role="alert">
     <!-- message will appear here -->
@@ -460,7 +626,7 @@
                     <div class="dashboard-panel h-100">
                         <div class="panel-header">
                             <h5 class="panel-title">Orders Overview</h5>
-                            <div class="d-flex gap-2 align-items-center mt-2">
+                            <div class="d-flex gap-2 align-items-center mt-2 flex-wrap">
     <input type="date" id="fromDate" class="form-control form-control-sm">
     <input type="date" id="toDate" class="form-control form-control-sm">
     <button class="btn btn-sm btn-primary" id="applyDateFilter">Apply</button>
@@ -576,7 +742,19 @@
         container.classList.add("d-none");
     }, 4000);
 }
+const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.querySelector(".sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
 
+menuToggle?.addEventListener("click", () => {
+    sidebar.classList.toggle("show");
+    sidebarOverlay.classList.toggle("show");
+});
+
+sidebarOverlay?.addEventListener("click", () => {
+    sidebar.classList.remove("show");
+    sidebarOverlay.classList.remove("show");
+});
         document.addEventListener("DOMContentLoaded", async () => {
 
             const token = localStorage.getItem("adminToken");

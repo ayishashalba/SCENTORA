@@ -159,7 +159,7 @@
             const password = document.getElementById('password').value.trim();
 
             try {
-                const res = await fetch('http://localhost:5000/api/admin/login', {
+                const res = await fetch('http://51.20.253.239:5000/api/admin/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -193,7 +193,7 @@ document.getElementById("sendResetBtn").addEventListener("click", async () => {
     if (!email) return showMessage("Please enter email", "danger");
 
     try {
-        const res = await fetch("http://localhost:5000/api/admin/forgot-password", {
+        const res = await fetch("http://51.20.253.239:5000/api/admin/forgot-password", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email })

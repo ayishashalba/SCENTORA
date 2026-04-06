@@ -14,6 +14,224 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        html,
+body {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+body.home-body {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+}
+
+main {
+    flex: 1;
+    width: 100%;
+}
+
+footer {
+    width: 100%;
+    margin-top: auto;
+}
+
+/* ===== CONTAINER FIX ===== */
+.success-page .container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ===== SUCCESS ICON ===== */
+.success-circle {
+    width: 80px;
+    height: 80px;
+    background: #28a745;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 32px;
+    margin: auto;
+}
+
+/* ===== TABLET + MOBILE ===== */
+@media (max-width: 767.98px) {
+
+    .top-header .col-4,
+    .top-header .col-12 {
+        width: 100%;
+        text-align: center !important;
+        margin-bottom: 10px;
+    }
+
+    .header-icons {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .nav-menu ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        padding-left: 0;
+    }
+
+    .success-page {
+        padding: 1rem !important;
+    }
+
+    .success-page .container {
+        width: 100%;
+        max-width: 100%;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .success-title {
+        font-size: 22px;
+    }
+
+    .success-subtext {
+        font-size: 14px;
+    }
+
+    .order-details-card {
+        padding: 14px !important;
+    }
+
+    .order-details-card .row > div {
+        text-align: left !important;
+    }
+
+    .order-details-card span {
+        font-size: 13px;
+    }
+
+    .order-illustration i {
+        font-size: 70px !important;
+    }
+
+    .track-shipment-btn,
+    .continue-shopping-btn {
+        width: 100%;
+        font-size: 13px;
+        padding: 10px !important;
+    }
+
+    .footer-top {
+        display: grid !important;
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .footer-col {
+        width: 100% !important;
+    }
+
+    .newsletter-box {
+        display: flex;
+        width: 100%;
+    }
+
+    .newsletter-box input {
+        width: 100%;
+    }
+}
+
+/* ===== MOBILE M ===== */
+@media (max-width: 375px) {
+
+    .success-title {
+        font-size: 18px;
+    }
+
+    .success-subtext {
+        font-size: 12px;
+    }
+
+    .success-circle {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+
+    .order-details-card {
+        padding: 12px !important;
+    }
+
+    .order-details-card span {
+        font-size: 11px;
+    }
+
+    .track-shipment-btn,
+    .continue-shopping-btn {
+        font-size: 12px;
+        padding: 9px !important;
+    }
+
+    .brand-logo {
+        font-size: 18px;
+    }
+
+    .nav-menu ul {
+        font-size: 11px;
+        gap: 6px 8px;
+    }
+}
+
+/* ===== MOBILE S ===== */
+@media (max-width: 320px) {
+
+    .success-title {
+        font-size: 16px;
+    }
+
+    .success-subtext {
+        font-size: 11px;
+    }
+
+    .success-circle {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    .order-details-card {
+        padding: 10px !important;
+    }
+
+    .order-details-card span {
+        font-size: 10px;
+    }
+
+    .track-shipment-btn,
+    .continue-shopping-btn {
+        font-size: 11px;
+        padding: 8px !important;
+    }
+
+    .brand-logo {
+        font-size: 16px;
+    }
+
+    .nav-menu ul {
+        font-size: 10px;
+        gap: 5px 6px;
+    }
+}
+    </style>
 </head>
 
 <body class="home-body">
@@ -255,7 +473,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
 
-        const res = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
+        const res = await fetch(`http://51.20.253.239:5000/api/orders/${orderId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -285,7 +503,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         console.error(err);
         showMessage("Failed to load order details");
-        window.location.href = "home.html";
+
+setTimeout(() => {
+    window.location.href = "home.html";
+}, 2000);
 
     }
 

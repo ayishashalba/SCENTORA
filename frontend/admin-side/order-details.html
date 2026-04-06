@@ -404,7 +404,7 @@ border:1px solid rgba(255,193,7,0.2);
                     </thead>
                     <tbody>
 </tbody>
-                    <tfoot>
+                    <!-- <tfoot>
                         <tr>
                             <td colspan="4" class="text-end fw-bold">Subtotal:</td>
                             <td class="text-end fw-bold">$215.00</td>
@@ -421,7 +421,7 @@ border:1px solid rgba(255,193,7,0.2);
                             <td colspan="4" class="text-end fw-bold">Grand Total:</td>
                             <td class="text-end fw-bold text-primary">$198.50</td>
                         </tr>
-                    </tfoot>
+                    </tfoot> -->
                 </table>
             </div>
         </div>
@@ -569,7 +569,9 @@ ${a.city || ""}, ${a.state || ""} - ${a.pincode || ""}<br>
     const tr = document.createElement("tr");
     tr.innerHTML = `
 <td>
-<img src="${p.image ? `http://localhost:5000/${p.image}` : 'http://localhost:5000/uploads/products/default.png'}" 
+<img src="${p.image?.startsWith('uploads/')
+    ? `/` + p.image
+    : p.image || '/uploads/products/default.png'}"
 class="product-img-thumb">
 </td>
 <td><strong>${p.name}</strong></td>
@@ -607,7 +609,7 @@ const grandTotal = subtotal - discount + shipping;
                 <td class="text-end fw-bold">₹${subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
             </tr>
             <tr>
-                <td colspan="4" class="text-end text-success">Discount (${order.coupon || '-'}):</td>
+                <td colspan="4" class="text-end text-success">Discount (${order.couponCode || '-'}):</td>
                 <td class="text-end text-success">-₹${discount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
             </tr>
             <tr>
@@ -624,10 +626,10 @@ const grandTotal = subtotal - discount + shipping;
                const select = document.querySelector('.status-update-card select');
 
 const validTransitions = {
-    Pending: ["placed", "cancelled"],
-    Placed: ["packed","cancelled"],
-    Packed: ["shipped"],
-    Shipped: ["delivered"],
+    Pending: ["Placed", "Cancelled"],
+    Placed: ["Packed","Cancelled"],
+    Packed: ["Shipped"],
+    Shipped: ["Delivered"],
     Delivered: [],
     Cancelled: []
 };

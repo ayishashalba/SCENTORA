@@ -207,20 +207,144 @@
         }
 
         /* Responsive Improvements */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 70px;
-            }
+        .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 999;
+    display: none;
+}
 
-            .sidebar-brand span,
-            .nav-link span {
-                display: none;
-            }
+.sidebar-overlay.show {
+    display: block;
+}
 
-            .main-content {
-                margin-left: 70px;
-            }
-        }
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 1199px) {
+    .main-content {
+        padding: 16px;
+    }
+
+    .header {
+        padding: 14px 20px;
+    }
+
+    .categories-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 250px;
+        position: fixed;
+        z-index: 1050;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .sidebar-brand span,
+    .nav-link span {
+        display: inline;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 14px;
+    }
+
+    .header {
+        padding: 14px 16px;
+        margin-bottom: 20px;
+    }
+
+    .header-title {
+        font-size: 1.25rem;
+    }
+
+    .categories-card {
+        padding: 18px;
+    }
+}
+
+@media (max-width: 767px) {
+    .header {
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .admin-profile {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .table-title-area {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .btn-add-category {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .categories-card {
+        padding: 16px;
+    }
+
+    .table {
+        min-width: 800px;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+}
+
+@media (max-width: 575px) {
+    .main-content {
+        padding: 10px;
+    }
+
+    .header {
+        padding: 12px 14px;
+        border-radius: 10px;
+    }
+
+    .header-title {
+        font-size: 1.1rem;
+    }
+
+    .admin-profile span {
+        font-size: 0.9rem;
+    }
+
+    .profile-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .categories-card {
+        border-radius: 10px;
+        padding: 14px;
+    }
+
+    .category-img {
+        width: 40px;
+        height: 40px;
+    }
+}
     </style>
 </head>
 
@@ -292,20 +416,26 @@
             </a>
         </nav>
     </div>
-
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- Main Content -->
     <div class="main-content">
         <!-- Header -->
         <div class="header">
-            <h2 class="header-title">Categories Management</h2>
-            <div class="admin-profile">
-                <span>Welcome, Admin</span>
-                <div class="profile-icon">
-                    <i class="bi bi-person"></i>
-                </div>
-            </div>
+    <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-secondary d-lg-none" id="menuToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        <h2 class="header-title">Categories Management</h2>
+    </div>
+
+    <div class="admin-profile">
+        <span>Welcome, Admin</span>
+        <div class="profile-icon">
+            <i class="bi bi-person"></i>
         </div>
+    </div>
+</div>
         <div id="messageBox"></div>
 
         <!-- Categories Table Area -->
@@ -529,6 +659,19 @@ document.getElementById("exportCategoriesBtn").addEventListener("click", async (
         console.error("Export failed:", err);
         alert("Failed to export categories.");
     }
+});
+const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.querySelector(".sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+menuToggle?.addEventListener("click", () => {
+    sidebar.classList.toggle("show");
+    sidebarOverlay.classList.toggle("show");
+});
+
+sidebarOverlay?.addEventListener("click", () => {
+    sidebar.classList.remove("show");
+    sidebarOverlay.classList.remove("show");
 });
 </script>
 

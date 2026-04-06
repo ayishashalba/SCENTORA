@@ -14,6 +14,133 @@
     <link rel="stylesheet" href="../assets/css/style.css">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+      @media (max-width: 991px) {
+    .otp-container {
+        width: 92% !important;
+        max-width: 520px !important;
+        margin: 30px auto !important;
+        padding: 30px 24px !important;
+        border-radius: 18px !important;
+        min-height: auto !important;
+        height: auto !important;
+    }
+
+    .page-title {
+        font-size: 32px !important;
+        text-align: center;
+    }
+
+    .otp-instruction {
+        font-size: 15px !important;
+        text-align: center;
+        margin-bottom: 20px !important;
+    }
+
+    .otp-inputs {
+        gap: 12px !important;
+        justify-content: center !important;
+    }
+
+    .otp-field {
+        width: 56px !important;
+        height: 56px !important;
+        font-size: 24px !important;
+        text-align: center;
+    }
+}
+
+@media (max-width: 767px) {
+    .otp-container {
+        width: 94% !important;
+        max-width: 420px !important;
+        margin: 20px auto !important;
+        padding: 26px 18px !important;
+        border-radius: 14px !important;
+    }
+
+    .page-title {
+        font-size: 28px !important;
+    }
+
+    .otp-instruction {
+        font-size: 14px !important;
+        margin-bottom: 18px !important;
+    }
+
+    .otp-inputs {
+        gap: 10px !important;
+    }
+
+    .otp-field {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 22px !important;
+    }
+
+    .resend-otp {
+        text-align: center;
+        font-size: 14px !important;
+        margin-top: 16px !important;
+    }
+
+    .otp-container button {
+        width: 100% !important;
+        font-size: 15px !important;
+        padding: 12px 14px !important;
+        margin-top: 18px !important;
+    }
+
+    .close-btn {
+        top: 10px !important;
+        right: 14px !important;
+        font-size: 24px !important;
+    }
+
+    #uiMessage {
+        font-size: 14px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .otp-container {
+        width: 100% !important;
+        min-height: 100vh !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        padding: 24px 14px !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .page-title {
+        font-size: 24px !important;
+    }
+
+    .otp-instruction {
+        font-size: 13px !important;
+    }
+
+    .otp-inputs {
+        gap: 8px !important;
+    }
+
+    .otp-field {
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 20px !important;
+    }
+
+    .resend-otp {
+        font-size: 13px !important;
+    }
+
+    .otp-container button {
+        font-size: 14px !important;
+    }
+}
+    </style>
 </head>
 
 <body>
@@ -73,7 +200,7 @@ async function verifyOTP() {
 
   try {
 
-    const response = await fetch("http://localhost:5000/api/auth/verify-otp", {
+    const response = await fetch("http://51.20.253.239:5000/api/auth/verify-otp", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -103,7 +230,7 @@ async function resendOTP() {
 
   try {
 
-    const response = await fetch("http://localhost:5000/api/auth/resend-otp", {
+    const response = await fetch("http://51.20.253.239:5000/api/auth/resend-otp", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

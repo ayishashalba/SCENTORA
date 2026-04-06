@@ -109,6 +109,507 @@
             border-radius: 6px;
             background: #f8f8f8;
         }
+        html,
+body {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+body.home-body {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    margin-top: auto;
+}
+
+/* desktop */
+.cart-page .container {
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+.cart-item-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid #eee;
+    border-radius: 14px;
+    background: #fff;
+    padding: 16px !important;
+    margin-bottom: 12px !important;
+}
+
+.cart-item-img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.item-name {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.item-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.item-price {
+    font-weight: 700;
+    color: #1e50A0;
+}
+
+.qty-btn,
+.quantity-box button {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    padding: 0;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 4px;
+}
+
+.quantity-box span,
+.quantity-text {
+    min-width: 20px;
+    text-align: center;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.item-actions .remove-btn {
+    border: none;
+    background: #dc3545;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+@media (max-width: 767.98px) {
+    .top-header .col-4,
+    .top-header .col-12 {
+        width: 100%;
+        text-align: center !important;
+        margin-bottom: 10px;
+    }
+
+    .header-icons {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .nav-menu ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        padding-left: 0;
+    }
+
+    .cart-page {
+        padding: 1rem !important;
+    }
+
+    .cart-page .container {
+        max-width: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .checkout-progress {
+        overflow-x: auto;
+        padding-bottom: 8px;
+        margin-bottom: 1rem !important;
+    }
+
+    .checkout-progress .d-flex {
+        min-width: 420px;
+    }
+
+    .cart-title {
+        font-size: 22px;
+        margin-bottom: 1rem !important;
+    }
+
+    .cart-item-card {
+        flex-direction: row !important;
+        align-items: center !important;
+        text-align: left !important;
+        gap: 10px;
+        padding: 10px !important;
+    }
+
+    .item-img-wrapper {
+        width: auto;
+        flex-shrink: 0;
+        text-align: left;
+    }
+
+    .cart-item-img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .item-details {
+        margin-left: 0 !important;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .item-name {
+        font-size: 14px;
+        margin-bottom: 4px !important;
+    }
+
+    .item-details p {
+        font-size: 12px;
+        margin-bottom: 4px !important;
+    }
+
+    .quantity-box {
+        justify-content: flex-start;
+        gap: 3px;
+        margin-top: 4px;
+    }
+
+    .item-actions {
+        width: auto;
+        margin-left: auto !important;
+        text-align: right !important;
+        flex-shrink: 0;
+    }
+
+    .item-price {
+        font-size: 13px;
+        margin-bottom: 6px !important;
+    }
+
+    .item-actions .remove-btn {
+        width: auto;
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+
+    .add-wishlist-btn,
+    .checkout-primary-btn {
+        width: 100%;
+    }
+
+    .tax-shipping-text {
+        font-size: 11px;
+        margin-bottom: 10px !important;
+    }
+
+    .footer-top {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 24px;
+    }
+
+    .footer-col {
+        width: 100% !important;
+    }
+
+    .newsletter-box {
+        display: flex;
+        width: 100%;
+    }
+
+    .newsletter-box input {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .scam-alert {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-logo {
+        font-size: 18px;
+        margin-bottom: 4px;
+    }
+
+    .top-header .col-4,
+    .top-header .col-12 {
+        margin-bottom: 8px;
+    }
+
+    .header-icons {
+        gap: 12px;
+    }
+
+    .nav-menu ul {
+        font-size: 11px;
+        gap: 6px 8px;
+    }
+
+    .cart-page {
+        padding-top: 0.7rem !important;
+        padding-bottom: 0.7rem !important;
+    }
+
+    .cart-page .container {
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+    }
+
+    .checkout-progress .d-flex {
+        min-width: 360px;
+    }
+
+    .progress-step .step-icon {
+        width: 20px;
+        height: 20px;
+        font-size: 9px;
+    }
+
+    .progress-step .step-label {
+        font-size: 8px;
+    }
+
+    .cart-title {
+        font-size: 18px;
+        margin-bottom: 0.9rem !important;
+    }
+
+    .cart-item-card {
+        padding: 8px !important;
+        gap: 8px;
+        border-radius: 10px;
+    }
+
+    .cart-item-img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .item-name {
+        font-size: 12px;
+    }
+
+    .item-details p,
+    .tax-shipping-text {
+        font-size: 10px;
+    }
+
+    .qty-btn,
+    .quantity-box button {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+    }
+
+    .quantity-box span,
+    .quantity-text {
+        font-size: 10px;
+        min-width: 12px;
+    }
+
+    .item-price {
+        font-size: 11px;
+    }
+
+    .item-actions .remove-btn,
+    .add-wishlist-btn,
+    .checkout-primary-btn,
+    .btn {
+        font-size: 10px;
+        padding: 4px 6px;
+    }
+
+    .text-center.mb-5 {
+        margin-bottom: 1rem !important;
+    }
+
+    .cart-footer .tax-shipping-text {
+        margin-bottom: 0.75rem !important;
+    }
+}
+@media (max-width: 375px) {
+    .cart-page .container {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+    .cart-item-card {
+        gap: 6px;
+        padding: 8px !important;
+    }
+
+    .cart-item-img {
+        width: 44px;
+        height: 44px;
+    }
+
+    .item-details {
+        min-width: 0;
+    }
+
+    .item-name {
+        font-size: 11px;
+        line-height: 1.25;
+        margin-bottom: 2px !important;
+    }
+
+    .item-details p {
+        font-size: 9px;
+        margin-bottom: 2px !important;
+    }
+
+    .quantity-box {
+        gap: 2px;
+        margin-top: 2px;
+    }
+
+    .qty-btn,
+    .quantity-box button {
+        width: 18px;
+        height: 18px;
+        font-size: 9px;
+    }
+
+    .quantity-box span,
+    .quantity-text {
+        min-width: 10px;
+        font-size: 9px;
+    }
+
+    .item-actions {
+        gap: 4px;
+    }
+
+    .item-price {
+        font-size: 10px;
+        margin-bottom: 4px !important;
+    }
+
+    .item-actions .remove-btn {
+        font-size: 9px;
+        padding: 3px 5px;
+        line-height: 1.1;
+    }
+
+    .checkout-progress .d-flex {
+        min-width: 340px;
+    }
+
+    .progress-step .step-icon {
+        width: 18px;
+        height: 18px;
+        font-size: 8px;
+    }
+
+    .progress-step .step-label {
+        font-size: 7px;
+    }
+
+    .cart-title {
+        font-size: 16px;
+    }
+
+    .tax-shipping-text,
+    .add-wishlist-btn,
+    .checkout-primary-btn {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 320px) {
+    .cart-page .container {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    .cart-item-card {
+        gap: 5px;
+        padding: 7px !important;
+    }
+
+    .cart-item-img {
+        width: 38px;
+        height: 38px;
+    }
+
+    .item-name {
+        font-size: 10px;
+        line-height: 1.2;
+    }
+
+    .item-details p {
+        font-size: 8px;
+    }
+
+    .qty-btn,
+    .quantity-box button {
+        width: 16px;
+        height: 16px;
+        font-size: 8px;
+    }
+
+    .quantity-box span,
+    .quantity-text {
+        min-width: 8px;
+        font-size: 8px;
+    }
+
+    .item-price {
+        font-size: 9px;
+    }
+
+    .item-actions .remove-btn {
+        font-size: 8px;
+        padding: 2px 4px;
+    }
+
+    .checkout-progress .d-flex {
+        min-width: 300px;
+    }
+
+    .progress-step .step-icon {
+        width: 16px;
+        height: 16px;
+        font-size: 7px;
+    }
+
+    .progress-step .step-label {
+        font-size: 6px;
+    }
+
+    .cart-title {
+        font-size: 15px;
+    }
+
+    .tax-shipping-text,
+    .add-wishlist-btn,
+    .checkout-primary-btn {
+        font-size: 9px;
+    }
+}
     </style>
 </head>
 
@@ -337,7 +838,7 @@
             // Load Cart
             async function loadCart() {
                 try {
-                    const res = await fetch("http://localhost:5000/api/cart", {
+                    const res = await fetch("http://51.20.253.239:5000/api/cart", {
                         headers: { "Authorization": `Bearer ${token}` }
                     });
                     const data = await res.json();
@@ -360,7 +861,7 @@ if (!item.product || !item.product._id || !/^[0-9a-fA-F]{24}$/.test(item.product
                         const price = item.product.price || 0;
                         const name = item.product.name || "Product";
                         const image = item.product.image
-  ? `http://localhost:5000/${item.product.image}`
+  ? `http://51.20.253.239:5000/${item.product.image}`
   : "assets/images/default.png";
                         const quantity = item.quantity;
                         const total = price * quantity;
@@ -401,7 +902,7 @@ if (!item.product || !item.product._id || !/^[0-9a-fA-F]{24}$/.test(item.product
             // Update Quantity
             async function updateQuantity(productId, type) {
                 try {
-                    const res = await fetch(`http://localhost:5000/api/cart/${productId}`, {
+                    const res = await fetch(`http://51.20.253.239:5000/api/cart/${productId}`, {
                         method: 'PATCH',
                         headers: {
                             'Content-Type': 'application/json',
@@ -431,7 +932,7 @@ const data = await res.json();
             // Remove Item
             async function removeItem(productId) {
                 try {
-                    const res = await fetch(`http://localhost:5000/api/cart/${productId}`, {
+                    const res = await fetch(`http://51.20.253.239:5000/api/cart/${productId}`, {
                         method: 'DELETE',
                         headers: { 'Authorization': `Bearer ${token}` }
                     });

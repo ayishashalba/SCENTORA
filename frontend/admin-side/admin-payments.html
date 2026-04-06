@@ -285,20 +285,171 @@
         }
 
         /* Responsive */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 70px;
-            }
+        .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 999;
+    display: none;
+}
 
-            .sidebar-brand span,
-            .nav-link span {
-                display: none;
-            }
+.sidebar-overlay.show {
+    display: block;
+}
 
-            .main-content {
-                margin-left: 70px;
-            }
-        }
+@media (max-width: 1199px) {
+    .main-content {
+        padding: 16px;
+    }
+
+    .filter-bar {
+        padding: 18px;
+    }
+}
+
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 250px;
+        position: fixed;
+        z-index: 1050;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .sidebar-brand span,
+    .nav-link span {
+        display: inline;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 14px;
+    }
+
+    .header {
+        padding: 14px 16px;
+    }
+
+    .header-title {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .header {
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .admin-profile {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .search-wrapper {
+        min-width: 100%;
+    }
+
+    .filter-bar .ms-auto {
+        width: 100%;
+        margin-left: 0 !important;
+        flex-direction: column;
+        gap: 12px !important;
+    }
+
+    .filter-bar select {
+        width: 100% !important;
+    }
+
+    .payment-card {
+        padding: 16px;
+    }
+
+    .payment-card .row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .payment-card .col-md-2 {
+        width: 100%;
+    }
+
+    .payment-card .text-md-end {
+        text-align: left !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .main-content {
+        padding: 10px;
+    }
+
+    .header {
+        padding: 12px 14px;
+    }
+
+    .header-title {
+        font-size: 1.1rem;
+    }
+
+    .profile-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .payment-amount {
+        font-size: 1.1rem;
+    }
+
+    .payment-info-value {
+        font-size: 0.85rem;
+    }
+}
+.payment-info-value,
+.payment-amount {
+    word-break: break-word;
+}
+
+@media (max-width: 1199px) {
+    .payment-card {
+        padding: 18px;
+    }
+
+    .payment-card .row {
+        row-gap: 12px;
+    }
+}
+
+@media (max-width: 991px) {
+    .payment-card .text-lg-end {
+        text-align: left !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .payment-card {
+        padding: 16px;
+    }
+
+    .payment-amount {
+        font-size: 1.15rem;
+    }
+
+    .payment-info-value {
+        font-size: 0.9rem;
+    }
+}
     </style>
 </head>
 
@@ -371,19 +522,26 @@
         </nav>
     </div>
 
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- Main Content -->
     <div class="main-content">
         <!-- Header -->
         <div class="header">
-            <h2 class="header-title">Payment Management</h2>
-            <div class="admin-profile">
-                <span>Finance Hub</span>
-                <div class="profile-icon">
-                    <i class="bi bi-currency-dollar"></i>
-                </div>
-            </div>
+    <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-secondary d-lg-none" id="menuToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        <h2 class="header-title">Payment Management</h2>
+    </div>
+
+    <div class="admin-profile">
+        <span>Finance Hub</span>
+        <div class="profile-icon">
+            <i class="bi bi-currency-dollar"></i>
         </div>
+    </div>
+</div>
 
         <!-- Filter & Search Bar -->
         <div class="filter-bar">
@@ -466,31 +624,31 @@ function renderPayments(orders) {
         const paymentCard = `
             <div class="col-12">
                 <div class="payment-card ${cardClass}">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <span class="payment-info-label">Order ID</span>
-                            <span class="payment-info-value">${order.orderNumber || order._id}</span>
-                        </div>
-                        <div class="col-md-2">
-                            <span class="payment-info-label">Amount Paid</span>
-                            <span class="payment-amount ${amountClass}">₹${order.totalAmount}</span>
-                        </div>
-                        <div class="col-md-2">
-                            <span class="payment-info-label">Email Id</span>
-                            <span class="payment-info-value">${order.user?.email || "No Email"}</span>
-                        </div>
-                        <div class="col-md-2">
-                            <span class="payment-info-label">Method</span>
-                            <span class="payment-info-value">${method}</span>
-                        </div>
-                        <div class="col-md-2">
-                            <span class="payment-info-label">Date</span>
-                            <span class="payment-info-value">${new Date(order.createdAt).toLocaleString()}</span>
-                        </div>
-                        <div class="col-md-2 text-md-end">
-                            <span class="badge badge-neon ${badgeClass}">${status}</span>
-                        </div>
-                    </div>
+                    <div class="row g-3 align-items-start">
+    <div class="col-12 col-sm-6 col-lg-2">
+        <span class="payment-info-label">Order ID</span>
+        <span class="payment-info-value text-break">${order.orderNumber || order._id}</span>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-2">
+        <span class="payment-info-label">Amount Paid</span>
+        <span class="payment-amount ${amountClass}">₹${order.totalAmount}</span>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <span class="payment-info-label">Email Id</span>
+        <span class="payment-info-value text-break">${order.user?.email || "No Email"}</span>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-2">
+        <span class="payment-info-label">Method</span>
+        <span class="payment-info-value">${method}</span>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-2">
+        <span class="payment-info-label">Date</span>
+        <span class="payment-info-value">${new Date(order.createdAt).toLocaleString()}</span>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-1 text-lg-end">
+        <span class="badge badge-neon ${badgeClass}">${status}</span>
+    </div>
+</div>
                 </div>
             </div>
         `;
@@ -544,6 +702,19 @@ async function loadPayments() {
 }
 
 document.addEventListener("DOMContentLoaded", loadPayments);
+const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.querySelector(".sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+menuToggle?.addEventListener("click", () => {
+    sidebar.classList.toggle("show");
+    sidebarOverlay.classList.toggle("show");
+});
+
+sidebarOverlay?.addEventListener("click", () => {
+    sidebar.classList.remove("show");
+    sidebarOverlay.classList.remove("show");
+});
 </script>
 
 </body>

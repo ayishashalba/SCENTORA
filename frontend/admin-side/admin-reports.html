@@ -248,19 +248,138 @@
         }
 
         /* Responsive */
-        @media (max-width: 992px) {
-            .sidebar {
-                transform: translateX(-250px);
-            }
+        .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 999;
+    display: none;
+}
 
-            .sidebar.show {
-                transform: translateX(0);
-            }
+.sidebar-overlay.show {
+    display: block;
+}
 
-            .main-content {
-                margin-left: 0;
-            }
-        }
+@media (max-width: 1199px) {
+    .container-fluid.p-4 {
+        padding: 16px !important;
+    }
+
+    .analytic-panel,
+    .stats-card {
+        padding: 20px;
+    }
+
+    .header {
+        padding: 14px 20px;
+    }
+}
+
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 250px;
+        z-index: 1050;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .header {
+        padding: 14px 16px;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .header-title {
+        font-size: 1.25rem;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .filter-controls {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .container-fluid.p-4 {
+        padding: 14px !important;
+    }
+
+    .filter-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .filter-controls input,
+    .filter-controls select,
+    .filter-controls button,
+    .filter-controls .btn-export {
+        width: 100%;
+    }
+
+    .stats-card {
+        padding: 16px;
+    }
+
+    .stats-value {
+        font-size: 1.4rem;
+    }
+
+    .analytic-panel {
+        padding: 16px;
+    }
+
+    .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .custom-table,
+    .table {
+        min-width: 700px;
+    }
+
+    .product-img {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+@media (max-width: 575px) {
+    .header {
+        padding: 12px 14px;
+    }
+
+    .header-title {
+        font-size: 1.1rem;
+    }
+
+    .stats-label {
+        font-size: 0.8rem;
+    }
+
+    .stats-value {
+        font-size: 1.2rem;
+    }
+
+    .analytic-panel {
+        padding: 14px;
+    }
+}
     </style>
 </head>
 
@@ -332,29 +451,36 @@
             </a>
         </nav>
     </div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- Main Content -->
     <div class="main-content">
         <!-- Header -->
         <header class="header">
-            <h2 class="header-title">Reports & Analytics</h2>
-            <div class="header-actions">
-                <div class="filter-controls">
-                    <input type="date" id="fromDate" class="form-control form-control-sm">
-<input type="date" id="toDate" class="form-control form-control-sm">
-<button class="btn btn-sm btn-primary" id="applyDate">Apply</button>
-                    <select id="reportFilter" class="form-select form-select-sm" style="width:150px;">
-    <option value="7">Last 7 Days</option>
-    <option value="30" selected>Last 30 Days</option>
-    <option value="365">This Year</option>
-</select>
-                    <a href="#" class="btn btn-export btn-sm">
-                        <i class="bi bi-download"></i>
-                        Export Report
-                    </a>
-                </div>
-            </div>
-        </header>
+    <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-secondary d-lg-none" id="menuToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        <h2 class="header-title">Reports & Analytics</h2>
+    </div>
+
+    <div class="header-actions">
+        <div class="filter-controls">
+            <input type="date" id="fromDate" class="form-control form-control-sm">
+            <input type="date" id="toDate" class="form-control form-control-sm">
+            <button class="btn btn-sm btn-primary" id="applyDate">Apply</button>
+            <select id="reportFilter" class="form-select form-select-sm" style="width:150px;">
+                <option value="7">Last 7 Days</option>
+                <option value="30" selected>Last 30 Days</option>
+                <option value="365">This Year</option>
+            </select>
+            <a href="#" class="btn btn-export btn-sm">
+                <i class="bi bi-download"></i>
+                Export Report
+            </a>
+        </div>
+    </div>
+</header>
         <div id="messageBox"></div>
 
         <div class="container-fluid p-4">
@@ -579,6 +705,19 @@ function downloadCSV(rows, filename) {
     link.setAttribute("download", filename);
     link.click();
 }
+const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.querySelector(".sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+menuToggle?.addEventListener("click", () => {
+    sidebar.classList.toggle("show");
+    sidebarOverlay.classList.toggle("show");
+});
+
+sidebarOverlay?.addEventListener("click", () => {
+    sidebar.classList.remove("show");
+    sidebarOverlay.classList.remove("show");
+});
     </script>
 
 </body>
