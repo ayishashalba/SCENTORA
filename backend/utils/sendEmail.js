@@ -11,7 +11,7 @@ const sendEmail = async (email, otp) => {
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Scentora" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "Your OTP Code",
       html: `

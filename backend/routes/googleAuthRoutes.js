@@ -12,8 +12,8 @@ router.get("/google/callback", (req, res, next) => {
 
   passport.authenticate("google", { session: false }, async (err, user, info) => {
 
-    const loginUrl = "http://127.0.0.1:5500/frontend/user-side/auth/login.html";
-    const homeUrl = "http://127.0.0.1:5500/frontend/user-side/home.html";
+    const loginUrl = "https://scentoras.online/user-side/auth/login.html";
+const homeUrl = "https://scentoras.online/user-side/home.html";
 
     // 🔴 account already exists
     if (info && info.message === "ACCOUNT_EXISTS") {
