@@ -69,24 +69,12 @@ exports.createOrder = async (req, res) => {
             }
         }
 
-        // Calculate shipping
 let shipping =0;
 if (paymentMethod?.trim().toLowerCase() === "cash on delivery") {
     shipping = 50;
 }
 
-// Calculate total including shipping
 const totalAmount = subtotal - discount + shipping;
-
-// for (const item of orderItems) {
-//     const product = await Product.findById(item.product);
-
-//     if (!product || product.stock < item.quantity) {
-//         return res.status(400).json({
-//             message: `${item.name} is out of stock`
-//         });
-//     }
-// }
 let updatedProducts = [];
 
 for (const item of orderItems) {
@@ -103,8 +91,6 @@ for (const item of orderItems) {
   );
 
   if (!product) {
-
-    // rollback already updated stock
     for (let p of updatedProducts) {
       await Product.findByIdAndUpdate(p.id, {
         $inc: { stock: p.qty }
@@ -162,12 +148,11 @@ const order = await Order.create({
     status: "Placed"
 });
 
-// CREATE TRANSACTION using request body value
 await Transaction.create({
 user: req.user.id,
     transactionId: "TXN-" + Date.now() + "-" + Math.floor(Math.random() * 1000),
     orderId: "ORD-" + order._id.toString().slice(-5).toUpperCase(),
-    paymentMethod: method, // important fix
+    paymentMethod: method,
     amount: totalAmount,
     status: "Pending",
     type: "debit",
@@ -305,8 +290,6 @@ exports.cancelSingleItem = async (req, res) => {
             0
         );
 
-        // Recalculate coupon/discount
-        // Recalculate coupon/discount
 if (order.couponCode && order.couponMinOrder != null) {
     if (order.subtotal < Number(order.couponMinOrder || 0)) {
         order.discount = 0;

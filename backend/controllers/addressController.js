@@ -18,7 +18,7 @@ const addAddress = async (req, res) => {
         res.status(201).json(newAddress);
 
     } catch (error) {
-        console.log(error);   // VERY IMPORTANT
+        console.log(error);
         res.status(500).json({ message: "Server error" });
     }
 };

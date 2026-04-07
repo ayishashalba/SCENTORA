@@ -5,7 +5,6 @@ exports.filterProducts = async (req, res) => {
 
         let query = {};
 
-        // CATEGORY / NOTE FILTER
         if (req.query.category) {
 
            let categories = req.query.category;
@@ -23,17 +22,13 @@ if (categories) {
 };
         }
 
-        // TARGET / GENDER FILTER
 if (req.query.target) {
     const targets = Array.isArray(req.query.target)
         ? req.query.target
         : [req.query.target];
-
-    // Map "Attars" to "attar"
     const normalizedTargets = targets.map(t => t.toLowerCase() === "attars" ? "attar" : t);
     query.gender = { $in: normalizedTargets.map(t => new RegExp(`^${t}$`, "i")) };
 }
-        // SIZE FILTER
         if (req.query.size) {
 
     const sizes = Array.isArray(req.query.size)
@@ -41,14 +36,12 @@ if (req.query.target) {
         : [req.query.size];
 query.size = { $in: sizes };
 }
-// AVAILABILITY FILTER
 if (req.query.availability === "outofstock") {
     query.stock = 0;
 }
 if (req.query.availability === "instock") {
     query.stock = { $gt: 0 };
 }
-        // PRICE FILTER
         if (req.query.minPrice || req.query.maxPrice) {
 
             query.price = {};
@@ -60,7 +53,6 @@ if (req.query.availability === "instock") {
                 query.price.$lte = Number(req.query.maxPrice);
         }
 
-        // SEARCH
         if (req.query.search) {
 
             query.name = {

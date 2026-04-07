@@ -1,14 +1,11 @@
 import Review from "../models/reviewModel.js";
 
-
-// ✅ GET ALL REVIEWS (with filters)
 export const getAllReviews = async (req, res) => {
   try {
     const { search, rating, status, sort } = req.query;
 
     let query = {};
 
-    // Search (product or user name)
     if (search) {
       query.$or = [
         { reviewText: { $regex: search, $options: "i" } },
@@ -37,8 +34,6 @@ export const getAllReviews = async (req, res) => {
   }
 };
 
-
-// ✅ GET SINGLE REVIEW
 export const getReviewById = async (req, res) => {
   try {
     const review = await Review.findById(req.params.id)
@@ -56,8 +51,6 @@ export const getReviewById = async (req, res) => {
   }
 };
 
-
-// ✅ UPDATE STATUS (Approve / Reject)
 export const updateReviewStatus = async (req, res) => {
   try {
     const { status } = req.body;

@@ -10,7 +10,6 @@ const codOrderController = async (req, res) => {
             return res.status(400).json({ success: false, message: "Invalid order data" });
         }
 
-        // 1️⃣ Create Order
         const newOrder = new Order({
             user: userId,
             products,
@@ -20,13 +19,11 @@ const codOrderController = async (req, res) => {
             createdAt: new Date()
         });
 
-        const savedOrder = await newOrder.save();  // ✅ Wait for save
-
-        // 2️⃣ Create Transaction linked to saved order
+        const savedOrder = await newOrder.save();
         const newTransaction = new Transaction({
             user:userId,
             transactionId: `TXN${Date.now()}`,
-            orderId: savedOrder._id,                 // ✅ Link correctly
+            orderId: savedOrder._id,
             paymentMethod: paymentMethod || "COD",
             amount,
             type: "debit",
@@ -48,7 +45,7 @@ const onlinePaymentController = async (req, res) => {
   try {
     const userId = req.user.id;
     const { products, totalAmount, paymentMethod } = req.body;
-    const Product = require("../models/Product"); // ✅ add this
+    const Product = require("../models/Product"); 
 
     const newOrder = new Order({
       user: userId,

@@ -25,18 +25,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 
-
 app.use(session({
   secret: "scentora_secret",
   resave: false,
   saveUninitialized: false
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-// ================= ROUTES =================
-
-app.use("/api/auth", require("./routes/googleAuthRoutes")); // This makes the route: /api/auth/google
+app.use("/api/auth", require("./routes/googleAuthRoutes"));
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/address", require("./routes/addressRoutes"));
 app.use("/api/products", require("./routes/productRoutes"));
@@ -48,8 +46,6 @@ app.use("/api/wishlist", require("./routes/wishlistRoutes"));
 app.use("/api/wallet", require("./routes/walletRoutes"));
 app.use("/api/products", require("./routes/productReviewRoutes"));
 
-// Admin
-// app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/admin", require("./routes/adminAuthRoutes"));
 app.use("/api/admin/dashboard", require("./routes/adminDashboardRoutes"));
 app.use("/api/admin", require("./routes/adminUserRoutes"));
@@ -65,16 +61,12 @@ app.use("/api/coupons", require("./routes/couponRoutes"));
 app.use("/api/settings", require("./routes/settings"));
 app.use("/api/transactions", require("./routes/transactionRoutes"));
 
-// Serve frontend
 app.use(express.static(path.join(__dirname, "../frontend")));
 
-// ================= TEST =================
 app.get("/", (req, res) => {
   res.send("Scentora Backend Running...");
 });
 
-
-// ================= START =================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

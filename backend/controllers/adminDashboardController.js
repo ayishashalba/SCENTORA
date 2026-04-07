@@ -12,7 +12,6 @@ exports.getDashboardStats = async (req, res) => {
 
   console.log("RAW:", fromDate, toDate);
 
-  // 🔥 FIX: handle dd-mm-yyyy format
   function parseDate(dateStr) {
     const [day, month, year] = dateStr.split("-");
     return new Date(`${year}-${month}-${day}T00:00:00.000Z`);
@@ -31,7 +30,6 @@ exports.getDashboardStats = async (req, res) => {
   console.log("TO:", end);
 } else {
 
-      // DEFAULT FILTERS
       let startDate = new Date();
 
       if (filter === "today") {
@@ -50,12 +48,10 @@ exports.getDashboardStats = async (req, res) => {
 
       query.createdAt = { $gte: startDate };
 
-      // Optional debug
       console.log("FILTER:", filter);
       console.log("START DATE:", startDate);
     }
 
-    // ✅ USE QUERY HERE
     const ordersForChart = await Order.find(query)
   .select("createdAt totalAmount");
 

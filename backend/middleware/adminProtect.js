@@ -1,10 +1,8 @@
 const jwt = require('jsonwebtoken');
-const Admin = require('../models/Admin'); // your admin model
-
+const Admin = require('../models/Admin');
 const adminProtect = async (req, res, next) => {
     let token;
 
-    // Check for token in headers
     if (
         req.headers.authorization &&
         req.headers.authorization.startsWith('Bearer')
@@ -13,7 +11,6 @@ const adminProtect = async (req, res, next) => {
             token = req.headers.authorization.split(' ')[1];
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-            // Attach admin to request
             req.admin = await Admin.findById(decoded.id).select('-password');
 
             if (!req.admin) {

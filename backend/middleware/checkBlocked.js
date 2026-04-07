@@ -1,4 +1,3 @@
-// middleware/checkBlocked.js
 const User = require("../models/User");
 
 const checkBlocked = async (req, res, next) => {

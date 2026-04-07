@@ -2,7 +2,6 @@ const AdminReview = require('../models/Review');
 const Product = require('../models/Product');
 const User = require('../models/User');
 
-// GET all reviews (with optional filters)
 exports.getReviews = async (req, res) => {
     try {
         const { status, rating, search } = req.query;
@@ -31,7 +30,6 @@ exports.getReviews = async (req, res) => {
     }
 };
 
-// UPDATE review status (Approve/Reject)
 exports.updateReviewStatus = async (req, res) => {
     try {
         const { id } = req.params;
@@ -54,7 +52,6 @@ exports.updateReviewStatus = async (req, res) => {
     }
 };
 
-// DELETE review
 exports.deleteReview = async (req, res) => {
     try {
         const { id } = req.params;

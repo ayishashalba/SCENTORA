@@ -38,7 +38,6 @@ const updateProduct = async (req, res) => {
     if (category) updatedData.category = category;
     if (status) updatedData.status = status;
 
-    // PRICE FIX
     if (price !== undefined && price !== "") {
       const numPrice = Number(price);
       if (isNaN(numPrice) || numPrice < 0) {
@@ -47,7 +46,6 @@ const updateProduct = async (req, res) => {
       updatedData.price = numPrice;
     }
 
-    // STOCK FIX
     if (stock !== undefined && stock !== "") {
       const numStock = Number(stock);
       if (isNaN(numStock) || numStock < 0) {
