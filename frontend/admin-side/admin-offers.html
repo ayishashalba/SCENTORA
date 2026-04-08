@@ -696,7 +696,7 @@
 }
         document.addEventListener("DOMContentLoaded", () => {
 
-            const API = "http://localhost:5000/api/admin/coupons";
+            const API = "/api/admin/coupons";
             const form = document.getElementById("couponForm");
             const container = document.getElementById("couponContainer");
 
@@ -888,7 +888,7 @@ document.getElementById("startDate").addEventListener("change", function () {
         });
         document.getElementById("exportCouponsBtn").addEventListener("click", async () => {
     try {
-        const res = await fetch("http://localhost:5000/api/admin/coupons");
+        const res = await fetch("/api/admin/coupons");
         const coupons = await res.json();
 
         if (!coupons.length) {

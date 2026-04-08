@@ -5,6 +5,8 @@ const Order = require("../models/Order");
 const Razorpay = require("razorpay");
 const authMiddleware = require("../middleware/authMiddleware");
 const crypto = require("crypto");
+const Cart = require("../models/Cart");
+const Product = require("../models/Product");
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -107,7 +109,27 @@ router.post("/verify-razorpay-payment", authMiddleware, async (req, res) => {
         image: item.product.image
     }));
 
-    const order = await Order.create({
+    for (const item of orderItems) {
+  const updatedProduct = await Product.findOneAndUpdate(
+    {
+      _id: item.product,
+      stock: { $gte: item.quantity }
+    },
+    {
+      $inc: { stock: -item.quantity }
+    },
+    { new: true }
+  );
+
+  if (!updatedProduct) {
+    return res.status(400).json({
+      success: false,
+      message: `${item.name} is out of stock`
+    });
+  }
+}
+
+const order = await Order.create({
         user: req.user.id,
         items: orderItems,
         subtotal,
@@ -120,14 +142,6 @@ router.post("/verify-razorpay-payment", authMiddleware, async (req, res) => {
         status: "Placed",
         paymentStatus: "Paid"
     });
-
-    // reduce stock
-    for (const item of orderItems) {
-        await Product.findByIdAndUpdate(
-            item.product,
-            { $inc: { stock: -item.quantity } }
-        );
-    }
 
     // clear cart
     cart.items = [];
