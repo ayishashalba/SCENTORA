@@ -680,7 +680,7 @@ document.querySelector(".header-actions .btn-export").addEventListener("click", 
         }
 
         // Best-selling products
-        rows.push([]);
+        rows.push([""]);
         rows.push(["Best Selling Products"]);
         rows.push(["Product Name", "Total Sold", "Revenue", "Stock", "Status"]);
         const tbody = document.getElementById("bestProductsTable");
@@ -700,16 +700,17 @@ document.querySelector(".header-actions .btn-export").addEventListener("click", 
 function downloadCSV(rows, filename) {
     const csvContent = rows
         .map(row =>
-            (row || []) // ✅ handle empty rows
+            (Array.isArray(row) ? row : [""]) // 🔥 FIX
                 .map(value => {
-                    const safeValue =
-                        value == null
-                            ? ""
-                            : Array.isArray(value)
-                                ? value.join(", ")
-                                : typeof value === "object"
-                                    ? JSON.stringify(value)
-                                    : String(value);
+                    let safeValue;
+
+                    if (value === null || value === undefined) {
+                        safeValue = "";
+                    } else if (typeof value === "object") {
+                        safeValue = JSON.stringify(value);
+                    } else {
+                        safeValue = String(value);
+                    }
 
                     return `"${safeValue.replace(/"/g, '""')}"`;
                 })
@@ -720,7 +721,7 @@ function downloadCSV(rows, filename) {
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.setAttribute("download", filename);
+    link.download = filename;
     link.click();
 }
 const menuToggle = document.getElementById("menuToggle");
