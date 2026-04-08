@@ -1,8 +1,10 @@
-const Order = require("../models/orderModel");
+const Order = require("../models/Order");
+const User = require("../models/User");
+const Product = require("../models/Product");
 
 exports.getDashboardStats = async (req, res) => {
   try {
-    const filter = req.query.filter || "week";
+    const filter = req.query.filter || "today";
     const { fromDate, toDate } = req.query;
 
     let query = {};
