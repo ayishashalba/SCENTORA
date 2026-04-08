@@ -700,14 +700,16 @@ document.querySelector(".header-actions .btn-export").addEventListener("click", 
 function downloadCSV(rows, filename) {
     const csvContent = rows
         .map(row =>
-            row
+            (row || []) // ✅ handle empty rows
                 .map(value => {
                     const safeValue =
-                        value === null || value === undefined
+                        value == null
                             ? ""
-                            : typeof value === "object"
-                                ? JSON.stringify(value)
-                                : String(value);
+                            : Array.isArray(value)
+                                ? value.join(", ")
+                                : typeof value === "object"
+                                    ? JSON.stringify(value)
+                                    : String(value);
 
                     return `"${safeValue.replace(/"/g, '""')}"`;
                 })
