@@ -696,7 +696,7 @@
 }
         document.addEventListener("DOMContentLoaded", () => {
 
-            const API = "http://51.20.253.239:5000/api/admin/coupons";
+            const API = "http://localhost:5000/api/admin/coupons";
             const form = document.getElementById("couponForm");
             const container = document.getElementById("couponContainer");
 
@@ -808,19 +808,28 @@ if (params.get("success")) {
             // Submit
             form.addEventListener("submit", async (e) => {
                 e.preventDefault();
-                const startDate = new Date(document.getElementById("startDate").value);
-const expiryDate = new Date(document.getElementById("expiryDate").value);
-const today = new Date();
-today.setHours(0,0,0,0);
+                const startDateInput = document.getElementById("startDate").value;
+const expiryDateInput = document.getElementById("expiryDate").value;
 
-// ❌ Expiry date already passed
-if (expiryDate < today) {
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+const startDate = startDateInput ? new Date(startDateInput + "T00:00:00") : null;
+const expiryDate = expiryDateInput ? new Date(expiryDateInput + "T00:00:00") : null;
+
+// ❌ Start date in past
+if (startDate && startDate < today) {
+    showMessage("Start date cannot be in the past.");
+    return;
+}
+
+// ❌ Expiry in past
+if (expiryDate && expiryDate < today) {
     showMessage("Expiry date cannot be in the past.");
     return;
 }
 
 // ❌ Expiry before start
-if (expiryDate < startDate) {
+if (startDate && expiryDate && expiryDate < startDate) {
     showMessage("Expiry date must be after start date.");
     return;
 }
@@ -866,13 +875,20 @@ if (usageLimit < 1) {
 
 window.location.href = "admin-offers.html?success=1";
             });
+            const todayStr = new Date().toISOString().split("T")[0];
+document.getElementById("startDate").setAttribute("min", todayStr);
+document.getElementById("expiryDate").setAttribute("min", todayStr);
+
+document.getElementById("startDate").addEventListener("change", function () {
+    document.getElementById("expiryDate").setAttribute("min", this.value);
+});
 
             loadCoupons();
             loadCouponData();
         });
         document.getElementById("exportCouponsBtn").addEventListener("click", async () => {
     try {
-        const res = await fetch("http://51.20.253.239:5000/api/admin/coupons");
+        const res = await fetch("http://localhost:5000/api/admin/coupons");
         const coupons = await res.json();
 
         if (!coupons.length) {
