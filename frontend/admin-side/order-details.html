@@ -546,7 +546,11 @@ ${a.city || ""}, ${a.state || ""} - ${a.pincode || ""}<br>
 `;
                 // --- Populate Products Table ---
                 const tbody = document.querySelector('.products-card tbody');
-                tbody.innerHTML = "";
+if (!tbody) {
+    console.error("tbody not found!");
+    return;
+}
+tbody.innerHTML = "";
                 order.items.forEach(p => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
@@ -585,7 +589,11 @@ const shipping = order.shipping || 0;
 const grandTotal = subtotal - discount + shipping;
 
                 const tfoot = document.querySelector('.products-card tfoot');
-                tfoot.innerHTML = `
+if (!tfoot) {
+    console.error("tfoot not found!");
+    return;
+}
+tfoot.innerHTML  = `
 <tr>
     <td colspan="5" class="text-end fw-bold">Subtotal:</td>
     <td class="text-end fw-bold">₹${subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
