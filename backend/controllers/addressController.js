@@ -49,13 +49,10 @@ const updateAddress = async (req, res) => {
     try {
         const addressId = req.params.id;
 
-        // Find the address and ensure it belongs to the user
         const address = await Address.findOne({ _id: addressId, user: req.user.id });
         if (!address) {
             return res.status(404).json({ message: "Address not found" });
         }
-
-        // Update fields
         address.fullName = req.body.fullName || address.fullName;
         address.phone = req.body.phone || address.phone;
         address.pincode = req.body.pincode || address.pincode;
