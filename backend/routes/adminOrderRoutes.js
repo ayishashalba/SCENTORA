@@ -23,7 +23,6 @@ router.get("/", adminProtect, async (req, res) => {
 router.get("/:id", adminProtect, async (req, res) => {
     const { id } = req.params;
 
-    // Validate ObjectId
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ message: "Invalid Order ID" });
     }
@@ -31,11 +30,9 @@ router.get("/:id", adminProtect, async (req, res) => {
     try {
         const order = await Order.findById(id)
             .populate("user", "name email phone")
-            .lean(); // lean() converts Mongoose doc to plain JS object
-
+            .lean(); 
         if (!order) return res.status(404).json({ message: "Order not found" });
 
-        // Ensure user object exists
         if (!order.user) {
             order.user = { name: "Unknown", email: "-", phone: "-" };
         }
