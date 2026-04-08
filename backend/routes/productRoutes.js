@@ -18,20 +18,15 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Route
 router.post("/", upload.single("image"), createProduct);
 router.get("/:id", getProductById);
 router.put("/:id", upload.single("image"), updateProduct);
 
 // ================= GET ALL PRODUCTS =================
-// ================= GET ALL PRODUCTS =================
 router.get("/", async (req, res) => {
     try {
 
         const { gender } = req.query;
-
-        // If gender is provided → filter
-        // If not → return all
         const filter = gender ? { gender } : {};
 
         const products = await Product.find(filter)
@@ -85,7 +80,6 @@ router.post("/", async (req, res) => {
 
         const savedProduct = await product.save();
 
-        // respond directly
         res.status(201).json(savedProduct);
     } catch (err) {
         console.error(err);

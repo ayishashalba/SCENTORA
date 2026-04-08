@@ -1,4 +1,3 @@
-// backend/routes/payment.js
 
 const express = require("express");
 const router = express.Router();
@@ -7,15 +6,14 @@ const Razorpay = require("razorpay");
 const authMiddleware = require("../middleware/authMiddleware");
 const crypto = require("crypto");
 
-// Initialize Razorpay
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-// ===========================
+
 // CREATE RAZORPAY ORDER
-// ===========================
+
 router.post("/create-order/:orderId", authMiddleware, async (req, res) => {
     try {
         const order = await Order.findById(req.params.orderId);
@@ -41,9 +39,9 @@ router.post("/create-order/:orderId", authMiddleware, async (req, res) => {
     }
 });
 
-// ===========================
+
 // CASH ON DELIVERY (COD) ORDER
-// ===========================
+
 router.post("/cod-order", authMiddleware, async (req, res) => {
     try {
         const { products, amount } = req.body;
@@ -70,9 +68,9 @@ router.post("/cod-order", authMiddleware, async (req, res) => {
 });
 
 
-// ===========================
+
 // VERIFY RAZORPAY PAYMENT
-// ===========================
+
 router.post("/verify-razorpay-payment", authMiddleware, async (req, res) => {
 
     const {
