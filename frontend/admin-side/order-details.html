@@ -392,37 +392,19 @@ border:1px solid rgba(255,193,7,0.2);
             <h5 class="card-heading">Ordered Products</h5>
             <div class="table-responsive">
                 <table class="table table-hover">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Unit Price</th>
-<th>Status</th>
-<th class="text-end">Total Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-</tbody>
-                    <!-- <tfoot>
-                        <tr>
-                            <td colspan="4" class="text-end fw-bold">Subtotal:</td>
-                            <td class="text-end fw-bold">$215.00</td>
-                        </tr>
-                        <tr>
-                            <td colspan="4" class="text-end text-success">Discount (COUPON10):</td>
-                            <td class="text-end text-success">-$21.50</td>
-                        </tr>
-                        <tr>
-                            <td colspan="4" class="text-end">Shipping Fee:</td>
-                            <td class="text-end">$5.00</td>
-                        </tr>
-                        <tr class="fs-5">
-                            <td colspan="4" class="text-end fw-bold">Grand Total:</td>
-                            <td class="text-end fw-bold text-primary">$198.50</td>
-                        </tr>
-                    </tfoot> -->
-                </table>
+    <thead class="table-light">
+        <tr>
+            <th>Image</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Status</th>
+            <th class="text-end">Total Amount</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot></tfoot>
+</table>
             </div>
         </div>
 
@@ -604,24 +586,23 @@ const grandTotal = subtotal - discount + shipping;
 
                 const tfoot = document.querySelector('.products-card tfoot');
                 tfoot.innerHTML = `
-            <tr>
-                <td colspan="4" class="text-end fw-bold">Subtotal:</td>
-                <td class="text-end fw-bold">₹${subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
-            </tr>
-            <tr>
-                <td colspan="4" class="text-end text-success">Discount (${order.couponCode || '-'}):</td>
-                <td class="text-end text-success">-₹${discount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
-            </tr>
-            <tr>
-                <td colspan="4" class="text-end">Shipping Fee:</td>
-                <td class="text-end">₹${shipping.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
-            </tr>
-            <tr class="fs-5">
-                <td colspan="4" class="text-end fw-bold">Grand Total:</td>
-                <td class="text-end fw-bold text-primary">₹${grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
-            </tr>
-        `;
-
+<tr>
+    <td colspan="5" class="text-end fw-bold">Subtotal:</td>
+    <td class="text-end fw-bold">₹${subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
+</tr>
+<tr>
+    <td colspan="5" class="text-end text-success">Discount (${order.couponCode || '-'}):</td>
+    <td class="text-end text-success">-₹${discount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
+</tr>
+<tr>
+    <td colspan="5" class="text-end">Shipping Fee:</td>
+    <td class="text-end">₹${shipping.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
+</tr>
+<tr class="fs-5">
+    <td colspan="5" class="text-end fw-bold">Grand Total:</td>
+    <td class="text-end fw-bold text-primary">₹${grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
+</tr>
+`;
                 // --- Set selected status in dropdown ---
                const select = document.querySelector('.status-update-card select');
 
