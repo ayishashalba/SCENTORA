@@ -680,12 +680,12 @@ document.querySelector(".header-actions .btn-export").addEventListener("click", 
         }
 
         // Best-selling products
-        rows.push([""]);
+        rows.push([" "]);
         rows.push(["Best Selling Products"]);
         rows.push(["Product Name", "Total Sold", "Revenue", "Stock", "Status"]);
         const tbody = document.getElementById("bestProductsTable");
         Array.from(tbody.rows).forEach(tr => {
-            const row = Array.from(tr.cells).map(td => td.innerText.trim());
+            const row = Array.from(tr.cells).map(td => String(td.innerText || "").trim());
             rows.push(row);
         });
 
@@ -700,16 +700,23 @@ document.querySelector(".header-actions .btn-export").addEventListener("click", 
 function downloadCSV(rows, filename) {
     const csvContent = rows
         .map(row =>
-            (Array.isArray(row) ? row : [""]) // 🔥 FIX
+            (Array.isArray(row) ? row : [""])
                 .map(value => {
-                    let safeValue;
+                    // 🔥 FORCE STRING SAFELY
+                    let safeValue = "";
 
                     if (value === null || value === undefined) {
                         safeValue = "";
-                    } else if (typeof value === "object") {
-                        safeValue = JSON.stringify(value);
+                    } else if (typeof value === "string") {
+                        safeValue = value;
+                    } else if (typeof value === "number") {
+                        safeValue = value.toString();
                     } else {
-                        safeValue = String(value);
+                        try {
+                            safeValue = JSON.stringify(value);
+                        } catch {
+                            safeValue = "";
+                        }
                     }
 
                     return `"${safeValue.replace(/"/g, '""')}"`;
