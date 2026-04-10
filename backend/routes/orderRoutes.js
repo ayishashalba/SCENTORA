@@ -319,20 +319,33 @@ router.post("/check-stock-before-payment", protect, async (req, res) => {
       });
     }
 
+    const outOfStockItems = [];
+    const removeIds = [];
+
     for (const item of cart.items) {
       if (!item.product) {
-        return res.status(400).json({
-          success: false,
-          message: "A product in cart no longer exists"
-        });
+        outOfStockItems.push("A product no longer exists");
+        continue;
       }
 
       if (item.product.stock < item.quantity) {
-        return res.status(400).json({
-          success: false,
-          message: `${item.product.name} is out of stock`
-        });
+        outOfStockItems.push(item.product.name);
+        removeIds.push(item.product._id.toString());
       }
+    }
+
+    if (outOfStockItems.length > 0) {
+      cart.items = cart.items.filter(item => {
+        if (!item.product) return false;
+        return !removeIds.includes(item.product._id.toString());
+      });
+
+      await cart.save();
+
+      return res.status(400).json({
+        success: false,
+        message: `Removed from cart: ${outOfStockItems.join(", ")} because they are out of stock`
+      });
     }
 
     return res.json({
