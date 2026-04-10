@@ -987,6 +987,23 @@ if (isCOD) {
 
 // ===== RAZORPAY FLOW =====
 if (isRazorpay) {
+    // ✅ STEP 1: CHECK STOCK BEFORE PAYMENT
+    const stockCheck = await fetch("http://51.20.253.239:5000/api/payment/check-stock-before-payment", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    const stockData = await stockCheck.json();
+
+    if (!stockData.success) {
+        showMessage(stockData.message || "Some items are out of stock");
+        return; // ❌ STOP HERE (DO NOT OPEN RAZORPAY)
+    }
+
+    // ✅ STEP 2: CONTINUE PAYMENT ONLY IF STOCK OK
 
         // Convert rupees to paise only here
         const amountInPaise = Math.round(finalCheckout.finalAmount * 100);

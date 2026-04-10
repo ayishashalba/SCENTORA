@@ -69,7 +69,46 @@ router.post("/cod-order", authMiddleware, async (req, res) => {
     }
 });
 
+router.post("/check-stock-before-payment", authMiddleware, async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ user: req.user.id }).populate("items.product");
 
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Cart is empty"
+      });
+    }
+
+    for (const item of cart.items) {
+      if (!item.product) {
+        return res.status(400).json({
+          success: false,
+          message: "A product in cart no longer exists"
+        });
+      }
+
+      if (item.product.stock < item.quantity) {
+        return res.status(400).json({
+          success: false,
+          message: `${item.product.name} is out of stock`
+        });
+      }
+    }
+
+    return res.json({
+      success: true,
+      message: "Stock available"
+    });
+
+  } catch (err) {
+    console.error("Stock pre-check error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Server error while checking stock"
+    });
+  }
+});
 
 // VERIFY RAZORPAY PAYMENT
 
