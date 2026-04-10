@@ -815,7 +815,7 @@ function downloadCSV(rows, filename) {
 
             try {
                 
-                const res = await fetch("http://51.20.253.239:5000/api/admin/dashboard/stats", {
+                const res = await fetch("/api/admin/dashboard/stats", {
                     headers: {
                         "Authorization": "Bearer " + token
                     }
@@ -946,7 +946,7 @@ async function loadOrdersChart(filter = "week",fromDate = null, toDate = null) {
     try {
         const token = localStorage.getItem("adminToken");
         if (!token) return;
-let url = `http://51.20.253.239:5000/api/admin/dashboard/stats?filter=${filter}`;
+let url = `/api/admin/dashboard/stats?filter=${filter}`;
 
         if (fromDate && toDate) {
             url += `&fromDate=${fromDate}&toDate=${toDate}`;
