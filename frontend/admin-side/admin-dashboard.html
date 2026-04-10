@@ -875,7 +875,7 @@ document.getElementById("applyDateFilter").addEventListener("click", () => {
 
                 data.lowStockProducts.forEach(product => {
     const imgSrc = product.image
-    ? `http://51.20.253.239:5000/uploads/${encodeURIComponent(product.image.split("/").pop())}`
+    ? `/uploads/${encodeURIComponent(product.image.split("/").pop())}`
     : "https://via.placeholder.com/40";
 
     lowStockTable.innerHTML += `
