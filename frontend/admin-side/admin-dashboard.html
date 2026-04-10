@@ -572,6 +572,9 @@
     </div>
 
     <div class="header-actions">
+    <button class="btn btn-primary btn-sm" id="exportDashboard">
+        <i class="bi bi-download"></i> Export Report
+    </button>
         <button class="icon-btn">
             <i class="bi bi-bell"></i>
             <span class="notification-badge"></span>
@@ -757,6 +760,52 @@ sidebarOverlay?.addEventListener("click", () => {
 });
         document.addEventListener("DOMContentLoaded", async () => {
 
+            document.getElementById("exportDashboard").addEventListener("click", () => {
+
+    const users = document.getElementById("totalUsers").innerText;
+    const orders = document.getElementById("totalOrders").innerText;
+    const revenue = document.getElementById("totalRevenue").innerText;
+    const products = document.getElementById("totalProducts").innerText;
+
+    const rows = [
+        ["Metric", "Value"],
+        ["Total Users", users],
+        ["Total Orders", orders],
+        ["Total Revenue", revenue],
+        ["Total Products", products],
+        [],
+        ["Recent Orders"],
+        ["Order ID", "Customer", "Date", "Total", "Status"]
+    ];
+
+    document.querySelectorAll("#recentOrdersTable tr").forEach(tr => {
+        const cols = tr.querySelectorAll("td");
+
+        if (cols.length > 0) {
+            rows.push([
+                cols[0].innerText,
+                cols[1].innerText,
+                cols[2].innerText,
+                cols[3].innerText,
+                cols[4].innerText
+            ]);
+        }
+    });
+
+    downloadCSV(rows, "dashboard-report.csv");
+});
+function downloadCSV(rows, filename) {
+    const csvContent = rows.map(row =>
+        row.map(val => `"${String(val).replace(/"/g, '""')}"`).join(",")
+    ).join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+}
             const token = localStorage.getItem("adminToken");
 
             if (!token) {
