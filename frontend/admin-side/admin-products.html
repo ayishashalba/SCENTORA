@@ -580,14 +580,11 @@ async function loadProducts() {
         products.forEach(product => {
 
             // Encode filename properly to fix spaces and special characters
-            let imgSrc = "https://via.placeholder.com/50";
+            let imgSrc = "/uploads/products/default.png";
 
 if (product.image) {
-    if (product.image.startsWith("uploads/")) {
-        imgSrc = `http://51.20.253.239:5000/${product.image}`;
-    } else {
-        imgSrc = `./${product.image}`;
-    }
+    const fileName = product.image.split("/").pop();
+    imgSrc = `https://scentoras.online/uploads/${fileName}`;
 }
 
             // Status badge
@@ -598,7 +595,10 @@ if (product.image) {
             tableBody.innerHTML += `
                 <tr>
                     <td>
-                        <img src="${imgSrc}" class="product-img-thumb" alt="${product.name}">
+                        <img src="${imgSrc}" 
+     class="product-img-thumb" 
+     alt="${product.name}"
+     onerror="this.src='/uploads/products/default.png'">
                     </td>
                     <td>${product.name}</td>
                     <td>${product.category || "General"}</td>
