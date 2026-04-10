@@ -988,7 +988,7 @@ if (isCOD) {
 // ===== RAZORPAY FLOW =====
 if (isRazorpay) {
     // ✅ STEP 1: CHECK STOCK BEFORE PAYMENT
-    const stockCheck = await fetch("http://51.20.253.239:5000/api/payment/check-stock-before-payment", {
+    const stockCheck = await fetch("http://51.20.253.239:5000/api/orders/check-stock-before-payment", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
