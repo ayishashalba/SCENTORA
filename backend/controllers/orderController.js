@@ -290,21 +290,29 @@ exports.cancelSingleItem = async (req, res) => {
             0
         );
 
-if (order.couponCode && order.couponMinOrder != null) {
-    if (order.subtotal < Number(order.couponMinOrder || 0)) {
-        order.discount = 0;
-        order.couponCode = null;
-    } else {
+const minOrder = Number(order.couponMinOrder || 0);
+const subtotal = Number(order.subtotal || 0);
+
+if (order.couponCode && minOrder > 0) {
+
+    if (subtotal >= minOrder) {
+
         if (order.couponDiscountType === "flat") {
             order.discount = Number(order.couponValue || 0);
         } else {
-            order.discount = (order.subtotal * Number(order.couponValue || 0)) / 100;
+            order.discount = (subtotal * Number(order.couponValue || 0)) / 100;
         }
 
-        if (order.discount > order.subtotal) {
-            order.discount = order.subtotal;
+        if (order.discount > subtotal) {
+            order.discount = subtotal;
         }
+
+    } else {
+        // ❌ remove coupon ONLY if below min order
+        order.discount = 0;
+        order.couponCode = null;
     }
+
 } else {
     order.discount = 0;
 }
