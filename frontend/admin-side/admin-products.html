@@ -598,7 +598,7 @@ if (product.image) {
                         <img src="${imgSrc}" 
      class="product-img-thumb" 
      alt="${product.name}"
-     onerror="this.src='/uploads/products/default.png'">
+     onerror="this.onerror=null;this.src='https://via.placeholder.com/50?text=No+Image'">
                     </td>
                     <td>${product.name}</td>
                     <td>${product.category || "General"}</td>
