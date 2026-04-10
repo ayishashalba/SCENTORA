@@ -737,7 +737,7 @@ const placeOrderBtn = document.getElementById("placeOrderBtn");
 // ================= LOAD CART =================
 async function loadCartTotal() {
     try {
-        const res = await fetch("http://51.20.253.239:5000/api/cart", {
+        const res = await fetch("/api/cart", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -775,7 +775,7 @@ const couponContainer = document.getElementById("couponContainer");
 
 async function loadCoupons() {
     try {
-        const res = await fetch("http://51.20.253.239:5000/api/coupons", {
+        const res = await fetch("/api/coupons", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -988,7 +988,7 @@ if (isCOD) {
 // ===== RAZORPAY FLOW =====
 if (isRazorpay) {
     // ✅ STEP 1: CHECK STOCK BEFORE PAYMENT
-    const stockCheck = await fetch("http://51.20.253.239:5000/api/orders/check-stock-before-payment", {
+    const stockCheck = await fetch("/api/orders/check-stock-before-payment", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -1008,7 +1008,7 @@ if (isRazorpay) {
         // Convert rupees to paise only here
         const amountInPaise = Math.round(finalCheckout.finalAmount * 100);
 
-        const response = await fetch("http://51.20.253.239:5000/api/orders/create-razorpay-order", {
+        const response = await fetch("/api/orders/create-razorpay-order", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -1036,7 +1036,7 @@ if (isRazorpay) {
 
     try {
 
-        const verifyRes = await fetch("http://51.20.253.239:5000/api/orders/verify-razorpay-payment", {
+        const verifyRes = await fetch("/api/orders/verify-razorpay-payment", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -1089,7 +1089,7 @@ if (isWallet) {
 
     const finalCheckout = JSON.parse(localStorage.getItem("finalCheckout"));
 
-    const res = await fetch("http://51.20.253.239:5000/api/wallet/pay", {
+    const res = await fetch("/api/wallet/pay", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
