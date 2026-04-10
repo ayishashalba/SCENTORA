@@ -999,9 +999,14 @@ if (isRazorpay) {
     const stockData = await stockCheck.json();
 
     if (!stockData.success) {
-        showMessage(stockData.message || "Some items are out of stock");
-        return; // ❌ STOP HERE (DO NOT OPEN RAZORPAY)
-    }
+    showMessage(stockData.message || "Some items are out of stock");
+
+    setTimeout(() => {
+        window.location.href = "/user-side/products.html";
+    }, 3000); // 3 seconds
+
+    return;
+}
 
     // ✅ STEP 2: CONTINUE PAYMENT ONLY IF STOCK OK
 
