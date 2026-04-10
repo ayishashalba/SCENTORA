@@ -634,8 +634,12 @@ async function loadOrderDetails() {
 
         <td class="text-end">
 
-            <button class="btn btn-sm btn-primary action-btn reorder-btn">
-    Reorder
+            <button 
+    class="btn btn-sm action-btn reorder-btn 
+    ${order.status === "Shipped" ? "btn-secondary" : "btn-primary"}"
+    ${order.status === "Shipped" ? "disabled" : ""}
+>
+    ${order.status === "Shipped" ? "Reorder Disabled" : "Reorder"}
 </button>
 
 <button 
