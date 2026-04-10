@@ -613,22 +613,19 @@ tfoot.innerHTML  = `
 `;
                 // --- Set selected status in dropdown ---
                const select = document.querySelector('.status-update-card select');
-               if (!select) {
-    console.error("Status dropdown not found");
-    return;
-}
 
-const validTransitions = {
-    Pending: ["Placed", "Cancelled"],
-    Placed: ["Packed","Cancelled"],
-    Packed: ["Shipped"],
-    Shipped: ["Delivered"],
-    Delivered: [],
-    Cancelled: []
-};
+if (select) {
 
-// Clear existing options
-select.innerHTML = "";
+    select.innerHTML = "";
+
+    const validTransitions = {
+        Pending: ["Placed", "Cancelled"],
+        Placed: ["Packed","Cancelled"],
+        Packed: ["Shipped"],
+        Shipped: ["Delivered"],
+        Delivered: [],
+        Cancelled: []
+    };
 
 // Current status
 const current =
@@ -636,23 +633,22 @@ const current =
     order.status.slice(1).toLowerCase();
 // Add current status as selected
 const currentOption = document.createElement("option");
-currentOption.value = current.toLowerCase();
-currentOption.textContent = current;
-currentOption.selected = true;
-select.appendChild(currentOption);
+    currentOption.value = current.toLowerCase();
+    currentOption.textContent = current;
+    currentOption.selected = true;
+    select.appendChild(currentOption);
 
-// Add only allowed next statuses
-(validTransitions[current] || []).forEach(status => {
-    const opt = document.createElement("option");
-    opt.value = status;
-    opt.textContent = status.charAt(0).toUpperCase() + status.slice(1);
-    select.appendChild(opt);
-});
+    (validTransitions[current] || []).forEach(status => {
+        const opt = document.createElement("option");
+        opt.value = status;
+        opt.textContent = status;
+        select.appendChild(opt);
+    });
 
-// Disable if final
-if (current === "Delivered" || current === "Cancelled") {
-    select.disabled = true;
-    document.querySelector(".btn-update").disabled = true;
+    if (current === "Delivered" || current === "Cancelled") {
+        select.disabled = true;
+        document.querySelector(".btn-update").disabled = true;
+    }
 }
 
             } catch (err) {
