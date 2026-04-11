@@ -800,14 +800,36 @@ async function loadCoupons() {
                 </div>
             `;
 
-            card.addEventListener("click", () => {
-                document.querySelectorAll(".coupon-card")
-                    .forEach(c => c.classList.remove("active"));
+            card.addEventListener("click", async () => {
 
-                card.classList.add("active");
+    try {
 
-                applyCoupon(coupon);
-            });
+        const res = await fetch("/api/coupons/apply", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ code: coupon.code })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            couponMessage.innerText = data.message || "Coupon not valid";
+            couponMessage.style.color = "red";
+            return;
+        }
+
+        // ✅ ONLY APPLY IF BACKEND APPROVES
+        applyCoupon(coupon);
+
+    } catch (err) {
+        console.error(err);
+        showMessage("Failed to apply coupon");
+    }
+
+});
 
             couponContainer.appendChild(card);
         });
