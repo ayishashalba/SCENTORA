@@ -59,14 +59,23 @@ exports.createOrder = async (req, res) => {
     });
 
             if (coupon) {
-                if (coupon.discountType === "flat") {
-                    discount = coupon.value;
-                } else {
-                    discount = (subtotal * coupon.value) / 100;
-                }
 
-                if (discount > subtotal) discount = subtotal;
-            }
+    // 🔥 ADD THIS BLOCK (IMPORTANT FIX)
+    if (coupon.usedCount >= coupon.usageLimit) {
+        return res.status(400).json({
+            success: false,
+            message: "Coupon usage limit reached"
+        });
+    }
+
+    if (coupon.discountType === "flat") {
+        discount = coupon.value;
+    } else {
+        discount = (subtotal * coupon.value) / 100;
+    }
+
+    if (discount > subtotal) discount = subtotal;
+}
         }
 
 let shipping =0;
