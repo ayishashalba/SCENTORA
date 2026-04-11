@@ -580,11 +580,16 @@ async function loadProducts() {
         products.forEach(product => {
 
             // Encode filename properly to fix spaces and special characters
-            let imgSrc = "/uploads/products/default.png";
+            let imgSrc = "https://via.placeholder.com/50?text=No+Image";
 
 if (product.image) {
-    const fileName = product.image.split("/").pop();
-    imgSrc = `https://scentoras.online/uploads/${fileName}`;
+    if (product.image.startsWith("http")) {
+        imgSrc = product.image;
+    } else if (product.image.startsWith("/")) {
+        imgSrc = `https://scentoras.online${product.image}`;
+    } else {
+        imgSrc = `https://scentoras.online/${product.image}`;
+    }
 }
 
             // Status badge
