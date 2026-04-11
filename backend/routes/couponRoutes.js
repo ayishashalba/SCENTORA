@@ -35,8 +35,21 @@ router.post("/apply", authMiddleware, async (req, res) => {
         const { code } = req.body;
         const user = req.user;
 
-        const coupon = await Coupon.findOne({ code, status: "Active" });
-        if (!coupon) return res.status(404).json({ message: "Coupon not found" });
+        const coupon = await Coupon.findOne({
+    code: code.toUpperCase(),
+    isActive: true
+});
+
+if (!coupon) {
+    return res.status(404).json({ message: "Coupon not found" });
+}
+
+// 🔥 ADD THIS BLOCK
+if (coupon.usedCount >= coupon.usageLimit) {
+    return res.status(400).json({
+        message: "Coupon usage limit reached"
+    });
+}
 
         if (!user.appliedCoupons) user.appliedCoupons = [];
         if (user.appliedCoupons.includes(code))

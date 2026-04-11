@@ -8,7 +8,9 @@ const couponSchema = new mongoose.Schema({
   minOrder: { type: Number, required: true },
   startDate: {type:Date},
   expiryDate: { type: Date },
-  isActive: { type: Boolean, default: true }
+  isActive: { type: Boolean, default: true },
+  usageLimit: { type: Number, default: 1 },
+usedCount: { type: Number, default: 0 }
 }, { timestamps: true });
 
 module.exports = mongoose.model("Coupon", couponSchema);

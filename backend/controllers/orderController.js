@@ -148,6 +148,11 @@ const order = await Order.create({
     status: "Placed"
 });
 
+if (coupon) {
+    await Coupon.findByIdAndUpdate(coupon._id, {
+        $inc: { usedCount: 1 }
+    });
+}
 await Transaction.create({
 user: req.user.id,
     transactionId: "TXN-" + Date.now() + "-" + Math.floor(Math.random() * 1000),
