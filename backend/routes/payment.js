@@ -53,12 +53,17 @@ router.post("/cod-order", authMiddleware, async (req, res) => {
         }
 
         const newOrder = new Order({
-            user: req.user._id,
-            items: products,   // match your Order schema
-            totalAmount: amount,
-            paymentMethod: "COD",
-            status: "Pending"
-        });
+    user: req.user._id,
+    items: products,
+    totalAmount: amount,
+    paymentMethod: "COD",
+    status: "Pending",
+
+    paymentInfo: {
+        method: "COD",
+        status: "Pending"
+    }
+});
 
         await newOrder.save();
         res.status(200).json({ success: true, orderId: newOrder._id });
@@ -169,18 +174,22 @@ router.post("/verify-razorpay-payment", authMiddleware, async (req, res) => {
 }
 
 const order = await Order.create({
-        user: req.user.id,
-        items: orderItems,
-        subtotal,
-        discount,
-        totalAmount,
-        couponCode,
-        paymentMethod: "Razorpay",
-        paymentId: razorpay_payment_id,
-        razorpayOrderId: razorpay_order_id,
-        status: "Placed",
-        paymentStatus: "Paid"
-    });
+    user: req.user.id,
+    items: orderItems,
+    subtotal,
+    discount,
+    totalAmount,
+    couponCode,
+    paymentMethod: "Razorpay",
+    paymentId: razorpay_payment_id,
+    razorpayOrderId: razorpay_order_id,
+    status: "Placed",
+
+    paymentInfo: {
+        method: "Razorpay",
+        status: "Completed"
+    }
+});
 
     // clear cart
     cart.items = [];
@@ -214,12 +223,17 @@ router.post("/pay", authMiddleware, async (req, res) => {
 
         // Create order
         const newOrder = new Order({
-            user: userId,
-            items: products,
-            totalAmount,
-            paymentMethod: "Wallet",
-            status: "Placed"
-        });
+    user: userId,
+    items: products,
+    totalAmount,
+    paymentMethod: "Wallet",
+    status: "Placed",
+
+    paymentInfo: {
+        method: "Wallet",
+        status: "Completed"
+    }
+});
 
         const savedOrder = await newOrder.save();
 
